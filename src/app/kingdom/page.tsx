@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import { Check, X, Building, ChevronRight } from 'lucide-react'
 import { useToast } from '@/components/ui/Toast'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { Button } from '@/components/ui/button'
 
 export default function KingdomPage() {
   const [kingdom, setKingdom] = useState<any>(null)
@@ -46,173 +48,205 @@ export default function KingdomPage() {
     }
   }
 
-  if (loading) return <div className="text-[#5C5C5C] font-mono text-sm tracking-widest uppercase">Surveying Domain...</div>
-  if (error) return <div className="text-[#C41E1E] font-mono text-sm">Corruption Detected: {error}</div>
-  if (!kingdom) return null
+  if (loading) {
+    return (
+      <div className="flex min-h-screen bg-[#080808]">
+        <Sidebar />
+        <main className="flex-1 md:ml-[64px] p-8 flex items-center justify-center">
+          <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Surveying Domain...</div>
+        </main>
+      </div>
+    )
+  }
 
-  const builtBuildings = kingdom.buildings.filter((b: any) => b.status === 'built')
-  const potentialBuildings = kingdom.buildings.filter((b: any) => b.status !== 'built')
+  if (error || !kingdom) {
+    return (
+      <div className="flex min-h-screen bg-[#080808]">
+        <Sidebar />
+        <main className="flex-1 md:ml-[64px] p-8 flex items-center justify-center">
+          <div className="text-[#C41E1E] font-mono text-[11px] tracking-[0.2em] uppercase">Corruption Detected: {error}</div>
+        </main>
+      </div>
+    )
+  }
+
+  // Ensure we have exactly 6 slots for the 3x2 grid if possible, or just use CSS grid
+  const allBuildings = kingdom.buildings || []
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)] relative overflow-hidden animate-fade-in">
-      {/* Left Column */}
-      <div className="w-full md:w-[55%] flex flex-col gap-12 pr-0 md:pr-12 overflow-y-auto pb-24 md:pb-0 scrollbar-hide">
+    <div className="flex min-h-screen bg-[#080808]">
+      <Sidebar />
+      <main className="flex-1 md:ml-[64px] relative overflow-hidden flex flex-col h-screen">
         
-        {/* Header */}
-        <div>
-          <div className="text-[10px] text-[#5C5C5C] font-mono tracking-[0.2em] mb-2 uppercase">Domain of</div>
-          <h1 className="font-display text-5xl font-bold text-[#E8E6E0] mb-4 uppercase">{kingdom.name}</h1>
-          <p className="font-display italic text-[#5C5C5C] text-lg max-w-lg mb-8">
-            A reflection of your inner fortitude. As you conquer the physical realm, these walls rise in parallel.
-          </p>
-          
-          <div className="flex gap-6 items-center">
-            <button className="border border-[#1A1A1A] text-[#E8E6E0] px-6 py-2 font-mono text-xs tracking-widest hover:bg-[#1A1A1A] hover:text-[#C41E1E] transition-colors uppercase">
-              Transcend
-            </button>
-            <button className="border border-[#1A1A1A] text-[#E8E6E0] px-6 py-2 font-mono text-xs tracking-widest hover:bg-[#1A1A1A] hover:text-[#C41E1E] transition-colors uppercase">
-              Commune
-            </button>
+        <div className="flex-1 p-8 md:p-12 lg:p-16 overflow-y-auto animate-fade-in-up">
+          <div className="max-w-[1400px] mx-auto">
+            {/* Header */}
+            <div className="mb-16">
+              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
+                Domain of
+              </div>
+              <h1 className="font-serif text-[40px] font-bold text-[#E8E6E0] mb-6 uppercase leading-none">
+                {kingdom.name}
+              </h1>
+              <p className="font-serif italic text-[#5C5C5C] text-[18px] max-w-2xl mb-8 leading-relaxed">
+                A reflection of your inner fortitude. As you conquer the physical realm, these walls rise in parallel.
+              </p>
+            </div>
+
+            {/* Grid */}
+            <section>
+              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-8 uppercase border-b border-[#1A1A1A] pb-4">
+                Structures
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {allBuildings.map((b: any) => {
+                  const isAvailable = b.status === 'available'
+                  const isBuilt = b.status === 'built'
+                  
+                  return (
+                    <div 
+                      key={b.id} 
+                      onClick={() => setSelectedBuilding(b)}
+                      className={`flex flex-col p-6 border cursor-pointer transition-colors ${
+                        isAvailable ? 'border-[#C41E1E] hover:border-[#E8E6E0]' : 
+                        isBuilt ? 'border-[#3A3A3A] hover:border-[#5C5C5C]' : 
+                        'border-[#1A1A1A] opacity-40 hover:opacity-100 hover:border-[#3A3A3A]'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-12">
+                        <div className={`w-8 h-8 flex items-center justify-center ${isAvailable || isBuilt ? 'text-[#E8E6E0]' : 'text-[#3A3A3A]'}`}>
+                          <Building size={24} strokeWidth={1} />
+                        </div>
+                        {isAvailable && (
+                          <span className="font-sans text-[10px] tracking-[0.2em] text-[#C41E1E] border border-[#C41E1E]/30 px-2 py-1 uppercase">
+                            Available
+                          </span>
+                        )}
+                        {b.status === 'locked' && (
+                          <span className="font-sans text-[10px] tracking-[0.2em] text-[#3A3A3A] border border-[#1A1A1A] px-2 py-1 uppercase">
+                            Locked
+                          </span>
+                        )}
+                      </div>
+                      
+                      <div>
+                        <h3 className={`font-serif text-[22px] font-bold leading-tight mb-2 ${isAvailable || isBuilt ? 'text-[#E8E6E0]' : 'text-[#5C5C5C]'}`}>
+                          {b.name}
+                        </h3>
+                        <div className="font-mono text-[11px] text-[#5C5C5C] uppercase tracking-[0.1em]">
+                          {b.domain} domain
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </section>
           </div>
         </div>
 
-        {/* Built Structures */}
-        <section>
-          <div className="text-[10px] text-[#5C5C5C] font-mono tracking-[0.2em] mb-6 uppercase border-b border-[#1A1A1A] pb-4">
-            Manifested Monuments
-          </div>
-          {builtBuildings.length === 0 ? (
-            <div className="text-[#5C5C5C] font-mono text-xs italic">No structures manifested yet.</div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {builtBuildings.map((b: any) => (
-                <div 
-                  key={b.id} 
-                  onClick={() => setSelectedBuilding(b)}
-                  className="flex items-center gap-4 p-4 border border-[#1A1A1A] cursor-pointer hover:border-[#3A3A3A] transition-colors group"
-                >
-                  <div className="w-10 h-10 flex items-center justify-center bg-[#0C0C0C] text-[#C41E1E]">
-                    <Building size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-display text-[#E8E6E0] text-lg leading-tight group-hover:text-[#C41E1E] transition-colors">{b.name}</div>
-                    <div className="font-mono text-[9px] text-[#5C5C5C] uppercase tracking-wider">{b.domain} domain</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Potential Structures */}
-        <section>
-          <div className="text-[10px] text-[#5C5C5C] font-mono tracking-[0.2em] mb-6 uppercase border-b border-[#1A1A1A] pb-4">
-            Potential Configurations
-          </div>
-          <div className="flex flex-col gap-3">
-            {potentialBuildings.map((b: any) => (
-              <div 
-                key={b.id} 
-                onClick={() => setSelectedBuilding(b)}
-                className={`flex items-center justify-between p-4 border border-[#1A1A1A] cursor-pointer transition-colors ${
-                  b.status === 'available' ? 'hover:border-[#C41E1E]/50' : 'hover:border-[#3A3A3A] opacity-50'
-                }`}
+        {/* Right Column / Detail Panel Slider */}
+        <div 
+          className={`fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[#0C0C0C] border-l border-[#1A1A1A] p-8 flex flex-col transition-transform duration-500 ease-out-expo z-20 overflow-y-auto ${
+            selectedBuilding ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          {selectedBuilding && (
+            <>
+              <button 
+                onClick={() => setSelectedBuilding(null)}
+                className="absolute top-6 right-6 text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors"
               >
-                <div className="flex items-center gap-4">
-                  <div className={`w-8 h-8 flex items-center justify-center ${b.status === 'available' ? 'text-[#E8E6E0]' : 'text-[#3A3A3A]'}`}>
-                    <Building size={16} />
-                  </div>
-                  <div>
-                    <div className={`font-display text-lg leading-tight ${b.status === 'available' ? 'text-[#E8E6E0]' : 'text-[#5C5C5C]'}`}>{b.name}</div>
-                    <div className="font-mono text-[9px] text-[#5C5C5C] uppercase tracking-wider">{b.domain} domain</div>
-                  </div>
-                </div>
-                <div className="font-mono text-[9px] tracking-widest flex items-center gap-2">
-                  {b.status === 'available' ? (
-                    <span className="text-[#C41E1E]">AVAILABLE</span>
-                  ) : (
-                    <span className="text-[#3A3A3A]">LOCKED</span>
-                  )}
-                  <ChevronRight size={14} className="text-[#5C5C5C]" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
-
-      {/* Right Column / Detail Panel */}
-      <div 
-        className={`fixed md:absolute top-0 right-0 w-[90%] sm:w-[400px] h-full bg-[#0C0C0C] border-l border-[#1A1A1A] p-8 flex flex-col transition-transform duration-500 ease-out-expo z-20 ${
-          selectedBuilding ? 'translate-x-0' : 'translate-x-[110%]'
-        }`}
-      >
-        {selectedBuilding && (
-          <>
-            <button 
-              onClick={() => setSelectedBuilding(null)}
-              className="absolute top-6 right-6 text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors"
-            >
-              <X size={20} />
-            </button>
-            
-            <div className="text-[10px] text-[#5C5C5C] font-mono tracking-[0.2em] mb-4 uppercase">Structure Detail</div>
-            <h2 className="font-display text-4xl text-[#E8E6E0] mb-2 leading-none">{selectedBuilding.name}</h2>
-            <div className="font-mono text-xs text-[#C41E1E] uppercase tracking-widest mb-8">{selectedBuilding.domain} Domain</div>
-            
-            <p className="font-display italic text-[#5C5C5C] text-lg leading-relaxed mb-8">
-              {selectedBuilding.loreText}
-            </p>
-
-            <div className="space-y-6 flex-1">
-              <div>
-                <div className="text-[9px] text-[#3A3A3A] font-mono tracking-[0.2em] mb-2 uppercase">Unlock Condition</div>
-                <div className={`font-mono text-xs flex items-center gap-2 ${selectedBuilding.status === 'locked' ? 'text-[#5C5C5C]' : 'text-[#E8E6E0]'}`}>
-                  {selectedBuilding.status !== 'locked' ? <Check size={14} className="text-[#C41E1E]" /> : <span className="w-[14px]" />}
-                  {selectedBuilding.unlockAttribute.replace('attr_', '').toUpperCase()} level {selectedBuilding.unlockThreshold}
-                </div>
+                <X size={20} />
+              </button>
+              
+              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-6 uppercase">
+                Structure Detail
               </div>
               
-              <div>
-                <div className="text-[9px] text-[#3A3A3A] font-mono tracking-[0.2em] mb-2 uppercase">Effects</div>
-                <ul className="font-mono text-xs text-[#5C5C5C] space-y-2">
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#C41E1E]">◆</span> Unlocks {selectedBuilding.questUnlockDomain} quests
-                  </li>
-                  {selectedBuilding.xpBonusPct > 0 && (
-                    <li className="flex items-center gap-2">
-                      <span className="text-[#C41E1E]">◆</span> +{selectedBuilding.xpBonusPct}% XP in {selectedBuilding.questUnlockDomain} domain
-                    </li>
-                  )}
-                </ul>
+              <h2 className="font-serif text-[40px] font-bold text-[#E8E6E0] mb-2 leading-none">
+                {selectedBuilding.name}
+              </h2>
+              <div className="font-mono text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-8">
+                {selectedBuilding.domain} Domain
               </div>
-            </div>
+              
+              <p className="font-serif italic text-[#5C5C5C] text-[18px] leading-relaxed mb-12">
+                "{selectedBuilding.loreText}"
+              </p>
 
-            {selectedBuilding.status === 'available' && (
-              <button 
-                onClick={() => handleBuild(selectedBuilding.id)}
-                disabled={isBuilding}
-                className="w-full bg-[#E8E6E0] text-[#080808] font-mono tracking-[0.2em] text-xs py-4 uppercase hover:bg-[#C41E1E] hover:text-[#FAFAF9] transition-colors disabled:opacity-50"
-              >
-                {isBuilding ? 'Manifesting...' : 'Manifest Structure'}
-              </button>
-            )}
-            {selectedBuilding.status === 'locked' && (
-              <div className="w-full border border-[#1A1A1A] text-[#3A3A3A] font-mono tracking-[0.2em] text-xs py-4 text-center uppercase">
-                Prerequisites Not Met
+              <div className="space-y-10 flex-1">
+                <div>
+                  <div className="text-[11px] text-[#3A3A3A] font-sans tracking-[0.2em] mb-4 uppercase">
+                    Unlock Condition
+                  </div>
+                  <div className={`font-mono text-[11px] flex items-center gap-3 uppercase tracking-[0.1em] ${selectedBuilding.status === 'locked' ? 'text-[#5C5C5C]' : 'text-[#E8E6E0]'}`}>
+                    {selectedBuilding.status !== 'locked' ? <Check size={16} className="text-[#C41E1E]" /> : <X size={16} className="text-[#3A3A3A]" />}
+                    {selectedBuilding.unlockAttribute.replace('attr_', '')} LEVEL {selectedBuilding.unlockThreshold}
+                  </div>
+                </div>
+                
+                <div>
+                  <div className="text-[11px] text-[#3A3A3A] font-sans tracking-[0.2em] mb-4 uppercase">
+                    Effects
+                  </div>
+                  <ul className="font-mono text-[11px] text-[#5C5C5C] space-y-4 uppercase tracking-[0.1em]">
+                    <li className="flex items-start gap-3">
+                      <span className="text-[#C41E1E] mt-0.5">◆</span> 
+                      <span>Unlocks {selectedBuilding.questUnlockDomain} quests</span>
+                    </li>
+                    {selectedBuilding.xpBonusPct > 0 && (
+                      <li className="flex items-start gap-3">
+                        <span className="text-[#C41E1E] mt-0.5">◆</span> 
+                        <span>+{selectedBuilding.xpBonusPct}% XP in {selectedBuilding.questUnlockDomain} domain</span>
+                      </li>
+                    )}
+                  </ul>
+                </div>
               </div>
-            )}
-          </>
+
+              <div className="mt-12 pt-8 border-t border-[#1A1A1A]">
+                {selectedBuilding.status === 'available' && (
+                  <Button 
+                    variant="primary"
+                    onClick={() => handleBuild(selectedBuilding.id)}
+                    disabled={isBuilding}
+                    className="w-full"
+                  >
+                    {isBuilding ? 'MANIFESTING...' : 'MANIFEST'}
+                  </Button>
+                )}
+                {selectedBuilding.status === 'locked' && (
+                  <Button 
+                    variant="secondary"
+                    disabled
+                    className="w-full opacity-50"
+                  >
+                    LOCKED
+                  </Button>
+                )}
+                {selectedBuilding.status === 'built' && (
+                  <Button 
+                    variant="secondary"
+                    disabled
+                    className="w-full"
+                  >
+                    MANIFESTED
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+        
+        {/* Overlay for mobile panel */}
+        {selectedBuilding && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-10 sm:hidden"
+            onClick={() => setSelectedBuilding(null)}
+          />
         )}
-      </div>
-      
-      {/* Overlay for mobile panel */}
-      {selectedBuilding && (
-        <div 
-          className="fixed inset-0 bg-black/50 z-10 md:hidden"
-          onClick={() => setSelectedBuilding(null)}
-        />
-      )}
+      </main>
     </div>
   )
 }

@@ -167,7 +167,7 @@ function DashboardContent() {
                 <CompanionQuote />
                 
                 <div>
-                  <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                  <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                     WEEKLY CADENCE
                   </h2>
                   <div className="border border-[#1A1A1A] h-48 flex items-center justify-center text-[#3A3A3A] font-mono text-[10px]">
@@ -177,7 +177,7 @@ function DashboardContent() {
               </div>
 
               <div className="lg:col-span-5 flex flex-col">
-                <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                   MANIFESTED ECHOES
                 </h2>
                 <div className="flex flex-col border-b border-[#1A1A1A]">
@@ -207,7 +207,7 @@ function DashboardContent() {
 
               <div className="lg:col-span-3 flex flex-col gap-16">
                 <div>
-                  <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                  <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                     DOMINION
                   </h2>
                   <KingdomThumbnail 
@@ -218,7 +218,7 @@ function DashboardContent() {
                 </div>
 
                 <div>
-                  <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                  <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                     ATTRIBUTES
                   </h2>
                   <div className="flex flex-col">

@@ -12,7 +12,7 @@ export function CompanionQuote() {
       <div>
         <Link 
           href="/companion" 
-          className="font-serif italic text-[14px] text-[#C41E1E] hover:text-[#E8E6E0] transition-colors"
+          className="font-serif italic text-[18px] text-[#C41E1E] hover:text-[#E8E6E0] transition-colors"
         >
           Commune →
         </Link>

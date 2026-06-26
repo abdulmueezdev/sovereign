@@ -25,8 +25,6 @@ export function Sidebar() {
   ]
 
   const avatarUrl = profile ? `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${profile.characterName}&backgroundColor=080808` : "https://api.dicebear.com/7.x/shapes/svg?seed=Aeon"
-  const displayName = profile ? profile.characterName : 'Aeon'
-  const displayLevel = profile ? profile.level : 1
 
   return (
     <>
@@ -35,14 +33,14 @@ export function Sidebar() {
         {/* Top Label */}
         <div className="flex-none h-32 flex items-start justify-center">
           <div className="origin-top-left -rotate-90 translate-y-24 translate-x-2">
-            <span className="font-mono text-[10px] tracking-[0.2em] text-[#3A3A3A] uppercase whitespace-nowrap">
+            <span className="font-sans text-[11px] tracking-[0.2em] text-[#3A3A3A] uppercase whitespace-nowrap">
               THE VOID
             </span>
           </div>
         </div>
 
         {/* Nav Icons */}
-        <nav className="flex-1 flex flex-col items-center justify-center gap-10">
+        <nav className="flex-1 w-full flex flex-col items-center justify-center gap-2">
           {navItems.map((item) => {
             const Icon = item.icon
             const active = pathname === item.href
@@ -50,8 +48,10 @@ export function Sidebar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`group flex flex-col items-center gap-1 transition-colors duration-150 ${
-                  active ? 'text-[#E8E6E0]' : 'text-[#3A3A3A] hover:text-[#E8E6E0]'
+                className={`group flex items-center justify-center w-full h-14 transition-colors duration-150 border-l-2 ${
+                  active 
+                    ? 'border-[#C41E1E] text-[#C41E1E] bg-[#0C0C0C]' 
+                    : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
                 }`}
                 title={item.name}
               >
@@ -62,22 +62,26 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Profile / Settings */}
-        <div className="flex-none flex flex-col items-center gap-6">
-          <Link href="/settings" className={`transition-colors ${pathname === '/settings' ? 'text-[#E8E6E0]' : 'text-[#3A3A3A] hover:text-[#E8E6E0]'}`}>
+        <div className="flex-none flex flex-col items-center gap-6 w-full">
+          <Link 
+            href="/settings" 
+            className={`flex items-center justify-center w-full h-14 transition-colors duration-150 border-l-2 ${
+              pathname === '/settings' 
+                ? 'border-[#C41E1E] text-[#C41E1E] bg-[#0C0C0C]' 
+                : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
+            }`}
+          >
             <Settings size={20} strokeWidth={1.5} />
           </Link>
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center pb-2">
             <div className="w-8 h-8 relative rounded-none overflow-hidden grayscale border border-[#1A1A1A]">
               <Image
                 src={avatarUrl}
                 alt="Avatar"
                 fill
+                sizes="32px"
                 className="object-cover"
               />
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="font-mono text-[10px] text-[#5C5C5C] max-w-[60px] truncate text-center">{displayName}</span>
-              <span className="font-mono text-[10px] text-[#5C5C5C]">Lv. {displayLevel}</span>
             </div>
           </div>
         </div>
@@ -93,7 +97,7 @@ export function Sidebar() {
               key={item.name}
               href={item.href}
               className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] transition-colors ${
-                active ? 'text-[#E8E6E0]' : 'text-[#3A3A3A] hover:text-[#E8E6E0]'
+                active ? 'text-[#C41E1E]' : 'text-[#5C5C5C] hover:text-[#E8E6E0]'
               }`}
             >
               <Icon size={20} color="currentColor" strokeWidth={1.5} />
@@ -103,7 +107,7 @@ export function Sidebar() {
         <Link
           href="/settings"
           className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] transition-colors ${
-            pathname === '/settings' ? 'text-[#E8E6E0]' : 'text-[#3A3A3A] hover:text-[#E8E6E0]'
+            pathname === '/settings' ? 'text-[#C41E1E]' : 'text-[#5C5C5C] hover:text-[#E8E6E0]'
           }`}
         >
           <Settings size={20} color="currentColor" strokeWidth={1.5} />

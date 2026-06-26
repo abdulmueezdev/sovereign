@@ -119,14 +119,14 @@ function QuestsContent() {
             {/* Tabs */}
             <div className="flex border-b border-[#1A1A1A] mb-8">
               {[
-                { id: 'active', label: 'Active' },
+                { id: 'active', label: 'Manifest' },
                 { id: 'available', label: 'Dormant' },
                 { id: 'completed', label: 'Fulfilled' }
               ].map(tab => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as any)}
-                  className={`font-mono text-[11px] tracking-[0.2em] uppercase px-8 py-4 border-b-2 transition-colors ${
+                  className={`font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-4 border-b-2 transition-colors ${
                     activeTab === tab.id 
                       ? 'border-[#C41E1E] text-[#E8E6E0]' 
                       : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0]'
@@ -141,7 +141,7 @@ function QuestsContent() {
             <div className="flex flex-col border-b border-[#1A1A1A] min-h-[400px]">
               {loading ? (
                 <div className="py-12 flex justify-center">
-                  <div className="w-6 h-6 border-2 border-[#1A1A1A] border-t-[#C41E1E] rounded-full animate-spin" />
+                  <div className="w-6 h-6 border-2 border-[#1A1A1A] border-t-[#C41E1E] rounded-none animate-spin" />
                 </div>
               ) : error ? (
                 <div className="py-12 text-[#C41E1E] font-mono text-[11px] uppercase tracking-widest text-center">

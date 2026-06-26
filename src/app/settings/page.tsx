@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useToast } from '@/components/ui/Toast'
+import { Sidebar } from '@/components/layout/Sidebar'
+import { Button } from '@/components/ui/button'
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -17,7 +19,6 @@ export default function SettingsPage() {
 
   const [houseId, setHouseId] = useState('')
   const [isSavingHouse, setIsSavingHouse] = useState(false)
-  const [cooldownTime, setCooldownTime] = useState<string | null>(null)
 
   useEffect(() => {
     fetch('/api/profile')
@@ -46,7 +47,7 @@ export default function SettingsPage() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to update names')
-      showToast('Names updated successfully')
+      showToast('Identities updated successfully')
     } catch (err: any) {
       showToast(err.message)
     } finally {
@@ -66,7 +67,6 @@ export default function SettingsPage() {
       if (!res.ok) throw new Error(data.error || 'Failed to change house')
       showToast('House changed successfully')
       
-      // Update local profile to reflect cooldown
       const pRes = await fetch('/api/profile')
       const pData = await pRes.json()
       setProfile(pData)
@@ -83,97 +83,132 @@ export default function SettingsPage() {
     router.push('/login')
   }
 
-  if (loading) return <div className="text-[#5C5C5C] font-mono text-sm tracking-widest uppercase">Accessing Configurations...</div>
+  if (loading) {
+    return (
+      <div className="flex min-h-screen bg-[#080808]">
+        <Sidebar />
+        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
+          <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Accessing Configurations...</div>
+        </main>
+      </div>
+    )
+  }
+
   if (!profile) return null
 
   return (
-    <div className="max-w-2xl mx-auto animate-fade-in pb-24 md:pb-0">
-      <div className="text-[10px] text-[#5C5C5C] font-mono tracking-[0.2em] mb-2 uppercase">System</div>
-      <h1 className="font-display text-5xl font-bold text-[#E8E6E0] mb-12">Configurations</h1>
-
-      <section className="mb-12 border border-[#1A1A1A] p-6 bg-[rgba(255,255,255,0.01)]">
-        <h2 className="font-mono text-xs text-[#E8E6E0] uppercase tracking-[0.2em] mb-6 border-b border-[#1A1A1A] pb-2">Identities</h2>
-        
-        <div className="space-y-6 mb-6">
-          <div>
-            <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-widest mb-2">Character Name</label>
-            <input 
-              type="text" 
-              value={names.characterName} 
-              onChange={e => setNames(prev => ({ ...prev, characterName: e.target.value }))}
-              className="w-full bg-[#080808] border border-[#1A1A1A] text-[#E8E6E0] font-sans px-4 py-3 focus:outline-none focus:border-[#C41E1E] transition-colors"
-            />
+    <div className="flex min-h-screen bg-[#080808]">
+      <Sidebar />
+      <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 min-h-screen">
+        <div className="max-w-2xl mx-auto animate-fade-in-up pb-24 md:pb-0">
+          
+          <div className="mb-16">
+            <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
+              System
+            </div>
+            <h1 className="font-serif text-[64px] md:text-[80px] font-bold text-[#E8E6E0] mb-2 leading-none">
+              Configurations
+            </h1>
           </div>
-          <div>
-            <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-widest mb-2">Kingdom Name</label>
-            <input 
-              type="text" 
-              value={names.kingdomName} 
-              onChange={e => setNames(prev => ({ ...prev, kingdomName: e.target.value }))}
-              className="w-full bg-[#080808] border border-[#1A1A1A] text-[#E8E6E0] font-sans px-4 py-3 focus:outline-none focus:border-[#C41E1E] transition-colors"
-            />
-          </div>
-          <div>
-            <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-widest mb-2">Companion Name</label>
-            <input 
-              type="text" 
-              value={names.companionName} 
-              onChange={e => setNames(prev => ({ ...prev, companionName: e.target.value }))}
-              className="w-full bg-[#080808] border border-[#1A1A1A] text-[#E8E6E0] font-sans px-4 py-3 focus:outline-none focus:border-[#C41E1E] transition-colors"
-            />
-          </div>
+
+          {/* Identities Section */}
+          <section className="mb-16">
+            <h2 className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
+              Identities
+            </h2>
+            
+            <div className="flex flex-col gap-8 mb-12">
+              <div className="flex flex-col gap-2">
+                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Character Name</label>
+                <input 
+                  type="text" 
+                  value={names.characterName} 
+                  onChange={e => setNames(prev => ({ ...prev, characterName: e.target.value }))}
+                  className="w-full bg-transparent border-b border-[#1A1A1A] text-[#E8E6E0] font-serif text-[22px] py-2 focus:outline-none focus:border-[#C41E1E] focus:shadow-[0_1px_6px_-2px_rgba(196,30,30,0.3)] transition-all"
+                />
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Kingdom Name</label>
+                <input 
+                  type="text" 
+                  value={names.kingdomName} 
+                  onChange={e => setNames(prev => ({ ...prev, kingdomName: e.target.value }))}
+                  className="w-full bg-transparent border-b border-[#1A1A1A] text-[#E8E6E0] font-serif text-[22px] py-2 focus:outline-none focus:border-[#C41E1E] focus:shadow-[0_1px_6px_-2px_rgba(196,30,30,0.3)] transition-all"
+                />
+              </div>
+              
+              <div className="flex flex-col gap-2">
+                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Companion Name</label>
+                <input 
+                  type="text" 
+                  value={names.companionName} 
+                  onChange={e => setNames(prev => ({ ...prev, companionName: e.target.value }))}
+                  className="w-full bg-transparent border-b border-[#1A1A1A] text-[#E8E6E0] font-serif text-[22px] py-2 focus:outline-none focus:border-[#C41E1E] focus:shadow-[0_1px_6px_-2px_rgba(196,30,30,0.3)] transition-all"
+                />
+              </div>
+            </div>
+
+            <Button 
+              variant="primary"
+              onClick={handleSaveNames}
+              disabled={isSavingNames}
+            >
+              {isSavingNames ? 'UPDATING...' : 'UPDATE IDENTITIES'}
+            </Button>
+          </section>
+
+          {/* Order Affiliation Section */}
+          <section className="mb-16">
+            <h2 className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
+              Order Affiliation
+            </h2>
+            
+            <div className="flex flex-col gap-2 mb-8">
+              <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">House</label>
+              <select 
+                value={houseId} 
+                onChange={e => setHouseId(e.target.value)}
+                className="w-full bg-transparent border-b border-[#1A1A1A] text-[#E8E6E0] font-serif text-[22px] py-2 focus:outline-none focus:border-[#C41E1E] focus:shadow-[0_1px_6px_-2px_rgba(196,30,30,0.3)] transition-all appearance-none cursor-pointer"
+              >
+                <option value="ash" className="bg-[#080808] text-[#E8E6E0] font-sans text-[14px]">House Ash (Strength & Vitality)</option>
+                <option value="zenith" className="bg-[#080808] text-[#E8E6E0] font-sans text-[14px]">House Zenith (Focus & Discipline)</option>
+                <option value="forge" className="bg-[#080808] text-[#E8E6E0] font-sans text-[14px]">House Forge (Technical & Intelligence)</option>
+                <option value="crown" className="bg-[#080808] text-[#E8E6E0] font-sans text-[14px]">House Crown (Leadership & Charisma)</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <Button 
+                variant="secondary"
+                onClick={handleSaveHouse}
+                disabled={isSavingHouse || houseId === profile.houseId}
+              >
+                {isSavingHouse ? 'SWITCHING...' : 'SWITCH HOUSE'}
+              </Button>
+              <span className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.1em] uppercase">
+                Note: Limited to once per week.
+              </span>
+            </div>
+          </section>
+
+          {/* Danger Zone */}
+          <section>
+            <h2 className="font-sans text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
+              Danger Zone
+            </h2>
+            
+            <div className="flex gap-4">
+              <Button 
+                variant="secondary"
+                onClick={handleLogout}
+              >
+                DISCONNECT
+              </Button>
+            </div>
+          </section>
         </div>
-
-        <button 
-          onClick={handleSaveNames}
-          disabled={isSavingNames}
-          className="border border-[#1A1A1A] text-[#E8E6E0] px-6 py-2 font-mono text-xs tracking-widest hover:bg-[#1A1A1A] hover:text-[#C41E1E] transition-colors uppercase disabled:opacity-50"
-        >
-          {isSavingNames ? 'Saving...' : 'Update Identities'}
-        </button>
-      </section>
-
-      <section className="mb-12 border border-[#1A1A1A] p-6 bg-[rgba(255,255,255,0.01)]">
-        <h2 className="font-mono text-xs text-[#E8E6E0] uppercase tracking-[0.2em] mb-6 border-b border-[#1A1A1A] pb-2">Order Affiliation</h2>
-        
-        <div className="mb-6">
-          <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-widest mb-2">House</label>
-          <select 
-            value={houseId} 
-            onChange={e => setHouseId(e.target.value)}
-            className="w-full bg-[#080808] border border-[#1A1A1A] text-[#E8E6E0] font-sans px-4 py-3 focus:outline-none focus:border-[#C41E1E] transition-colors appearance-none"
-          >
-            <option value="ash">House Ash (Strength & Vitality)</option>
-            <option value="zenith">House Zenith (Focus & Discipline)</option>
-            <option value="forge">House Forge (Technical & Intelligence)</option>
-            <option value="crown">House Crown (Leadership & Charisma)</option>
-          </select>
-        </div>
-
-        <button 
-          onClick={handleSaveHouse}
-          disabled={isSavingHouse || houseId === profile.houseId}
-          className="border border-[#1A1A1A] text-[#E8E6E0] px-6 py-2 font-mono text-xs tracking-widest hover:bg-[#1A1A1A] hover:text-[#C41E1E] transition-colors uppercase disabled:opacity-50"
-        >
-          {isSavingHouse ? 'Switching...' : 'Switch House'}
-        </button>
-        <p className="mt-4 font-mono text-[9px] text-[#5C5C5C] uppercase tracking-widest">
-          Note: You may only change your affiliation once per week.
-        </p>
-      </section>
-
-      <section className="border border-[#1A1A1A] border-l-[#C41E1E] p-6 bg-[rgba(196,30,30,0.02)]">
-        <h2 className="font-mono text-xs text-[#C41E1E] uppercase tracking-[0.2em] mb-6 border-b border-[#1A1A1A] pb-2">Danger Zone</h2>
-        
-        <div className="flex gap-4">
-          <button 
-            onClick={handleLogout}
-            className="border border-[#1A1A1A] text-[#E8E6E0] px-6 py-2 font-mono text-xs tracking-widest hover:bg-[#C41E1E] hover:text-white transition-colors uppercase"
-          >
-            Disconnect
-          </button>
-        </div>
-      </section>
+      </main>
     </div>
   )
 }

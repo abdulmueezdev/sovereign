@@ -51,7 +51,7 @@ export function KingdomThumbnail({ name, level, buildings }: KingdomThumbnailPro
             >
               <Icon size={24} color={iconColor} strokeWidth={1.5} />
               {showName && (
-                <span className="font-mono text-[10px] text-[#5C5C5C] text-center px-1">
+                <span className="font-sans text-[10px] tracking-[0.1em] text-[#5C5C5C] text-center px-1 uppercase">
                   {building.name}
                 </span>
               )}
@@ -62,11 +62,11 @@ export function KingdomThumbnail({ name, level, buildings }: KingdomThumbnailPro
 
       {/* Labels */}
       <div>
-        <h4 className="font-mono text-[10px] text-[#5C5C5C] uppercase tracking-widest mb-1">
+        <h4 className="font-mono text-[11px] text-[#5C5C5C] uppercase tracking-[0.15em] mb-1">
           {name} · Level {level}
         </h4>
         {readyCount > 0 && (
-          <Link href="/kingdom" className="font-serif text-[14px] italic text-[#C41E1E] hover:text-[#E8E6E0] transition-colors">
+          <Link href="/kingdom" className="font-serif text-[18px] italic text-[#C41E1E] hover:text-[#E8E6E0] transition-colors">
             {readyCount} {readyCount === 1 ? 'monument' : 'monuments'} ready →
           </Link>
         )}

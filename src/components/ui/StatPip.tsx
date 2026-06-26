@@ -25,11 +25,11 @@ export function StatPip({ attribute, value, delta, icon }: StatPipProps) {
         <IconComponent size={16} strokeWidth={1.5} />
       </div>
       <div className="flex-1 flex items-baseline justify-between">
-        <span className="font-serif text-[14px] text-[#E8E6E0] capitalize">
+        <span className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] uppercase">
           {attribute}
         </span>
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[14px] text-[#E8E6E0]">
+          <span className="font-serif text-[22px] font-bold text-[#E8E6E0]">
             {value}
           </span>
           {delta !== undefined && delta > 0 && (
