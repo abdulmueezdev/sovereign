@@ -45,6 +45,11 @@ export default function CharacterPage() {
     fetchData()
   }, [])
 
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   if (loading) return <div className="text-[#5C5C5C] font-mono text-sm tracking-widest uppercase">Initializing Entity...</div>
   if (error) return <div className="text-[#C41E1E] font-mono text-sm">Corruption Detected: {error}</div>
   if (!profile) return null
@@ -63,12 +68,6 @@ export default function CharacterPage() {
     { key: 'charisma', label: 'CHARISMA', val: profile.attributes.charisma },
     { key: 'discipline', label: 'DISCIPLINE', val: profile.attributes.discipline },
   ]
-
-  // Animate bars on mount
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
 
   return (
     <div className="flex flex-col md:flex-row gap-16 animate-fade-in pb-16 md:pb-0">

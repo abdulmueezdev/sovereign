@@ -39,8 +39,10 @@ function DashboardContent() {
   }, [user, authLoading, router])
 
   useEffect(() => {
-    if (!authLoading && user && userProfile && !userProfile.onboarding_complete) {
-      router.push('/onboarding')
+    if (!authLoading && user) {
+      if (!userProfile || !userProfile.onboarding_complete) {
+        router.push('/onboarding')
+      }
     }
   }, [user, userProfile, authLoading, router])
 
