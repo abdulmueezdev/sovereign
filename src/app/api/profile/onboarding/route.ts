@@ -11,14 +11,28 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  let body: { characterName?: string; kingdomName?: string; companionName?: string; class?: string }
+  let body: any
   try {
     body = await request.json()
   } catch {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
   }
 
-  const { characterName, kingdomName, companionName, class: selectedClass } = body
+  const { 
+    characterName, 
+    kingdomName, 
+    companionName, 
+    class: selectedClass,
+    attr_strength,
+    attr_vitality,
+    attr_intelligence,
+    attr_focus,
+    attr_technical,
+    attr_creativity,
+    attr_leadership,
+    attr_charisma,
+    attr_discipline
+  } = body
 
   // Validate required fields
   if (!characterName || !kingdomName || !companionName || !selectedClass) {
@@ -58,23 +72,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Invalid class mapping' }, { status: 500 })
   }
 
-  // Apply class bonuses to starting attributes
+  // Apply class bonuses to starting attributes (mapping frontend names if provided, otherwise default 10)
   const bonuses = CLASS_BONUSES[selectedClass]
-  const defaultAttrs: Record<string, number> = {
-    attr_strength: 10,
-    attr_constitution: 10,
-    attr_intelligence: 10,
-    attr_wisdom: 10,
-    attr_dexterity: 10,
-    attr_creativity: 10,
-    attr_perception: 10,
-    attr_charisma: 10,
-    attr_discipline: 10,
+  const finalAttrs: Record<string, number> = {
+    attr_strength: attr_strength ?? 10,
+    attr_constitution: attr_vitality ?? 10,
+    attr_intelligence: attr_intelligence ?? 10,
+    attr_wisdom: attr_focus ?? 10,
+    attr_dexterity: attr_technical ?? 10,
+    attr_creativity: attr_creativity ?? 10,
+    attr_perception: attr_leadership ?? 10,
+    attr_charisma: attr_charisma ?? 10,
+    attr_discipline: attr_discipline ?? 10,
   }
 
-  // Apply bonuses
-  defaultAttrs[bonuses.primary] += bonuses.primaryBonus
-  defaultAttrs[bonuses.secondary] += bonuses.secondaryBonus
+  // If frontend didn't pass attributes, apply bonuses to the defaults
+  if (attr_strength === undefined) {
+    finalAttrs[bonuses.primary] += bonuses.primaryBonus
+    finalAttrs[bonuses.secondary] += bonuses.secondaryBonus
+  }
 
   // Check if profile already exists
   const { data: existingProfile } = await supabase
@@ -96,12 +112,16 @@ export async function POST(request: Request) {
     class: selectedClass,
     house_id: houseId,
     onboarding_complete: true,
-    ...defaultAttrs,
+    ...finalAttrs,
   })
 
   if (profileError) {
     console.error('Profile creation error:', profileError)
-    return NextResponse.json({ error: 'Failed to create profile' }, { status: 500 })
+    return NextResponse.json({ 
+      error: 'Failed to create profile', 
+      details: profileError.message,
+      code: profileError.code
+    }, { status: 500 })
   }
 
   // Initialize buildings for this user
