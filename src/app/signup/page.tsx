@@ -73,72 +73,32 @@ export default function SignupPage() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-2">
-              <label htmlFor="email" className="font-mono text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase block">
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                {...register('email')}
-                placeholder="you@example.com"
-                className="w-full h-12 bg-transparent border border-[#2A2A2A] text-[#E8E6E0] font-sans px-4 placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#C41E1E] transition-colors"
-                autoComplete="email"
-              />
-              {errors.email && (
-                <p className="font-sans text-[13px] text-[#C41E1E] mt-1">{errors.email.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="password" className="font-mono text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase block">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                {...register('password')}
-                placeholder="At least 6 characters"
-                className="w-full h-12 bg-transparent border border-[#2A2A2A] text-[#E8E6E0] font-sans px-4 placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#C41E1E] transition-colors"
-                autoComplete="new-password"
-              />
-              {errors.password && (
-                <p className="font-sans text-[13px] text-[#C41E1E] mt-1">{errors.password.message}</p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor="confirmPassword" className="font-mono text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase block">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                {...register('confirmPassword')}
-                placeholder="Re-enter your password"
-                className="w-full h-12 bg-transparent border border-[#2A2A2A] text-[#E8E6E0] font-sans px-4 placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#C41E1E] transition-colors"
-                autoComplete="new-password"
-              />
-              {errors.confirmPassword && (
-                <p className="font-sans text-[13px] text-[#C41E1E] mt-1">{errors.confirmPassword.message}</p>
-              )}
-            </div>
-
-            {error && (
-              <div className="font-sans text-[13px] text-[#C41E1E] py-2">
-                {error}
+          <div className="space-y-6">
+            <div className="p-6 border border-[#1A1A1A] bg-[rgba(255,255,255,0.02)]">
+              <h2 className="font-sans text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-4">
+                Registration Currently Disabled
+              </h2>
+              <p className="font-sans text-[13px] text-[#E8E6E0] mb-6 leading-relaxed">
+                New accounts cannot be created at this time. Please use the following credentials to access the experience:
+              </p>
+              
+              <div className="space-y-2 font-mono text-[11px] text-[#5C5C5C]">
+                <div>
+                  <span className="uppercase tracking-[0.2em] text-[#E8E6E0]">ID:</span> admin@gmail.com
+                </div>
+                <div>
+                  <span className="uppercase tracking-[0.2em] text-[#E8E6E0]">Password:</span> admin123
+                </div>
               </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-3 border-none hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150 mt-4 disabled:opacity-50 disabled:hover:bg-[#C41E1E] disabled:active:scale-100"
+            </div>
+            
+            <Link 
+              href="/login"
+              className="w-full flex items-center justify-center bg-[#1A1A1A] text-[#E8E6E0] font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#C41E1E] hover:text-[#FAFAF9] transition-colors"
             >
-              {loading ? 'Forging Path...' : 'Begin Your Journey'}
-            </button>
-          </form>
+              PROCEED TO LOGIN
+            </Link>
+          </div>
 
           <p className="mt-8 font-sans text-[13px] text-[#5C5C5C]">
             Already have a kingdom?{' '}

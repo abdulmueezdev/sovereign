@@ -26,8 +26,8 @@ export default function LoginPage() {
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: 'admin@gmail.com',
+      password: 'admin123',
     },
   })
 
@@ -125,10 +125,7 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-8 font-sans text-[13px] text-[#5C5C5C]">
-            No account?{' '}
-            <Link href="/signup" className="text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors duration-150">
-              Create one
-            </Link>
+            Registration is currently closed.
           </p>
         </div>
       </div>
