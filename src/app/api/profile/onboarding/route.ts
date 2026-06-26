@@ -62,12 +62,12 @@ export async function POST(request: Request) {
   const bonuses = CLASS_BONUSES[selectedClass]
   const defaultAttrs: Record<string, number> = {
     attr_strength: 10,
-    attr_vitality: 10,
+    attr_constitution: 10,
     attr_intelligence: 10,
-    attr_focus: 10,
-    attr_technical: 10,
+    attr_wisdom: 10,
+    attr_dexterity: 10,
     attr_creativity: 10,
-    attr_leadership: 10,
+    attr_perception: 10,
     attr_charisma: 10,
     attr_discipline: 10,
   }

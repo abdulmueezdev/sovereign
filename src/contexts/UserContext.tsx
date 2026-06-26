@@ -18,12 +18,12 @@ interface Profile {
   kingdom_level: number
   kingdom_xp: number
   attr_strength: number
-  attr_vitality: number
+  attr_constitution: number
   attr_intelligence: number
-  attr_focus: number
-  attr_technical: number
+  attr_wisdom: number
+  attr_dexterity: number
   attr_creativity: number
-  attr_leadership: number
+  attr_perception: number
   attr_charisma: number
   attr_discipline: number
   onboarding_complete: boolean
