@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space-grotesk);
+  --font-mono: var(--font-space-mono);
+  --font-serif: var(--font-cormorant);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-crimson: var(--crimson);
+  --color-ember: var(--ember);
+  --color-gold: var(--gold);
+  --color-void: var(--void);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* ============================================================
+   SOVEREIGN — Obsidian Void Theme
+   Dark-first design inspired by anime leveling aesthetics
+   ============================================================ */
+
+:root {
+  --radius: 0.625rem;
+
+  /* Core palette — Obsidian Void */
+  --void: #000000;
+  --background: #080808;
+  --foreground: #E8E4DD;
+  --crimson: #C41E1E;
+  --ember: #8B3A2A;
+  --gold: #8B7355;
+
+  /* Card and surface */
+  --card: #111111;
+  --card-foreground: #E8E4DD;
+  --popover: #0F0F0F;
+  --popover-foreground: #E8E4DD;
+
+  /* Primary — Crimson accent */
+  --primary: #C41E1E;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary — Muted stone */
+  --secondary: #1A1A1A;
+  --secondary-foreground: #B0AAA0;
+
+  /* Muted — Subtle backgrounds */
+  --muted: #151515;
+  --muted-foreground: #6B6560;
+
+  /* Accent — Gold */
+  --accent: #1E1E1E;
+  --accent-foreground: #8B7355;
+
+  /* Destructive — Bright red */
+  --destructive: #EF4444;
+
+  /* Borders and inputs */
+  --border: #2A2520;
+  --input: #2A2520;
+  --ring: #C41E1E;
+
+  /* Chart colors */
+  --chart-1: #C41E1E;
+  --chart-2: #8B7355;
+  --chart-3: #6B6560;
+  --chart-4: #3A3530;
+  --chart-5: #1A1A1A;
+
+  /* Sidebar */
+  --sidebar: #0A0A0A;
+  --sidebar-foreground: #B0AAA0;
+  --sidebar-primary: #C41E1E;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1A1A1A;
+  --sidebar-accent-foreground: #E8E4DD;
+  --sidebar-border: #2A2520;
+  --sidebar-ring: #C41E1E;
+}
+
+/* Animation timing — Sovereign motion system */
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-fast: 150ms;
+  --dur-normal: 300ms;
+  --dur-slow: 500ms;
+  --dur-epic: 800ms;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* ============================================================
+   Custom animations — Phase 1
+   ============================================================ */
+
+@keyframes wordReveal {
+  to { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(196, 30, 30, 0.4); }
+  50% { box-shadow: 0 0 20px 4px rgba(196, 30, 30, 0.2); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Utility animation classes */
+.animate-fade-in { animation: fadeIn var(--dur-normal) var(--ease-out-expo) both; }
+.animate-fade-in-up { animation: fadeInUp var(--dur-slow) var(--ease-out-expo) both; }
+.animate-scale-in { animation: scaleIn var(--dur-normal) var(--ease-out-expo) both; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }

@@ -1,0 +1,502 @@
+     1→     1→# Sovereign — Game Development Specification v1.0
+     2→     2→
+     3→     3→**For: GLM 5.2 / Antigravity AI Coding Agent**
+     4→     4→**Build target: Next.js 14 web application**
+     5→     5→**Budget: $0 (free tiers only until monetization)**
+     6→     6→**Document completeness: Every system, formula, table, and API endpoint specified. No TBDs.**
+     7→     7→
+     8→     8→> **How to use this document:** Read every section before writing any code. Every section is required. Phase labels (Phase 1, Phase 2, Phase 3+) indicate build order — implement only Phase 1 features until explicitly instructed otherwise. When a decision is marked FIXED, do not deviate from it.
+     9→     9→
+    10→    10→---
+    11→    11→
+    12→    12→## Table of Contents
+    13→    13→
+    14→    14→1. [Product Definition & Scope](#1-product-definition--scope)
+    15→    15→2. [Technical Architecture](#2-technical-architecture)
+    16→    16→3. [Complete Data Model](#3-complete-data-model)
+    17→    17→4. [Game Systems Specification](#4-game-systems-specification)
+    18→    18→5. [API Specification](#5-api-specification)
+    19→    19→6. [State Management & Logic Flow](#6-state-management--logic-flow)
+    20→    20→7. [Animation & Interaction Specification](#7-animation--interaction-specification)
+    21→    21→8. [Asset Inventory](#8-asset-inventory)
+    22→    22→9. [Free-Tier Budget & Limits](#9-free-tier-budget--limits)
+    23→    23→10. [Build Procedure — Week by Week](#10-build-procedure--week-by-week)
+    24→    24→11. [Testing & Validation Plan](#11-testing--validation-plan)
+    25→    25→12. [Risk Analysis & Mitigation](#12-risk-analysis--mitigation)
+    26→    26→
+    27→    27→---
+    28→    28→
+    29→    29→## 1. Product Definition & Scope
+    30→    30→
+    31→    31→### 1.1 What This Product Is
+    32→    32→
+    33→    33→Sovereign is a browser-based web application that turns real-life self-improvement into an RPG kingdom-building game. Users complete real-world actions — studying, exercising, building skills, leading — and those actions award XP, level up their character, grow attributes, and unlock buildings in a persistent kingdom.
+    34→    34→
+    35→    35→It is NOT a to-do list. It is NOT a habit tracker with cosmetic decoration. It is an identity system that happens to use quests as its input mechanism.
+    36→    36→
+    37→    37→### 1.2 What This Product Is Not
+    38→    38→
+    39→    39→- Not a downloadable game (no Unity, Godot, or game engine)
+    40→    40→- Not a mobile app (no React Native or Flutter)
+    41→    41→- Not a social media platform
+    42→    42→- Not a habit tracker
+    43→    43→- Not a task manager
+    44→    44→- Not a dashboard or analytics tool
+    45→    45→
+    46→    46→The kingdom map is a styled CSS div layout. The XP bar is a CSS transition. The AI companion is a fetch call. Everything runs in a browser via URL.
+    47→    47→
+    48→    48→### 1.3 Target Platform
+    49→    49→
+    50→    50→**FIXED:** Next.js 14 web application, deployed on Vercel, accessed via browser at a custom domain.
+    51→    51→
+    52→    52→Same technical form factor as Linear, Notion, and Habitica — all of which are React/Next.js web apps with game-like UI.
+    53→    53→
+    54→    54→### 1.4 Target User
+    55→    55→
+    56→    56→Primary demographic: Ambitious males aged 18–24 who consume self-improvement content (YouTube, Reddit, podcasts), are familiar with gaming progression systems (anime leveling aesthetics, RPG stat screens), and feel productivity apps are either too boring or too childish.
+    57→    57→
+    58→    58→**IMPORTANT — This demographic is a hypothesis, not a fact.** The 20-person test cohort in Phase 2 Week 14 must validate this assumption. The product should be built as though the assumption is true, but the retention metrics will reveal whether it holds.
+    59→    59→
+    60→    60→Evidence supporting the hypothesis:
+    61→    61→- HabitForge (Solo Leveling-inspired habit tracker) gained a user base in this demographic with anime-leveling aesthetics
+    62→    62→- Reddit communities such as r/selfimprovement, r/nosurf, and r/getdisciplined skew young male
+    63→    63→- LifeUp has 280K+ downloads with user reviews indicating gaming-oriented self-improvement seekers
+    64→    64→
+    65→    65→Evidence against: LifeUp's top complaint is that it "lacks a real game." Habitica lost its community spaces in 2023 and its guilds in 2023 due to moderation issues. This means the category has a demand problem (users want a more serious experience) and a supply gap.
+    66→    66→
+    67→    67→### 1.5 Core Loop
+    68→    68→
+    69→    69→**Single session (under 5 minutes for casual engagement):**
+    70→    70→
+    71→    71→```
+    72→    72→Open app
+    73→    73→→ Check active quests on Dashboard
+    74→    74→→ Mark objective(s) complete on one quest
+    75→    75→→ See XP animation fill the bar
+    76→    76→→ [Optional] Check kingdom for any building unlocks
+    77→    77→→ [Optional] Message companion
+    78→    78→→ Close app
+    79→    79→```
+    80→    80→
+    81→    81→**Daily loop (5–15 minutes for power users):**
+    82→    82→
+    83→    83→```
+    84→    84→Morning: Check companion for daily quest recommendation
+    85→    85→→ Browse Quest Board for available quests
+    86→    86→→ Start 1–2 new quests
+    87→    87→→ Mark progress on active quests
+    88→    88→
+    89→    89→Evening: Mark completions
+    90→    90→→ XP award and animation
+    91→    91→→ Level-up gate if threshold crossed
+    92→    92→→ Building unlock check
+    93→    93→→ Achievement check
+    94→    94→→ Check guild weekly progress
+    95→    95→```
+    96→    96→
+    97→    97→**Weekly loop:**
+    98→    98→
+    99→    99→```
+   100→   100→Monday: House weekly collective XP goal resets
+   101→   101→→ New featured quest appears on Quest Board
+   102→   102→→ Review progress toward Kingdom Level milestone
+   103→   103→
+   104→   104→Friday: Check House leaderboard position
+   105→   105→→ Final push on active quests before week resets
+   106→   106→```
+   107→   107→
+   108→   108→### 1.6 Session Length Targets
+   109→   109→
+   110→   110→- Minimum meaningful session: 30 seconds (mark one objective complete)
+   111→   111→- Casual session: 2–5 minutes (check dashboard, update quest, view kingdom)
+   112→   112→- Power user session: 10–20 minutes (quest board review, companion chat, character review)
+   113→   113→- Onboarding session: 90 seconds maximum (3 steps, one page)
+   114→   114→
+   115→   115→### 1.7 Win State and Endgame
+   116→   116→
+   117→   117→There is no win condition. Sovereign is an ongoing identity game.
+   118→   118→
+   119→   119→Milestones that replace a "win state":
+   120→   120→- Reach Level 10 (Journeyman status)
+   121→   121→- Build all 6 Phase 1 kingdom buildings
+   122→   122→- Complete quests in every domain (Renaissance achievement)
+   123→   123→- Reach Kingdom Level 5 (Phase 2)
+   124→   124→- Reach the top 10 of the House weekly leaderboard (Phase 2)
+   125→   125→
+   126→   126→The "endgame" is a high-level character with a complete kingdom, a recognizable title in the leaderboard, and a reputation in their House. Phase 3 will introduce prestige mechanics (class reset with bonuses) for users who have reached Level 50+.
+   127→   127→
+   128→   128→---
+   129→   129→
+   130→   130→## 2. Technical Architecture
+   131→   131→
+   132→   132→### 2.1 Framework and Engine
+   133→   133→
+   134→   134→**FIXED: Next.js 14 with App Router. No other framework is acceptable.**
+   135→   135→
+   136→   136→Justification:
+   137→   137→- Single repo for frontend, API routes, and server components
+   138→   138→- App Router enables server-side data fetching without separate API layer for most reads
+   139→   139→- Vercel deploys Next.js natively with zero configuration
+   140→   140→- shadcn/ui is built for Next.js + Tailwind
+   141→   141→- Supabase has a first-class Next.js integration package
+   142→   142→
+   143→   143→Do NOT use: Vite+React (no SSR, no API routes), Remix (less ecosystem support with Supabase), SvelteKit (unfamiliar tech stack risk).
+   144→   144→
+   145→   145→### 2.2 Frontend Stack
+   146→   146→
+   147→   147→| Layer | Technology | Version | Purpose |
+   148→   148→|---|---|---|---|
+   149→   149→| Framework | Next.js | 14.2.x | App Router, SSR, API Routes |
+   150→   150→| Language | TypeScript | 5.x | Type safety |
+   151→   151→| Styling | Tailwind CSS | 3.4.x | Utility-first CSS |
+   152→   152→| Components | shadcn/ui | latest | Accessible primitives: Button, Dialog, Input, Tabs, Badge, Sonner |
+   153→   153→| Fonts | next/font/google | built-in | Cormorant Garamond, Space Grotesk, Space Mono |
+   154→   154→| Animations | CSS transitions only (Phase 1) | — | 90% of animations need no library |
+   155→   155→| Icons | Lucide React | latest | Bundled with shadcn; used for UI only, not kingdom icons |
+   156→   156→| State | React Context + useState | built-in | No external state library at Phase 1 |
+   157→   157→| Form handling | React Hook Form + Zod | latest | Onboarding and settings forms only |
+   158→   158→
+   159→   159→**No Redux. No Zustand. No Jotai.** React Context is sufficient for Phase 1 auth state and user profile.
+   160→   160→
+   161→   161→### 2.3 Backend / BaaS
+   162→   162→
+   163→   163→**FIXED: Supabase only. Do not split across multiple services.**
+   164→   164→
+   165→   165→| Supabase Feature | Used For | Free Limit | Phase |
+   166→   166→|---|---|---|---|
+   167→   167→| Auth | Email+password login, Google OAuth, session tokens | 50,000 MAU | 1 |
+   168→   168→| PostgreSQL | All data: profiles, quests, buildings, messages | 500MB | 1 |
+   169→   169→| Row Level Security | Users read only their own rows | Built-in | 1 |
+   170→   170→| Edge Functions | AI companion calls, quest generation (server-side Gemini calls) | 500K/month | 1 |
+   171→   171→| Realtime | House/guild activity feed | 200 concurrent | 2 |
+   172→   172→| Storage | Avatar uploads (avoid — use DiceBear instead) | 1GB | Never |
+   173→   173→
+   174→   174→**Critical operational note:** Supabase free tier pauses projects after 7 consecutive days of zero database requests. To prevent this during development: set up a GitHub Actions scheduled workflow to ping the health endpoint every 3 days. Do NOT let the project pause — data is preserved but the downtime breaks demos.
+   175→   175→
+   176→   176→**Inactivity ping (add to `.github/workflows/keepalive.yml`):**
+   177→   177→```yaml
+   178→   178→name: Supabase Keepalive
+   179→   179→on:
+   180→   180→  schedule:
+   181→   181→    - cron: '0 12 */3 * *'  # Every 3 days at noon UTC
+   182→   182→jobs:
+   183→   183→  ping:
+   184→   184→    runs-on: ubuntu-latest
+   185→   185→    steps:
+   186→   186→      - run: curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/" -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" > /dev/null
+   187→   187→```
+   188→   188→
+   189→   189→### 2.4 AI Integration
+   190→   190→
+   191→   191→**FIXED: Gemini 3 Flash as primary model. Gemini 2.0 Flash was deprecated and shut down June 1, 2026 — do not reference it anywhere in code.**
+   192→   192→
+   193→   193→| Service | Model | Free Limit | RPM | RPD | Use |
+   194→   194→|---|---|---|---|---|---|
+   195→   195→| Google AI Studio | gemini-3-flash (or `gemini-2.5-flash` if 3 unavailable) | Free, no credit card | 10 | 1,500 | Companion chat, quest lore personalization |
+   196→   196→| Groq | llama-3.1-8b-instant | Free, no credit card | varies | 14,400 | Fallback when Gemini unavailable |
+   197→   197→
+   198→   198→**API key management:**
+   199→   199→- `GEMINI_API_KEY` — server-side only, in `.env.local`, never in client code
+   200→   200→- Never prefix with `NEXT_PUBLIC_` — would expose the key in browser
+   201→   201→- All Gemini calls go through Next.js API Route Handlers in `/app/api/`
+   202→   202→
+   203→   203→**AI strategy:** Template-based + light AI personalization. The AI does NOT generate quest content. It only:
+   204→   204→1. Personalizes lore text for existing quest templates (1 API call per quest generation, ~20 words output)
+   205→   205→2. Responds to companion chat messages (1 API call per message, 200 token max output)
+   206→   206→
+   207→   207→At 50 DAU × 3 AI calls/day = 150 calls/day. Well within 1,500 RPD free limit.
+   208→   208→
+   209→   209→**Rate limit handling:**
+   210→   210→```typescript
+   211→   211→// lib/gemini.ts — exponential backoff on 429
+   212→   212→async function callGemini(prompt: string, maxRetries = 3): Promise<string> {
+   213→   213→  for (let attempt = 0; attempt < maxRetries; attempt++) {
+   214→   214→    try {
+   215→   215→      const response = await fetch(GEMINI_API_URL, { ... })
+   216→   216→      if (response.status === 429) {
+   217→   217→        await sleep(Math.pow(2, attempt) * 1000) // 1s, 2s, 4s
+   218→   218→        continue
+   219→   219→      }
+   220→   220→      return await parseResponse(response)
+   221→   221→    } catch (e) {
+   222→   222→      if (attempt === maxRetries - 1) throw e
+   223→   223→    }
+   224→   224→  }
+   225→   225→  return RULE_BASED_FALLBACK // If all retries fail, use rule-based response
+   226→   226→}
+   227→   227→```
+   228→   228→
+   229→   229→**Fallback to Groq:** If Gemini returns 429 after 3 retries, call Groq's llama-3.1-8b-instant with the same prompt. If Groq also fails, return a rule-based response from the RULE_RESPONSES dictionary (no API call).
+   230→   230→
+   231→   231→### 2.5 Hosting and Deployment
+   232→   232→
+   233→   233→| Service | Use | Free Tier | Commercial Use |
+   234→   234→|---|---|---|---|
+   235→   235→| Vercel | Next.js frontend + API routes | 100GB bandwidth, 100K function invocations, 10s timeout | **NOT PERMITTED on Hobby plan** |
+   236→   236→| Supabase | Database + Auth | 500MB DB, 50K MAU | Permitted |
+   237→   237→| Cloudflare | DNS + SSL for custom domain | Free forever | Permitted |
+   238→   238→
+   239→   239→**CRITICAL — Vercel commercial use policy:** The Vercel Hobby plan explicitly prohibits commercial use in its Terms of Service. For Phase 1 (free product with 20–50 test users, no payment processing), Hobby is acceptable. The moment any paid tier is introduced or ads are run, the project MUST be on Vercel Pro ($20/month).
+   240→   240→
+   241→   241→**10-second function timeout on Hobby:** Gemini API calls typically complete in 1–3 seconds. This is well within Hobby's 10-second limit. If streaming is implemented later (Phase 2), that extends function duration and may require Pro. Do not implement streaming in Phase 1.
+   242→   242→
+   243→   243→**Deployment flow:**
+   244→   244→```
+   245→   245→Push to GitHub main branch
+   246→   246→→ Vercel auto-deploys (CI/CD is built in, zero config)
+   247→   247→→ Preview URL generated for every PR
+   248→   248→→ Production URL updates on merge to main
+   249→   249→```
+   250→   250→
+   251→   251→**Environment variables required:**
+   252→   252→```
+   253→   253→NEXT_PUBLIC_SUPABASE_URL=             # Public, safe to expose
+   254→   254→NEXT_PUBLIC_SUPABASE_ANON_KEY=        # Public, safe to expose (RLS protects data)
+   255→   255→SUPABASE_SERVICE_ROLE_KEY=            # NEVER expose — server-side only
+   256→   256→GEMINI_API_KEY=                       # NEVER expose — server-side only
+   257→   257→GROQ_API_KEY=                         # NEVER expose — server-side only
+   258→   258→NEXTAUTH_SECRET=                      # Random string, server-side only
+   259→   259→```
+   260→   260→
+   261→   261→### 2.6 Asset Pipeline
+   262→   262→
+   263→   263→**Kingdom building icons:**
+   264→   264→- Source: Game-Icons.net (CC-BY license — attribution required in footer)
+   265→   265→- Format: SVG, inline embedded or fetched as static files in `/public/icons/`
+   266→   266→- Rendering: CSS `filter: brightness(0) invert(0.9)` for warm white on dark background
+   267→   267→- Do NOT use `<img>` tags for SVG icons — use inline `<svg>` or CSS background-image for better control
+   268→   268→
+   269→   269→**Character avatars:**
+   270→   270→- Source: DiceBear API — `https://api.dicebear.com/9.x/adventurer/svg?seed={userId}&backgroundColor=080808`
+   271→   271→- No uploads, no storage costs, consistent per user ID
+   272→   272→- Fallback: First character of character name if DiceBear unreachable
+   273→   273→
+   274→   274→**Fonts:**
+   275→   275→- All loaded via `next/font/google` in `app/layout.tsx` — no external HTTP request at runtime
+   276→   276→- Cormorant Garamond: weights 400, 700 (normal and italic)
+   277→   277→- Space Grotesk: weights 400, 500, 600
+   278→   278→- Space Mono: weights 400, 700
+   279→   279→
+   280→   280→---
+   281→   281→
+   282→   282→## 3. Complete Data Model
+   283→   283→
+   284→   284→### 3.1 Database Tables — Phase 1
+   285→   285→
+   286→   286→All tables are in the `public` schema. All tables have Row Level Security enabled.
+   287→   287→
+   288→   288→```sql
+   289→   289→-- ============================================================
+   290→   290→-- CORE USER DATA
+   291→   291→-- ============================================================
+   292→   292→
+   293→   293→-- User profiles (extends Supabase auth.users)
+   294→   294→CREATE TABLE public.profiles (
+   295→   295→  id                  UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+   296→   296→  character_name      TEXT NOT NULL CHECK (char_length(character_name) BETWEEN 2 AND 30),
+   297→   297→  kingdom_name        TEXT NOT NULL CHECK (char_length(kingdom_name) BETWEEN 2 AND 40),
+   298→   298→  companion_name      TEXT NOT NULL DEFAULT 'Aegis' CHECK (char_length(companion_name) BETWEEN 2 AND 20),
+   299→   299→  class               TEXT NOT NULL CHECK (class IN ('scholar', 'warrior', 'builder', 'commander')),
+   300→   300→  house_id            TEXT NOT NULL DEFAULT 'zenith' CHECK (house_id IN ('ash', 'zenith', 'forge', 'crown')),
+   301→   301→  house_changed_at    TIMESTAMPTZ,                  -- Enforce once-per-week change limit
+   302→   302→  level               INTEGER NOT NULL DEFAULT 1 CHECK (level >= 1),
+   303→   303→  xp                  INTEGER NOT NULL DEFAULT 0 CHECK (xp >= 0),
+   304→   304→  xp_to_next          INTEGER NOT NULL DEFAULT 300, -- XP needed for current level → next level
+   305→   305→  xp_total            INTEGER NOT NULL DEFAULT 0,   -- Lifetime XP (never resets on level-up)
+   306→   306→  kingdom_level       INTEGER NOT NULL DEFAULT 1 CHECK (kingdom_level >= 1),
+   307→   307→  kingdom_xp          INTEGER NOT NULL DEFAULT 0,   -- Separate from character XP
+   308→   308→  -- Attributes (all start at 10, grow from quest completion)
+   309→   309→  attr_strength       INTEGER NOT NULL DEFAULT 10 CHECK (attr_strength >= 0),
+   310→   310→  attr_vitality       INTEGER NOT NULL DEFAULT 10 CHECK (attr_vitality >= 0),
+   311→   311→  attr_intelligence   INTEGER NOT NULL DEFAULT 10 CHECK (attr_intelligence >= 0),
+   312→   312→  attr_focus          INTEGER NOT NULL DEFAULT 10 CHECK (attr_focus >= 0),
+   313→   313→  attr_technical      INTEGER NOT NULL DEFAULT 10 CHECK (attr_technical >= 0),
+   314→   314→  attr_creativity     INTEGER NOT NULL DEFAULT 10 CHECK (attr_creativity >= 0),
+   315→   315→  attr_leadership     INTEGER NOT NULL DEFAULT 10 CHECK (attr_leadership >= 0),
+   316→   316→  attr_charisma       INTEGER NOT NULL DEFAULT 10 CHECK (attr_charisma >= 0),
+   317→   317→  attr_discipline     INTEGER NOT NULL DEFAULT 10 CHECK (attr_discipline >= 0), -- Streak-based
+   318→   318→  -- Meta
+   319→   319→  onboarding_complete BOOLEAN NOT NULL DEFAULT FALSE,
+   320→   320→  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+   321→   321→  updated_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   322→   322→);
+   323→   323→
+   324→   324→-- Trigger: auto-update updated_at
+   325→   325→CREATE OR REPLACE FUNCTION update_updated_at()
+   326→   326→RETURNS TRIGGER AS $$ BEGIN NEW.updated_at = NOW(); RETURN NEW; END; $$ LANGUAGE plpgsql;
+   327→   327→CREATE TRIGGER profiles_updated_at BEFORE UPDATE ON public.profiles
+   328→   328→  FOR EACH ROW EXECUTE FUNCTION update_updated_at();
+   329→   329→
+   330→   330→-- ============================================================
+   331→   331→-- QUEST SYSTEM
+   332→   332→-- ============================================================
+   333→   333→
+   334→   334→-- Quest templates (seeded by developer, not user-generated at Phase 1)
+   335→   335→CREATE TABLE public.quest_templates (
+   336→   336→  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   337→   337→  title               TEXT NOT NULL CHECK (char_length(title) BETWEEN 5 AND 80),
+   338→   338→  description         TEXT NOT NULL CHECK (char_length(description) BETWEEN 10 AND 200),
+   339→   339→  domain              TEXT NOT NULL CHECK (domain IN ('body', 'mind', 'craft', 'command')),
+   340→   340→  difficulty          TEXT NOT NULL DEFAULT 'medium' CHECK (difficulty IN ('easy', 'medium', 'hard', 'epic')),
+   341→   341→  class_affinity      TEXT[] DEFAULT '{}',           -- Empty array = available to all classes
+   342→   342→  xp_reward           INTEGER NOT NULL CHECK (xp_reward > 0),
+   343→   343→  rarity              TEXT NOT NULL DEFAULT 'common' CHECK (rarity IN ('common', 'uncommon', 'rare', 'epic')),
+   344→   344→  duration_days       INTEGER NOT NULL DEFAULT 7,
+   345→   345→  objectives          JSONB NOT NULL DEFAULT '[]',   -- [{id: UUID, text: string, order: number}]
+   346→   346→  -- Attribute rewards on completion
+   347→   347→  primary_attr        TEXT NOT NULL,                 -- Which attribute gets +2
+   348→   348→  secondary_attr      TEXT NOT NULL,                 -- Which attribute gets +1
+   349→   349→  kingdom_xp_reward   INTEGER NOT NULL DEFAULT 50,   -- Kingdom XP on quest complete
+   350→   350→  min_level           INTEGER NOT NULL DEFAULT 1,    -- Locked below this level
+   351→   351→  is_active           BOOLEAN NOT NULL DEFAULT TRUE,
+   352→   352→  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   353→   353→);
+   354→   354→
+   355→   355→-- User quest instances (one row per quest a user has started)
+   356→   356→CREATE TABLE public.user_quests (
+   357→   357→  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   358→   358→  user_id               UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+   359→   359→  template_id           UUID NOT NULL REFERENCES public.quest_templates(id),
+   360→   360→  status                TEXT NOT NULL DEFAULT 'active'
+   361→   361→                          CHECK (status IN ('active', 'completed', 'failed', 'abandoned')),
+   362→   362→  objectives_completed  JSONB NOT NULL DEFAULT '[]', -- Array of completed objective IDs
+   363→   363→  progress_pct          INTEGER NOT NULL DEFAULT 0 CHECK (progress_pct BETWEEN 0 AND 100),
+   364→   364→  started_at            TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+   365→   365→  due_at                TIMESTAMPTZ NOT NULL,
+   366→   366→  completed_at          TIMESTAMPTZ,
+   367→   367→  failed_at             TIMESTAMPTZ,
+   368→   368→  xp_awarded            INTEGER,                     -- Actual XP given (may differ if partial)
+   369→   369→  created_at            TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   370→   370→);
+   371→   371→
+   372→   372→-- Index for common queries
+   373→   373→CREATE INDEX user_quests_user_status ON public.user_quests(user_id, status);
+   374→   374→CREATE INDEX user_quests_due ON public.user_quests(due_at) WHERE status = 'active';
+   375→   375→
+   376→   376→-- ============================================================
+   377→   377→-- KINGDOM SYSTEM
+   378→   378→-- ============================================================
+   379→   379→
+   380→   380→-- Building definitions (seeded by developer)
+   381→   381→CREATE TABLE public.buildings (
+   382→   382→  id                  TEXT PRIMARY KEY,              -- 'library', 'training_grounds', etc.
+   383→   383→  name                TEXT NOT NULL,
+   384→   384→  domain              TEXT NOT NULL CHECK (domain IN ('body', 'mind', 'craft', 'command', 'discipline')),
+   385→   385→  icon_filename       TEXT NOT NULL,                 -- filename in /public/icons/ e.g. 'book-cover.svg'
+   386→   386→  lore_text           TEXT,
+   387→   387→  -- Unlock conditions
+   388→   388→  unlock_attribute    TEXT NOT NULL,                 -- Column name in profiles, e.g. 'attr_intelligence'
+   389→   389→  unlock_threshold    INTEGER NOT NULL,
+   390→   390→  -- What the building provides
+   391→   391→  quest_unlock_domain TEXT,                          -- Makes quest templates of this domain available
+   392→   392→  xp_bonus_pct        INTEGER NOT NULL DEFAULT 0,    -- % XP bonus for quests in unlock domain
+   393→   393→  -- Display
+   394→   394→  display_order       INTEGER NOT NULL DEFAULT 0,
+   395→   395→  phase               INTEGER NOT NULL DEFAULT 1
+   396→   396→);
+   397→   397→
+   398→   398→-- User building status (one row per user per building)
+   399→   399→CREATE TABLE public.user_buildings (
+   400→   400→  user_id             UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+   401→   401→  building_id         TEXT NOT NULL REFERENCES public.buildings(id),
+   402→   402→  status              TEXT NOT NULL DEFAULT 'locked'
+   403→   403→                        CHECK (status IN ('locked', 'available', 'built', 'upgrading')),
+   404→   404→  built_at            TIMESTAMPTZ,
+   405→   405→  PRIMARY KEY (user_id, building_id)
+   406→   406→);
+   407→   407→
+   408→   408→-- ============================================================
+   409→   409→-- AI COMPANION
+   410→   410→-- ============================================================
+   411→   411→
+   412→   412→-- Companion message history (max 10 messages per user — prune on insert)
+   413→   413→CREATE TABLE public.companion_messages (
+   414→   414→  id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+   415→   415→  user_id             UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+   416→   416→  role                TEXT NOT NULL CHECK (role IN ('user', 'companion')),
+   417→   417→  content             TEXT NOT NULL CHECK (char_length(content) BETWEEN 1 AND 2000),
+   418→   418→  created_at          TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   419→   419→);
+   420→   420→
+   421→   421→CREATE INDEX companion_messages_user_time ON public.companion_messages(user_id, created_at DESC);
+   422→   422→
+   423→   423→-- ============================================================
+   424→   424→-- ACHIEVEMENTS
+   425→   425→-- ============================================================
+   426→   426→
+   427→   427→-- Achievement definitions (seeded by developer)
+   428→   428→CREATE TABLE public.achievements (
+   429→   429→  id                  TEXT PRIMARY KEY,              -- e.g. 'first_quest', 'level_5'
+   430→   430→  title               TEXT NOT NULL,
+   431→   431→  description         TEXT NOT NULL,
+   432→   432→  condition_type      TEXT NOT NULL,                 -- 'quest_count', 'level', 'building', 'domain_quests', 'chat', 'streak', 'all_domains', 'kingdom_level'
+   433→   433→  condition_value     INTEGER NOT NULL,              -- The threshold
+   434→   434→  condition_domain    TEXT,                          -- For domain-specific achievements
+   435→   435→  xp_bonus            INTEGER NOT NULL DEFAULT 0,
+   436→   436→  display_order       INTEGER NOT NULL DEFAULT 0
+   437→   437→);
+   438→   438→
+   439→   439→-- User achievement unlocks
+   440→   440→CREATE TABLE public.user_achievements (
+   441→   441→  user_id             UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+   442→   442→  achievement_id      TEXT NOT NULL REFERENCES public.achievements(id),
+   443→   443→  unlocked_at         TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+   444→   444→  PRIMARY KEY (user_id, achievement_id)
+   445→   445→);
+   446→   446→
+   447→   447→-- ============================================================
+   448→   448→-- LEADERBOARD (Phase 2 — create table now, populate in Phase 2)
+   449→   449→-- ============================================================
+   450→   450→
+   451→   451→-- Weekly XP snapshot (refreshed every Monday midnight UTC)
+   452→   452→CREATE TABLE public.weekly_xp (
+   453→   453→  user_id             UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+   454→   454→  house_id            TEXT NOT NULL,
+   455→   455→  week_start          DATE NOT NULL,                 -- Monday of the week (ISO week)
+   456→   456→  xp_earned           INTEGER NOT NULL DEFAULT 0,
+   457→   457→  PRIMARY KEY (user_id, week_start)
+   458→   458→);
+   459→   459→
+   460→   460→CREATE INDEX weekly_xp_house_week ON public.weekly_xp(house_id, week_start, xp_earned DESC);
+   461→   461→CREATE INDEX weekly_xp_week ON public.weekly_xp(week_start, xp_earned DESC);
+   462→   462→```
+   463→   463→
+   464→   464→### 3.2 Seed Data — Buildings
+   465→   465→
+   466→   466→```sql
+   467→   467→INSERT INTO public.buildings (id, name, domain, icon_filename, lore_text, unlock_attribute, unlock_threshold, quest_unlock_domain, xp_bonus_pct, display_order) VALUES
+   468→   468→('library',          'The Archive',          'mind',       'book-cover.svg',     'Where knowledge crystallizes into power.',             'attr_intelligence', 25, 'mind',    10, 1),
+   469→   469→('training_grounds', 'The Proving Ground',   'body',       'weight-lifting-up.svg','Forged by pain, remembered by muscle.',             'attr_strength',     25, 'body',    10, 2),
+   470→   470→('workshop',         'The Forge',            'craft',      'anvil.svg',          'Where intention becomes artifact.',                    'attr_technical',    25, 'craft',   10, 3),
+   471→   471→('watchtower',       'The Watchtower',       'discipline', 'tower.svg',          'Clarity requires elevation.',                          'attr_discipline',   25, NULL,       5, 4),
+   472→   472→('guild_hall',       'The Assembly Hall',    'command',    'players.svg',        'Command begins with trust.',                           'attr_charisma',     40, 'command', 10, 5),
+   473→   473→('academy',          'The Academy',          'mind',       'graduate-cap.svg',   'The highest form of the Archive. Mastery begets mastery.','attr_intelligence',60, 'mind',    5, 6);
+   474→   474→```
+   475→   475→
+   476→   476→### 3.3 Seed Data — Quest Templates (100 total — first 20 shown)
+   477→   477→
+   478→   478→```sql
+   479→   479→-- Phase 1 quest templates: 25 per domain (Body, Mind, Craft, Command)
+   480→   480→-- Easy = 75 XP, duration 1–3 days
+   481→   481→-- Medium = 175 XP, duration 5–7 days
+   482→   482→-- Hard = 350 XP, duration 7–14 days
+   483→   483→-- Epic = 650 XP, duration 14–21 days
+   484→   484→
+   485→   485→INSERT INTO public.quest_templates 
+   486→   486→  (title, description, domain, difficulty, xp_reward, rarity, duration_days, objectives, primary_attr, secondary_attr, kingdom_xp_reward, min_level)
+   487→   487→VALUES
+   488→   488→-- BODY — EASY
+   489→   489→('Complete 50 pushups today',
+   490→   490→ 'Forge the body''s foundation through simple repetition.',
+   491→   491→ 'body', 'easy', 75, 'common', 1,
+   492→   492→ '[{"id":"o1","text":"Do 50 pushups in total throughout the day","order":1}]',
+   493→   493→ 'attr_strength', 'attr_vitality', 30, 1),
+   494→   494→
+   495→   495→('Drink 2 liters of water today',
+   496→   496→ 'The most fundamental discipline: feeding the vessel.',
+   497→   497→ 'body', 'easy', 75, 'common', 1,
+   498→   498→ '[{"id":"o1","text":"Drink 2 liters of water before midnight","order":1}]',
+   499→   499→ 'attr_vitality', 'attr_discipline', 30, 1),
+   500→   500→
+
+[showing lines 1-500 of 2002; use offset=501 with limit to continue reading]
