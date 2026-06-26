@@ -13,7 +13,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-flex items-center justify-center h-10 px-6 bg-crimson hover:bg-crimson/90 text-white text-sm font-medium tracking-wide rounded-md transition-colors"
+          className="inline-flex items-center justify-center h-10 px-6 bg-crimson hover:bg-crimson/90 text-white text-sm font-medium tracking-wide transition-colors"
         >
           Return to Your Kingdom
         </Link>

@@ -63,7 +63,7 @@ export default function SignupPage() {
           <h1 className="font-serif text-5xl font-bold tracking-wide text-foreground mb-6">
             Sovereign
           </h1>
-          <div className="bg-card border border-border rounded-lg p-8">
+          <div className="bg-card border border-border p-8">
             <h2 className="text-xl font-medium text-foreground mb-3">
               The Void Awaits
             </h2>
@@ -148,7 +148,7 @@ export default function SignupPage() {
           </div>
 
           {error && (
-            <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md px-4 py-3">
+            <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 px-4 py-3">
               {error}
             </div>
           )}

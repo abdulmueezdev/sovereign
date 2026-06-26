@@ -21,7 +21,7 @@ function LandingContent() {
     <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative overflow-hidden">
       {/* Background glow effect */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[600px] h-[600px] bg-crimson/5 rounded-full blur-[120px]" />
+        <div className="w-[600px] h-[600px] bg-crimson/5 blur-[120px]" />
       </div>
 
       {/* Content */}
