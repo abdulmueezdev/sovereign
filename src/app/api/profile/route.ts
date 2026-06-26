@@ -45,6 +45,44 @@ export async function GET() {
       discipline: profile.attr_discipline,
     },
     onboardingComplete: profile.onboarding_complete,
-    createdAt: profile.created_at,
   })
 }
+
+export async function PUT(request: Request) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  let body: { characterName?: string, kingdomName?: string, companionName?: string }
+  try {
+    body = await request.json()
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 })
+  }
+
+  const updates: Record<string, string> = {}
+  if (body.characterName) updates.character_name = body.characterName
+  if (body.kingdomName) updates.kingdom_name = body.kingdomName
+  if (body.companionName) updates.companion_name = body.companionName
+
+  if (Object.keys(updates).length === 0) {
+    return NextResponse.json({ error: 'No valid fields provided to update' }, { status: 400 })
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update(updates)
+    .eq('id', user.id)
+    .select()
+    .single()
+
+  if (error) {
+    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 })
+  }
+
+  return NextResponse.json({ success: true, profile: data })
+}
+

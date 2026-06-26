@@ -34,6 +34,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { PWARegistration } from '@/components/pwa/PWARegistration'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,9 +43,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#080808" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="apple-touch-icon" href="/logo.svg" />
+      </head>
       <body
         className={`${cormorant.variable} ${spaceGrotesk.variable} ${spaceMono.variable} font-sans antialiased bg-background text-foreground`}
       >
+        <PWARegistration />
         {children}
         <Toaster
           position="bottom-right"
