@@ -18,7 +18,7 @@ export async function GET() {
       .single()
 
     if (profileError || !profile) {
-      console.error('Kingdom profile error:', profileError)
+      console.error('Kingdom profile error:', JSON.stringify(profileError))
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
     }
 
@@ -29,7 +29,7 @@ export async function GET() {
       .order('display_order', { ascending: true })
 
     if (buildingsError) {
-      console.error('Buildings fetch error:', buildingsError)
+      console.error('Buildings fetch error:', JSON.stringify(buildingsError))
       return NextResponse.json({ error: 'Failed to fetch buildings' }, { status: 500 })
     }
 

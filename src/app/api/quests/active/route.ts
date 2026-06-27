@@ -34,8 +34,8 @@ export async function GET() {
       .eq('status', 'active')
       .order('due_at', { ascending: true })
 
-    if (error) {
-      console.error('Error fetching active quests:', error)
+    if (activeQuestsError) {
+      console.error('Active quests fetch error:', JSON.stringify(activeQuestsError))
       return NextResponse.json({ error: 'Failed to fetch active quests' }, { status: 500 })
     }
 
