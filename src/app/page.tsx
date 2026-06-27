@@ -44,9 +44,12 @@ function LandingContent() {
           </Button>
         </Link>
         
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col items-center gap-4">
           <Link href="/login" className="font-serif text-[18px] italic text-[#C41E1E] hover:text-[#E8E6E0] transition-colors duration-150">
             Or enter the void as an existing sovereign...
+          </Link>
+          <Link href="/guide" className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] hover:text-[#E8E6E0] uppercase transition-colors duration-150">
+            Read the Guide
           </Link>
         </div>
 

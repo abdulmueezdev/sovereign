@@ -97,28 +97,37 @@ export default function CharacterPage() {
           {/* Left Column (40%) - Attributes / Stats */}
           <div className="w-full md:w-[40%] flex flex-col">
             <div className="mb-12">
-              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
-                Entity Record
-              </div>
-              <h1 className="font-serif text-[64px] md:text-[80px] font-bold text-[#E8E6E0] mb-2 leading-none">
-                {profile.characterName}
-              </h1>
-              <div className="font-serif italic text-[22px] text-[#5C5C5C]">
-                Seeker of the {profile.houseId.charAt(0).toUpperCase() + profile.houseId.slice(1)} Order
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
+                    Entity Record
+                  </div>
+                  <h1 className="font-serif text-[64px] md:text-[80px] font-bold text-[#E8E6E0] mb-2 leading-none">
+                    {profile.characterName}
+                  </h1>
+                  <div className="font-serif italic text-[22px] text-[#5C5C5C]">
+                    Seeker of the {profile.houseId.charAt(0).toUpperCase() + profile.houseId.slice(1)} Order
+                  </div>
+                </div>
+                <div className="flex flex-col items-end pt-2">
+                  <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-2 uppercase">
+                    LEVEL
+                  </div>
+                  <div className="font-serif text-[64px] text-[#C41E1E] leading-none">
+                    {toRoman(profile.level)}
+                  </div>
+                </div>
               </div>
             </div>
 
             <div className="w-full h-[1px] bg-[#1A1A1A] mb-12" />
 
             <div className="mb-16">
-              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
-                Temporal Fragments
-              </div>
-              <div className="flex items-end gap-6 mb-8">
-                <span className="font-serif text-[48px] text-[#C41E1E] leading-none">
-                  {toRoman(profile.level)}
-                </span>
-                <span className="font-mono text-[14px] text-[#5C5C5C] mb-2">
+              <div className="flex justify-between items-baseline mb-4">
+                <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] uppercase">
+                  Temporal Fragments
+                </div>
+                <span className="font-mono text-[14px] text-[#5C5C5C]">
                   {profile.xp.toLocaleString()} / {profile.xpToNext.toLocaleString()} XP
                 </span>
               </div>

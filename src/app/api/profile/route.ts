@@ -9,43 +9,49 @@ export async function GET() {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single()
+  try {
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', user.id)
+      .single()
 
-  if (error || !profile) {
-    return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
+    if (error || !profile) {
+      console.error('Profile fetch error:', error)
+      return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
+    }
+
+    // Transform to camelCase for API consistency
+    return NextResponse.json({
+      id: profile.id,
+      characterName: profile.character_name,
+      kingdomName: profile.kingdom_name,
+      companionName: profile.companion_name,
+      class: profile.class,
+      houseId: profile.house_id,
+      level: profile.level,
+      xp: profile.xp,
+      xpToNext: profile.xp_to_next,
+      xpTotal: profile.xp_total,
+      kingdomLevel: profile.kingdom_level,
+      kingdomXp: profile.kingdom_xp,
+      attributes: {
+        strength: profile.attr_strength,
+        vitality: profile.attr_vitality,
+        intelligence: profile.attr_intelligence,
+        focus: profile.attr_focus,
+        technical: profile.attr_technical,
+        creativity: profile.attr_creativity,
+        leadership: profile.attr_leadership,
+        charisma: profile.attr_charisma,
+        discipline: profile.attr_discipline,
+      },
+      onboardingComplete: profile.onboarding_complete,
+    })
+  } catch (err) {
+    console.error('Unexpected error in profile GET:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
-
-  // Transform to camelCase for API consistency
-  return NextResponse.json({
-    id: profile.id,
-    characterName: profile.character_name,
-    kingdomName: profile.kingdom_name,
-    companionName: profile.companion_name,
-    class: profile.class,
-    houseId: profile.house_id,
-    level: profile.level,
-    xp: profile.xp,
-    xpToNext: profile.xp_to_next,
-    xpTotal: profile.xp_total,
-    kingdomLevel: profile.kingdom_level,
-    kingdomXp: profile.kingdom_xp,
-    attributes: {
-      strength: profile.attr_strength,
-      vitality: profile.attr_constitution,
-      intelligence: profile.attr_intelligence,
-      focus: profile.attr_wisdom,
-      technical: profile.attr_dexterity,
-      creativity: profile.attr_creativity,
-      leadership: profile.attr_perception,
-      charisma: profile.attr_charisma,
-      discipline: profile.attr_discipline,
-    },
-    onboardingComplete: profile.onboarding_complete,
-  })
 }
 
 export async function PUT(request: Request) {
@@ -72,17 +78,23 @@ export async function PUT(request: Request) {
     return NextResponse.json({ error: 'No valid fields provided to update' }, { status: 400 })
   }
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .update(updates)
-    .eq('id', user.id)
-    .select()
-    .single()
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .update(updates)
+      .eq('id', user.id)
+      .select()
+      .single()
 
-  if (error) {
-    return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 })
+    if (error) {
+      console.error('Profile update error:', error)
+      return NextResponse.json({ error: 'Failed to update profile' }, { status: 500 })
+    }
+
+    return NextResponse.json({ success: true, profile: data })
+  } catch (err) {
+    console.error('Unexpected error in profile PUT:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
-
-  return NextResponse.json({ success: true, profile: data })
 }
 

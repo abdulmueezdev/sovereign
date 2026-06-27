@@ -115,12 +115,6 @@ export default function CompanionPage() {
         <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col gap-8 pb-4">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} max-w-[85%] ${msg.role === 'user' ? 'self-end' : 'self-start'}`}>
-              {msg.role === 'companion' && (
-                <div className="font-mono text-[10px] text-[#C41E1E] uppercase tracking-widest mb-2 select-none">
-                  AEGIS // ARCHITECT
-                </div>
-              )}
-              
               {msg.role === 'user' ? (
                 <div className="font-sans text-[14px] text-[#5C5C5C] animate-fade-in text-right">
                   {msg.content}
@@ -135,9 +129,6 @@ export default function CompanionPage() {
 
           {isProcessing && (
             <div className="self-start max-w-[85%] border-l-2 border-[#C41E1E] pl-4 py-1 animate-pulse">
-              <div className="font-mono text-[10px] text-[#C41E1E] uppercase tracking-widest mb-1 select-none">
-                AEGIS // ARCHITECT
-              </div>
               <div className="font-sans text-[12px] text-[#5C5C5C] tracking-[0.1em] uppercase flex items-center gap-1">
                 PROCESSING REALITY <span className="w-2 h-3 bg-[#C41E1E] animate-pulse block" />
               </div>
