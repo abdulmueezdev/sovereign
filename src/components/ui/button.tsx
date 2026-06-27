@@ -9,10 +9,24 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase border-none hover:bg-[#E8282B] transition-colors duration-150 active:scale-[0.97] transition-transform duration-[80ms]",
-        secondary:
-          "bg-transparent text-[#E8E6E0] font-sans text-[11px] tracking-[0.2em] uppercase border border-[#2A2A2A] hover:border-[#E8E6E0] transition-colors duration-150 active:scale-[0.97] transition-transform duration-[80ms]",
+        default: [
+          "bg-[#C41E1E] text-white",
+          "font-grotesk text-[11px] tracking-[0.2em] uppercase",
+          "rounded-none",
+          "hover:bg-[#E8282B] transition-colors duration-150",
+          "active:scale-[0.97] transition-transform duration-[80ms]",
+          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C41E1E] focus-visible:ring-offset-0",
+          "disabled:opacity-40 disabled:cursor-not-allowed disabled:active:scale-100",
+        ].join(' '),
+        secondary: [
+          "bg-transparent text-[#E8E6E0]",
+          "font-grotesk text-[11px] tracking-[0.2em] uppercase",
+          "rounded-none",
+          "border border-[#2A2A2A]",
+          "hover:border-[#E8E6E0] transition-colors duration-150",
+          "active:scale-[0.97] transition-transform duration-[80ms]",
+          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2A2A2A] focus-visible:ring-offset-0",
+        ].join(' '),
         ghost:
           "bg-transparent text-[#5C5C5C] font-sans text-[11px] tracking-[0.2em] uppercase hover:text-[#E8E6E0] transition-colors duration-150",
         link: 

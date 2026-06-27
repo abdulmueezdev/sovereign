@@ -88,30 +88,25 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 h-[56px] bg-[#080808] border-t border-[#1A1A1A] z-50 flex md:hidden items-center justify-around pb-safe">
-        {navItems.map((item) => {
-          const Icon = item.icon
-          const active = pathname === item.href
-          return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] transition-colors ${
-                active ? 'text-[#C41E1E]' : 'text-[#5C5C5C] hover:text-[#E8E6E0]'
-              }`}
-            >
-              <Icon size={20} color="currentColor" strokeWidth={1.5} />
-            </Link>
-          )
-        })}
-        <Link
-          href="/settings"
-          className={`flex flex-col items-center justify-center min-h-[44px] min-w-[44px] transition-colors ${
-            pathname === '/settings' ? 'text-[#C41E1E]' : 'text-[#5C5C5C] hover:text-[#E8E6E0]'
-          }`}
-        >
-          <Settings size={20} color="currentColor" strokeWidth={1.5} />
-        </Link>
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#1A1A1A] bg-[#080808]">
+        <div className="flex items-center justify-around h-14 px-2">
+          {navItems.map((item) => {
+            const Icon = item.icon
+            const active = pathname === item.href
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center justify-center w-12 h-12 transition-colors duration-150 ${
+                  active ? 'text-[#C41E1E]' : 'text-[#3A3A3A] hover:text-[#5C5C5C]'
+                }`}
+                aria-label={item.name}
+              >
+                <Icon size={20} strokeWidth={1.5} />
+              </Link>
+            )
+          })}
+        </div>
       </nav>
     </>
   )

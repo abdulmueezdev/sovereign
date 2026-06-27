@@ -23,10 +23,10 @@ export const CLASS_TO_HOUSE: Record<string, string> = {
 
 // Class → starting attribute bonuses
 export const CLASS_BONUSES: Record<string, { primary: string; primaryBonus: number; secondary: string; secondaryBonus: number }> = {
-  scholar:   { primary: 'attr_intelligence', primaryBonus: 5, secondary: 'attr_focus',       secondaryBonus: 3 },
-  warrior:   { primary: 'attr_strength',     primaryBonus: 5, secondary: 'attr_vitality', secondaryBonus: 3 },
-  builder:   { primary: 'attr_technical',    primaryBonus: 5, secondary: 'attr_creativity',   secondaryBonus: 3 },
-  commander: { primary: 'attr_leadership',   primaryBonus: 5, secondary: 'attr_charisma',     secondaryBonus: 3 },
+  scholar:   { primary: 'attr_intelligence', primaryBonus: 5, secondary: 'attr_wisdom',       secondaryBonus: 3 },
+  warrior:   { primary: 'attr_strength',     primaryBonus: 5, secondary: 'attr_constitution', secondaryBonus: 3 },
+  builder:   { primary: 'attr_dexterity',    primaryBonus: 5, secondary: 'attr_creativity',   secondaryBonus: 3 },
+  commander: { primary: 'attr_perception',   primaryBonus: 5, secondary: 'attr_charisma',     secondaryBonus: 3 },
 }
 
 /**

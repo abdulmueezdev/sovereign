@@ -3,9 +3,10 @@ import { NextResponse } from 'next/server'
 
 // Gemini call with exponential backoff
 async function callGemini(body: any, retries = 3): Promise<string> {
+  const modelName = process.env.GEMINI_MODEL ?? 'gemini-1.5-flash';
   for (let i = 0; i < retries; i++) {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${process.env.GEMINI_API_KEY}`,
       { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }
     )
     if (res.status === 429) {
@@ -67,18 +68,18 @@ export async function POST(request: Request) {
   })
 
   // 3. RULE-BASED MATCHING
-  const lowerMsg = message.toLowerCase()
-  let reply = ''
-  let source = 'rule-based'
+  let reply = '';
+  let source = 'rule-based';
 
-  if (lowerMsg.includes('give me a quest')) {
-    reply = "I cannot manifest quests directly here yet, but you may commence your journey from the Quests panel."
-  } else if (lowerMsg.includes('analyze my week')) {
-    reply = "Your temporal fragments show steady progress. Focus on your weaker domains."
-  } else if (lowerMsg.includes("i'm struggling") || lowerMsg.includes('struggling')) {
-    reply = "The void tests all who walk it. Rest, reflect, and return stronger."
-  } else if (lowerMsg.includes('what should i focus on')) {
-    reply = "Review your pending objectives. Consistency over intensity."
+  const lower = message.toLowerCase();
+  if (lower.includes('quest') || lower.includes('task')) {
+    reply = `The board holds ${profile.max_active_quests ?? 'several'} active echoes. Visit the Quest Board to manifest your next challenge.`;
+  } else if (lower.includes('struggling') || lower.includes('difficult') || lower.includes('hard')) {
+    reply = `Even the strongest sovereigns face resistance. Return to the Quest Board and find one small action you can complete today. Momentum is built one echo at a time.`;
+  } else if (lower.includes('level') || lower.includes('xp') || lower.includes('progress')) {
+    reply = `You stand at level ${profile.level ?? 1}. The board awaits your next conquest.`;
+  } else if (lower.includes('kingdom')) {
+    reply = `${profile.kingdom_name ?? 'Your kingdom'} grows with every quest fulfilled. Visit the Kingdom to manifest new structures.`;
   } else {
     // 4. Gemini Call
     source = 'gemini'

@@ -79,17 +79,8 @@ export default function SignupPage() {
                 Registration Currently Disabled
               </h2>
               <p className="font-sans text-[13px] text-[#E8E6E0] mb-6 leading-relaxed">
-                New accounts cannot be created at this time. Please use the following credentials to access the experience:
+                New accounts cannot be created at this time. Please return later.
               </p>
-              
-              <div className="space-y-2 font-mono text-[11px] text-[#5C5C5C]">
-                <div>
-                  <span className="uppercase tracking-[0.2em] text-[#E8E6E0]">ID:</span> admin@gmail.com
-                </div>
-                <div>
-                  <span className="uppercase tracking-[0.2em] text-[#E8E6E0]">Password:</span> admin123
-                </div>
-              </div>
             </div>
             
             <Link 

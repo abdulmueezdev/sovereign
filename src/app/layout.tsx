@@ -57,12 +57,19 @@ export default function RootLayout({
         {children}
         <Toaster
           position="bottom-right"
+          gap={8}
           toastOptions={{
+            duration: 3000,
             style: {
-              background: '#111111',
-              border: '1px solid #2A2520',
-              color: '#E8E4DD',
+              background: '#0C0C0C',
+              border: '1px solid #2A2A2A',
               borderRadius: '0',
+              color: '#E8E6E0',
+              padding: '10px 14px',
+              maxWidth: '300px',
+              fontSize: '11px',
+              letterSpacing: '0.1em',
+              fontFamily: 'var(--font-space-mono, monospace)',
             },
           }}
         />
