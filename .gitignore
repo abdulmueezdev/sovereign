@@ -49,3 +49,4 @@ dev.out.log
 server.log
 test
 promptcontext.md
+.env.production
