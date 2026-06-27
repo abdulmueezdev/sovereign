@@ -124,10 +124,12 @@ export async function POST(request: Request) {
   }
 
   // 7. Save companion response
+  const safeResponse = reply?.trim() || "The void stirs. Your kingdom awaits action. Visit the Quest Board to manifest your next challenge."
+
   await supabase.from('companion_messages').insert({
     user_id: user.id,
     role: 'companion',
-    content: reply.substring(0, 2000)
+    content: safeResponse.substring(0, 2000)
   })
 
   // 8. Prune to last 10 messages
@@ -143,5 +145,5 @@ export async function POST(request: Request) {
   }
 
   // 9. Return
-  return NextResponse.json({ reply, source })
+  return NextResponse.json({ reply: safeResponse, source })
 }

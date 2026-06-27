@@ -53,22 +53,16 @@ export default function CharacterPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Initializing Entity...</div>
-        </main>
+      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
+        <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Initializing Entity...</div>
       </div>
     )
   }
 
   if (error || !profile) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="text-[#C41E1E] font-mono text-[11px] tracking-[0.2em] uppercase">Corruption Detected: {error}</div>
-        </main>
+      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
+        <div className="text-[#C41E1E] font-mono text-[11px] tracking-[0.2em] uppercase">Corruption Detected: {error}</div>
       </div>
     )
   }
@@ -89,10 +83,8 @@ export default function CharacterPage() {
   ]
 
   return (
-    <div className="flex min-h-screen bg-[#080808]">
-      <Sidebar />
-      <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 min-h-screen">
-        <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-16 animate-fade-in-up">
+    <div className="flex-1 p-8 md:p-12 lg:p-16 min-h-screen">
+      <div className="max-w-[1400px] mx-auto flex flex-col md:flex-row gap-16 animate-fade-in-up">
           
           {/* Left Column (40%) - Attributes / Stats */}
           <div className="w-full md:w-[40%] flex flex-col">
@@ -113,7 +105,7 @@ export default function CharacterPage() {
                   <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-2 uppercase">
                     LEVEL
                   </div>
-                  <div className="font-serif text-[64px] text-[#C41E1E] leading-none">
+                  <div className="font-serif text-[72px] text-[#C41E1E] leading-none">
                     {toRoman(profile.level)}
                   </div>
                 </div>
@@ -213,9 +205,7 @@ export default function CharacterPage() {
               )}
             </div>
           </div>
-          
         </div>
-      </main>
-    </div>
+      </div>
   )
 }

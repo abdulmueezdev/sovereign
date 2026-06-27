@@ -73,14 +73,11 @@ function QuestsContent() {
 
   if (authLoading || (loading && quests.length === 0 && !error)) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="w-full max-w-4xl animate-pulse">
-            <div className="h-8 bg-[#1A1A1A] w-1/3 mb-12" />
-            <div className="h-64 bg-[#1A1A1A] w-full" />
-          </div>
-        </main>
+      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
+        <div className="w-full max-w-4xl animate-pulse">
+          <div className="h-8 bg-[#1A1A1A] w-1/3 mb-12" />
+          <div className="h-64 bg-[#1A1A1A] w-full" />
+        </div>
       </div>
     )
   }
@@ -101,11 +98,8 @@ function QuestsContent() {
         onClose={() => setLevelUpData({ ...levelUpData, open: false })}
       />
 
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        
-        <main className="flex-1 md:ml-[64px] min-h-screen p-8 md:p-12 lg:p-16">
-          <div className="max-w-4xl mx-auto animate-fade-in-up">
+      <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16">
+        <div className="max-w-4xl mx-auto animate-fade-in-up">
             
             <div className="mb-12">
               <h1 className="font-serif text-[48px] font-bold text-[#E8E6E0] mb-2 leading-none">
@@ -145,7 +139,7 @@ function QuestsContent() {
                 </div>
               ) : error ? (
                 <div className="py-12 text-[#C41E1E] font-mono text-[11px] uppercase tracking-widest text-center">
-                  Failed to synchronize with the void.
+                  FAILED TO SYNCHRONIZE WITH THE VOID.
                 </div>
               ) : quests.length === 0 ? (
                 <div className="py-12 text-[#5C5C5C] font-mono text-[11px] uppercase tracking-widest text-center">
@@ -172,8 +166,7 @@ function QuestsContent() {
               )}
             </div>
 
-          </div>
-        </main>
+        </div>
       </div>
     </>
   )

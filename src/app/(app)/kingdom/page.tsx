@@ -50,22 +50,16 @@ export default function KingdomPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 flex items-center justify-center">
-          <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Surveying Domain...</div>
-        </main>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Surveying Domain...</div>
       </div>
     )
   }
 
   if (error || !kingdom) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 flex items-center justify-center">
-          <div className="text-[#C41E1E] font-mono text-[11px] tracking-[0.2em] uppercase">Corruption Detected: {error}</div>
-        </main>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-[#C41E1E] font-mono text-[11px] tracking-[0.2em] uppercase">CORRUPTION DETECTED: {error}</div>
       </div>
     )
   }
@@ -74,10 +68,7 @@ export default function KingdomPage() {
   const allBuildings = kingdom.buildings || []
 
   return (
-    <div className="flex min-h-screen bg-[#080808]">
-      <Sidebar />
-      <main className="flex-1 md:ml-[64px] relative overflow-hidden flex flex-col h-screen">
-        
+    <div className="flex-1 relative overflow-hidden flex flex-col h-[calc(100vh-8rem)] md:h-full -m-4 md:-m-8">
         <div className="flex-1 p-8 md:p-12 lg:p-16 overflow-y-auto animate-fade-in-up">
           <div className="max-w-[1400px] mx-auto">
             {/* Header */}
@@ -208,7 +199,7 @@ export default function KingdomPage() {
               <div className="mt-12 pt-8 border-t border-[#1A1A1A]">
                 {selectedBuilding.status === 'available' && (
                   <Button 
-                    variant="primary"
+                    variant="default"
                     onClick={() => handleBuild(selectedBuilding.id)}
                     disabled={isBuilding}
                     className="w-full"
@@ -246,7 +237,6 @@ export default function KingdomPage() {
             onClick={() => setSelectedBuilding(null)}
           />
         )}
-      </main>
     </div>
   )
 }

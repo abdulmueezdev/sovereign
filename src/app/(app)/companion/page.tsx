@@ -102,7 +102,7 @@ export default function CompanionPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-8rem)] relative pb-[56px] md:pb-0 -m-4 md:-m-8">
+    <div className="flex flex-col md:flex-row h-full relative -m-4 md:-m-8">
       {/* LEFT PANEL - TERMINAL */}
       <div className="w-full md:w-[65%] bg-[#080808] flex flex-col p-4 md:p-8 overflow-hidden h-[50vh] md:h-full border-b md:border-b-0 md:border-r border-[#1A1A1A]">
         
@@ -112,7 +112,7 @@ export default function CompanionPage() {
         </div>
 
         {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto scrollbar-hide flex flex-col gap-8 pb-4">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide flex flex-col gap-8 pb-4">
           {messages.map((msg) => (
             <div key={msg.id} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'} max-w-[85%] ${msg.role === 'user' ? 'self-end' : 'self-start'}`}>
               {msg.role === 'user' ? (
@@ -144,13 +144,8 @@ export default function CompanionPage() {
         
         {/* Profile */}
         <div className="flex items-center gap-6 mb-8">
-          <div className="w-[160px] h-[160px] bg-[#E8E6E0] relative grayscale contrast-125">
-            <Image
-              src="https://api.dicebear.com/7.x/bottts-neutral/svg?seed=Aegis&backgroundColor=E8E6E0"
-              alt="Aegis"
-              fill
-              className="object-cover"
-            />
+          <div className="w-[160px] h-[160px] bg-[#E8E6E0] relative grayscale contrast-125 flex items-center justify-center border border-[#1A1A1A]">
+            <span className="font-serif text-[48px] text-[#1A1A1A]">A</span>
           </div>
           <div>
             <h2 className="font-serif text-[32px] font-bold text-[#1A1A1A] mb-1 leading-none">AEGIS</h2>

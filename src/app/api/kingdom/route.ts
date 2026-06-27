@@ -17,8 +17,13 @@ export async function GET() {
       .eq('id', user.id)
       .single()
 
-    if (profileError || !profile) {
-      console.error('Kingdom profile error:', JSON.stringify(profileError))
+    if (profileError) {
+      console.error('[/api/kingdom] Profile error:', profileError?.message)
+      return NextResponse.json({ error: profileError.message }, { status: 500 })
+    }
+
+    if (!profile) {
+      console.error('[/api/kingdom] Profile not found')
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
     }
 
@@ -29,8 +34,8 @@ export async function GET() {
       .order('display_order', { ascending: true })
 
     if (buildingsError) {
-      console.error('Buildings fetch error:', JSON.stringify(buildingsError))
-      return NextResponse.json({ error: 'Failed to fetch buildings' }, { status: 500 })
+      console.error('[/api/kingdom] Buildings error:', buildingsError?.message)
+      return NextResponse.json({ error: buildingsError.message }, { status: 500 })
     }
 
     // Fetch user building statuses
@@ -40,7 +45,7 @@ export async function GET() {
       .eq('user_id', user.id)
 
     if (userBuildingsError) {
-      console.error('User buildings fetch error:', userBuildingsError)
+      console.error('[/api/kingdom] User buildings error:', userBuildingsError?.message)
     }
 
     const statusMap = userBuildings?.reduce((acc: any, ub: any) => {
@@ -48,7 +53,7 @@ export async function GET() {
       return acc
     }, {}) || {}
 
-    const formattedBuildings = buildings.map((b: any) => ({
+    const formattedBuildings = buildings?.map((b: any) => ({
       id: b.id,
       name: b.name,
       domain: b.domain,
@@ -59,7 +64,7 @@ export async function GET() {
       questUnlockDomain: b.quest_unlock_domain,
       xpBonusPct: b.xp_bonus_pct,
       status: statusMap[b.id] || 'locked'
-    }))
+    })) ?? []
 
     return NextResponse.json({
       name: profile.kingdom_name,

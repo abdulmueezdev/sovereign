@@ -3,21 +3,27 @@ import { NextResponse } from 'next/server'
 
 export async function GET() {
   const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user }, error: authError } = await supabase.auth.getUser()
 
-  if (!user) {
+  if (authError || !user) {
+    console.error('[/api/profile] Auth error:', authError?.message)
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   try {
-    const { data: profile, error } = await supabase
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', user.id)
       .single()
 
-    if (error || !profile) {
-      console.error('Profile fetch error:', error)
+    if (profileError) {
+      console.error('[/api/profile] Profile fetch error:', profileError.message, profileError.code)
+      return NextResponse.json({ error: profileError.message }, { status: 500 })
+    }
+
+    if (!profile) {
+      console.error('[/api/profile] No profile found for user:', user.id)
       return NextResponse.json({ error: 'Profile not found' }, { status: 404 })
     }
 

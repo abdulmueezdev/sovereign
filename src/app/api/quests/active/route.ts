@@ -10,7 +10,7 @@ export async function GET() {
   }
 
   try {
-    const { data: quests, error } = await supabase
+    const { data: quests, error: activeQuestsError } = await supabase
       .from('user_quests')
       .select(`
         id,
@@ -35,8 +35,12 @@ export async function GET() {
       .order('due_at', { ascending: true })
 
     if (activeQuestsError) {
-      console.error('Active quests fetch error:', JSON.stringify(activeQuestsError))
-      return NextResponse.json({ error: 'Failed to fetch active quests' }, { status: 500 })
+      console.error('[/api/quests/active] Error:', activeQuestsError.message)
+      return NextResponse.json({ error: activeQuestsError.message }, { status: 500 })
+    }
+
+    if (!quests) {
+      return NextResponse.json([])
     }
 
     // Map to flat structure for the frontend

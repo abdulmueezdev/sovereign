@@ -85,11 +85,8 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Accessing Configurations...</div>
-        </main>
+      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
+        <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Accessing Configurations...</div>
       </div>
     )
   }
@@ -97,10 +94,8 @@ export default function SettingsPage() {
   if (!profile) return null
 
   return (
-    <div className="flex min-h-screen bg-[#080808]">
-      <Sidebar />
-      <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 min-h-screen">
-        <div className="max-w-2xl mx-auto animate-fade-in-up pb-24 md:pb-0">
+    <div className="flex-1 p-8 md:p-12 lg:p-16 min-h-screen">
+      <div className="max-w-2xl mx-auto animate-fade-in-up pb-24 md:pb-0">
           
           <div className="mb-16">
             <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
@@ -150,7 +145,7 @@ export default function SettingsPage() {
             </div>
 
             <Button 
-              variant="primary"
+              variant="default"
               onClick={handleSaveNames}
               disabled={isSavingNames}
             >
@@ -208,7 +203,6 @@ export default function SettingsPage() {
             </div>
           </section>
         </div>
-      </main>
-    </div>
+      </div>
   )
 }

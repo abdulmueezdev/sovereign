@@ -93,20 +93,17 @@ function DashboardContent() {
 
   if (authLoading || (loading && !error && userProfile?.onboarding_complete)) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="w-full max-w-4xl">
-            <div className="animate-pulse">
-              <div className="h-8 bg-[#1A1A1A] w-1/3 mb-4" />
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-4 h-48 bg-[#1A1A1A]" />
-                <div className="col-span-5 h-48 bg-[#1A1A1A]" />
-                <div className="col-span-3 h-48 bg-[#1A1A1A]" />
-              </div>
+      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
+        <div className="w-full max-w-4xl">
+          <div className="animate-pulse">
+            <div className="h-8 bg-[#1A1A1A] w-1/3 mb-4" />
+            <div className="grid grid-cols-12 gap-6">
+              <div className="col-span-4 h-48 bg-[#1A1A1A]" />
+              <div className="col-span-5 h-48 bg-[#1A1A1A]" />
+              <div className="col-span-3 h-48 bg-[#1A1A1A]" />
             </div>
           </div>
-        </main>
+        </div>
       </div>
     )
   }
@@ -117,14 +114,11 @@ function DashboardContent() {
 
   if (error || !profile) {
     return (
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        <main className="flex-1 md:ml-[64px] flex items-center justify-center">
-          <div className="text-center py-20 animate-fade-in-up">
-            <p className="font-serif text-[24px] text-[#E8E6E0]">The void shifts unexpectedly.</p>
-            <p className="font-sans text-[14px] text-[#5C5C5C] mt-2">Could not retrieve your data.</p>
-          </div>
-        </main>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center py-20 animate-fade-in-up">
+          <p className="font-mono text-[24px] text-[#C41E1E] uppercase">THE VOID SHIFTS UNEXPECTEDLY.</p>
+          <p className="font-mono text-[14px] text-[#5C5C5C] uppercase mt-2">COULD NOT RETRIEVE YOUR DATA.</p>
+        </div>
       </div>
     )
   }
@@ -141,11 +135,8 @@ function DashboardContent() {
         onClose={() => setLevelUpData({ ...levelUpData, open: false })}
       />
 
-      <div className="flex min-h-screen bg-[#080808]">
-        <Sidebar />
-        
-        <main className="flex-1 md:ml-[64px] min-h-screen p-8 md:p-12 lg:p-16">
-          <div className="max-w-[1400px] mx-auto animate-fade-in-up">
+      <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16">
+        <div className="max-w-[1400px] mx-auto animate-fade-in-up">
             
             <div className="mb-16">
               <div className="mb-6 flex items-center justify-between">
@@ -234,8 +225,7 @@ function DashboardContent() {
               </div>
 
             </div>
-          </div>
-        </main>
+        </div>
       </div>
     </>
   )
