@@ -38,18 +38,19 @@ function LandingContent() {
           Complete quests. Earn power. Ascend.
         </p>
 
-        <Link href="/signup">
-          <Button variant="default">
-            Claim Your Kingdom
-          </Button>
-        </Link>
-        
-        <div className="mt-8 flex flex-col items-center gap-4">
-          <Link href="/login" className="font-serif text-[18px] italic text-[#C41E1E] hover:text-[#E8E6E0] transition-colors duration-150">
-            Or enter the void as an existing sovereign...
+        <div className="flex flex-col items-center gap-6">
+          <Link
+            href="/dashboard"
+            className="inline-block bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-12 py-4 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150"
+          >
+            Enter the Void
           </Link>
-          <Link href="/guide" className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] hover:text-[#E8E6E0] uppercase transition-colors duration-150">
-            Read the Guide
+
+          <Link
+            href="/guide"
+            className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#3A3A3A] hover:text-[#E8E6E0] transition-colors duration-150"
+          >
+            Read the Codex
           </Link>
         </div>
 

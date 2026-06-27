@@ -8,75 +8,134 @@ export const metadata: Metadata = {
 
 const SECTIONS = [
   {
-    id: '01',
-    heading: 'The Concept',
-    body: 'Sovereign turns real-world discipline into a kingdom-building game. Every action you complete — training, studying, creating — manifests as progress in your digital realm.'
+    id: '01', heading: 'The Concept',
+    body: 'Sovereign turns real-world discipline into a kingdom-building game. Every action you complete — training, studying, creating — becomes a Quest. Quests yield XP. XP levels your character. Your character grows your realm.',
   },
   {
-    id: '02',
-    heading: 'The Void & Manifestation',
-    body: 'You begin with nothing. The Void is empty. By selecting Quests from the Board and completing them, you earn XP and structure points to build your Kingdom.'
+    id: '02', heading: 'Your Character',
+    lines: [
+      'Choose a Class on arrival: Scholar, Warrior, Builder, or Commander',
+      'Each Class is bound to a House: Zenith, Ash, Forge, or Crown',
+      'Your level is displayed as a Roman numeral — a mark of earned ascent',
+      'Nine attributes grow as you conquer domain-specific quests',
+    ],
   },
   {
-    id: '03',
-    heading: 'The Domains',
-    body: 'BODY (Physical training), MIND (Learning and meditation), CRAFT (Creation and work), COMMAND (Leadership and organization). Balance them to unlock specific kingdom structures.'
+    id: '03', heading: 'The Quest Board',
+    lines: [
+      'MANIFEST — quests you have activated and are currently pursuing',
+      'DORMANT — available quests waiting to be claimed',
+      'FULFILLED — completed quests and the power they granted',
+      'Open any quest to see its objectives. Check each one off. Mark complete to claim XP.',
+    ],
   },
   {
-    id: '04',
-    heading: 'The Companion',
-    body: 'Aegis is your advisor. Seek counsel when lost, or request new trials when the board is empty. The companion remembers your deeds.'
-  }
+    id: '04', heading: 'Your Kingdom',
+    lines: [
+      'Buildings unlock when your attributes cross specific thresholds',
+      'Manifest available structures to add them to your realm',
+      'Each building contributes passive bonuses and reflects your domain mastery',
+    ],
+  },
+  {
+    id: '05', heading: 'Aegis — Your Companion',
+    lines: [
+      'Aegis is your AI advisor, strategist, and voice of your realm',
+      'Ask for quest suggestions, progress analysis, or tactical guidance',
+      'Try: "Give me a quest", "Analyze my week", "I am struggling"',
+    ],
+  },
+  {
+    id: '06', heading: 'Settings',
+    lines: [
+      'Change character name, kingdom name, and companion name at any time',
+      'Switch your House — permitted once every seven days',
+      'Logout lives in the Danger Zone at the bottom of Settings',
+    ],
+  },
 ];
 
 export default function GuidePage() {
   return (
-    <div className="min-h-screen bg-[#080808] text-[#E8E6E0] selection:bg-[#C41E1E] selection:text-[#E8E6E0] flex flex-col font-sans">
-      {/* HEADER */}
-      <header className="flex-none p-8 md:p-12 lg:p-16 flex justify-between items-center animate-fade-in">
-        <Link 
-          href="/" 
-          className="font-mono text-[11px] tracking-[0.2em] text-[#5C5C5C] hover:text-[#E8E6E0] uppercase transition-colors"
-        >
-          ← Return to Void
-        </Link>
-      </header>
-
-      {/* CONTENT */}
-      <main className="flex-1 px-8 md:px-12 lg:px-16 max-w-4xl mx-auto w-full pb-32">
-        <div className="mb-24 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
-          <h1 className="font-serif text-[48px] md:text-[64px] font-bold mb-4 leading-none text-[#E8E6E0]">
+    <div className="min-h-screen bg-[#080808] text-[#E8E6E0]">
+      {/* Nav */}
+      <div className="sticky top-0 z-10 border-b border-[#1A1A1A] bg-[#080808]">
+        <div className="flex items-center justify-between h-12 px-6 max-w-3xl mx-auto">
+          <Link
+            href="/"
+            className="font-sans text-[10px] tracking-[0.3em] uppercase text-[#3A3A3A] hover:text-[#E8E6E0] transition-colors duration-150 focus:outline-none"
+          >
+            ← Sovereign
+          </Link>
+          <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#2A2A2A]">
             The Codex
-          </h1>
-          <p className="font-mono text-[11px] tracking-[0.2em] text-[#5C5C5C] uppercase">
-            System Mechanics & Directives
-          </p>
+          </span>
         </div>
+      </div>
 
-        <div className="space-y-16">
-          {SECTIONS.map((section, index) => (
-            <div 
-              key={section.id}
-              className="group relative pl-8 md:pl-16 animate-fade-in-up"
-              style={{ animationDelay: `${(index + 2) * 100}ms` }}
-            >
-              <div className="absolute left-0 top-1 font-mono text-[11px] tracking-widest text-[#C41E1E]">
-                {section.id}
+      {/* Hero */}
+      <div className="max-w-3xl mx-auto px-6 pt-20 pb-16">
+        <p className="font-mono text-[10px] tracking-[0.4em] uppercase text-[#C41E1E] mb-8">
+          Field Guide
+        </p>
+        <h1 className="font-serif text-[56px] md:text-[72px] font-bold leading-[0.92] mb-10">
+          How to Rule
+          <br />
+          <span className="text-[#5C5C5C]">Your Kingdom</span>
+        </h1>
+        <div className="w-8 h-[1px] bg-[#C41E1E] mb-10" />
+        <p className="font-sans text-[14px] text-[#5C5C5C] leading-relaxed max-w-sm">
+          Six principles. Read once. Apply every day.
+        </p>
+      </div>
+
+      {/* Sections */}
+      <div className="max-w-3xl mx-auto px-6 pb-32">
+        {SECTIONS.map((s) => (
+          <div key={s.id} className="border-t border-[#1A1A1A] py-14">
+            <div className="grid grid-cols-[48px_1fr] gap-8 md:gap-12">
+              <span className="font-mono text-[10px] tracking-[0.2em] text-[#2A2A2A] uppercase block pt-[6px]">
+                {s.id}
+              </span>
+              <div>
+                <h2 className="font-serif text-[28px] md:text-[32px] font-bold mb-6 leading-tight">
+                  {s.heading}
+                </h2>
+                {s.body && (
+                  <p className="font-sans text-[14px] text-[#5C5C5C] leading-[1.75]">
+                    {s.body}
+                  </p>
+                )}
+                {s.lines && (
+                  <div className="space-y-4">
+                    {s.lines.map((line, j) => (
+                      <div key={j} className="flex items-start gap-4">
+                        <span className="block w-[1px] min-h-[16px] bg-[#C41E1E] mt-[4px] shrink-0" />
+                        <p className="font-sans text-[14px] text-[#5C5C5C] leading-[1.75]">
+                          {line}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-              
-              <h2 className="font-serif text-[24px] font-bold mb-4 text-[#E8E6E0] group-hover:text-[#C41E1E] transition-colors">
-                {section.heading}
-              </h2>
-              
-              <p className="font-sans text-[14px] leading-relaxed text-[#A8A094] max-w-2xl">
-                {section.body}
-              </p>
-              
-              <div className="w-8 h-[1px] bg-[#1A1A1A] mt-8 group-hover:w-16 group-hover:bg-[#C41E1E] transition-all duration-300" />
             </div>
-          ))}
+          </div>
+        ))}
+
+        {/* CTA */}
+        <div className="border-t border-[#1A1A1A] pt-20 flex flex-col items-start gap-8">
+          <p className="font-serif text-[22px] italic text-[#3A3A3A]">
+            The void awaits your command.
+          </p>
+          <Link
+            href="/dashboard"
+            className="inline-block bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-10 py-4 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150 focus:outline-none"
+          >
+            Enter the Void
+          </Link>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

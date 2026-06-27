@@ -47,7 +47,7 @@ export function AppHeader() {
         {/* Guide link — right */}
         <Link
           href="/guide"
-          className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#3A3A3A] hover:text-[#5C5C5C] transition-colors duration-150 hidden md:block"
+          className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#3A3A3A] hover:text-[#5C5C5C] transition-colors duration-150 hidden md:block focus:outline-none focus-visible:outline-none"
         >
           Codex
         </Link>
