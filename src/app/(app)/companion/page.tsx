@@ -9,6 +9,9 @@ type Message = {
   content: string
 }
 
+import { getDemoCompanionResponse } from '@/lib/use-demo-data'
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
 export default function CompanionPage() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
@@ -35,6 +38,11 @@ export default function CompanionPage() {
   }, [messages, isProcessing])
 
   useEffect(() => {
+    if (IS_DEMO) {
+      setMessages([{ id: 'init', role: 'companion', content: 'The void stirs. Your kingdom grows stronger with each action. What would you manifest today?' }])
+      return
+    }
+
     // Fetch history
     fetch('/api/companion/history')
       .then(res => res.json())
@@ -54,6 +62,14 @@ export default function CompanionPage() {
     setInput('')
     setIsProcessing(true)
 
+    if (IS_DEMO) {
+      await new Promise(r => setTimeout(r, 900))
+      const response = getDemoCompanionResponse(text)
+      setMessages(prev => [...prev, { role: 'companion', content: response, id: crypto.randomUUID() }])
+      setIsProcessing(false)
+      return
+    }
+
     try {
       const res = await fetch('/api/companion/message', {
         method: 'POST',
@@ -64,7 +80,7 @@ export default function CompanionPage() {
       
       if (!res.ok) throw new Error(data.error || 'Failed to commune')
       
-      const compMsg: Message = { id: crypto.randomUUID(), role: 'companion', content: data.reply }
+      const compMsg: Message = { id: crypto.randomUUID(), role: 'companion', content: data.reply ?? 'The void stirs. Try again.' }
       setMessages(prev => [...prev, compMsg])
     } catch (err: any) {
       console.error(err)
@@ -87,7 +103,7 @@ export default function CompanionPage() {
   const WordReveal = ({ text }: { text: string }) => {
     const words = text.split(' ')
     return (
-      <div className="leading-relaxed">
+      <div className="leading-relaxed whitespace-pre-wrap break-words w-full" style={{ wordBreak: 'break-word' }}>
         {words.map((word, i) => (
           <span 
             key={i} 

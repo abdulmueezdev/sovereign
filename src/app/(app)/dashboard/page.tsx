@@ -14,6 +14,9 @@ import { CompanionQuote } from '@/components/companion/CompanionQuote'
 import { LevelUpGate } from '@/components/overlays/LevelUpGate'
 import { ToastContainer, useToast } from '@/components/ui/Toast'
 
+import { DEMO_PROFILE, DEMO_QUESTS_ACTIVE, DEMO_BUILDINGS } from '@/lib/demo-data'
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
 function DashboardContent() {
   const { user, profile: userProfile, loading: authLoading } = useUser()
   const router = useRouter()
@@ -33,12 +36,14 @@ function DashboardContent() {
   })
 
   useEffect(() => {
+    if (IS_DEMO) return
     if (!authLoading && !user) {
       router.push('/login')
     }
   }, [user, authLoading, router])
 
   useEffect(() => {
+    if (IS_DEMO) return
     if (!authLoading && user) {
       if (!userProfile || !userProfile.onboarding_complete) {
         router.push('/onboarding')
@@ -47,6 +52,14 @@ function DashboardContent() {
   }, [user, userProfile, authLoading, router])
 
   const fetchDashboard = async () => {
+    if (IS_DEMO) {
+      setProfile(DEMO_PROFILE)
+      setQuests(DEMO_QUESTS_ACTIVE)
+      setKingdom(DEMO_BUILDINGS)
+      setLoading(false)
+      return
+    }
+
     try {
       const [profileRes, questsRes, kingdomRes] = await Promise.all([
         fetch('/api/profile'),

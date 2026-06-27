@@ -16,6 +16,9 @@ function toRoman(num: number): string {
   return roman || '0'
 }
 
+import { DEMO_PROFILE, DEMO_ACHIEVEMENTS } from '@/lib/demo-data'
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
 export default function CharacterPage() {
   const [profile, setProfile] = useState<any>(null)
   const [achievements, setAchievements] = useState<any[]>([])
@@ -24,6 +27,13 @@ export default function CharacterPage() {
 
   useEffect(() => {
     async function fetchData() {
+      if (IS_DEMO) {
+        setProfile(DEMO_PROFILE)
+        setAchievements(DEMO_ACHIEVEMENTS)
+        setLoading(false)
+        return
+      }
+
       try {
         const [profileRes, achRes] = await Promise.all([
           fetch('/api/profile'),

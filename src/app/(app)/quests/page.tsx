@@ -10,6 +10,9 @@ import { QuestCard } from '@/components/quests/QuestCard'
 import { ToastContainer, useToast } from '@/components/ui/Toast'
 import { LevelUpGate } from '@/components/overlays/LevelUpGate'
 
+import { DEMO_QUESTS_ACTIVE, DEMO_QUESTS_DORMANT, DEMO_QUESTS_FULFILLED } from '@/lib/demo-data'
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
 function QuestsContent() {
   const { user, profile: userProfile, loading: authLoading } = useUser()
   const router = useRouter()
@@ -34,6 +37,14 @@ function QuestsContent() {
   const fetchQuests = async (tab: string) => {
     setLoading(true)
     setError(false)
+    if (IS_DEMO) {
+      if (tab === 'active') setQuests(DEMO_QUESTS_ACTIVE)
+      else if (tab === 'available') setQuests(DEMO_QUESTS_DORMANT)
+      else setQuests(DEMO_QUESTS_FULFILLED)
+      setLoading(false)
+      return
+    }
+
     try {
       const endpoint = tab === 'active' ? '/api/quests/active' 
                      : tab === 'available' ? '/api/quests/available' 
@@ -51,24 +62,64 @@ function QuestsContent() {
   }
 
   useEffect(() => {
+    if (IS_DEMO) {
+      fetchQuests(activeTab)
+      return
+    }
     if (user && userProfile?.onboarding_complete) {
       fetchQuests(activeTab)
     }
   }, [user, userProfile, activeTab])
 
-  const handleQuestComplete = () => {
-    addToast({ type: 'xp', message: `++ XP AWARDED` })
-    
-    fetch('/api/profile').then(res => res.json()).then(newProfile => {
-      if (userProfile && newProfile.level > userProfile.level) {
-        setLevelUpData({
-          open: true,
-          newLevel: newProfile.level,
-          newTitle: 'Master of the Void'
-        })
-      }
+  const handleStartQuest = async (questTemplateId: string) => {
+    if (IS_DEMO) {
+      const template = DEMO_QUESTS_DORMANT.find(q => q.id === questTemplateId)
+      DEMO_QUESTS_ACTIVE.push({
+        id: `demo-${Date.now()}`,
+        quest_template_id: questTemplateId,
+        status: 'active',
+        started_at: new Date().toISOString(),
+        quest_templates: template as any,
+        objectives_completed: [],
+      })
+      setActiveTab('active')
+      addToast({ type: 'success', message: 'QUEST MANIFESTED' })
+      return
+    }
+
+    try {
+      const res = await fetch('/api/quests/start', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ questTemplateId }),
+      })
+      if (!res.ok) throw new Error()
+      addToast({ type: 'success', message: 'QUEST MANIFESTED' })
       fetchQuests(activeTab)
-    })
+    } catch (err) {
+      addToast({ type: 'error', message: 'FAILED TO MANIFEST' })
+    }
+  }
+
+  const handleCompleteQuest = async (questId: string, xpReward: number) => {
+    if (IS_DEMO) {
+      const idx = DEMO_QUESTS_ACTIVE.findIndex(q => q.id === questId)
+      if (idx !== -1) {
+        DEMO_QUESTS_ACTIVE.splice(idx, 1)
+        addToast({ type: 'xp', message: `+${xpReward} XP EARNED` })
+        fetchQuests(activeTab)
+      }
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/quests/${questId}/complete`, { method: 'POST' })
+      if (!res.ok) throw new Error()
+      addToast({ type: 'xp', message: `+${xpReward} XP EARNED` })
+      fetchQuests(activeTab)
+    } catch (err) {
+      addToast({ type: 'error', message: 'FAILED TO COMPLETE' })
+    }
   }
 
   if (authLoading || (loading && quests.length === 0 && !error)) {
@@ -82,7 +133,7 @@ function QuestsContent() {
     )
   }
 
-  if (!user || (!userProfile?.onboarding_complete && !authLoading)) {
+  if (!IS_DEMO && (!user || (!userProfile?.onboarding_complete && !authLoading))) {
     return null
   }
 
@@ -92,7 +143,7 @@ function QuestsContent() {
       
       <LevelUpGate
         open={levelUpData.open}
-        characterName={userProfile?.characterName || 'Sovereign'}
+        characterName={userProfile?.character_name || 'Sovereign'}
         newLevel={levelUpData.newLevel}
         newTitle={levelUpData.newTitle}
         onClose={() => setLevelUpData({ ...levelUpData, open: false })}
@@ -146,23 +197,28 @@ function QuestsContent() {
                   No {activeTab} echoes found.
                 </div>
               ) : (
-                quests.map((quest: any, i: number) => (
-                  <QuestCard
-                    key={quest.id}
-                    index={i}
-                    id={quest.id}
-                    title={quest.title}
-                    description={quest.description}
-                    domain={quest.domain}
-                    xpReward={quest.xpReward}
-                    rarity={quest.rarity}
-                    progress={quest.progress}
-                    dueDate={quest.dueDate}
-                    status={quest.status}
-                    objectives={quest.objectives || []}
-                    onContinue={activeTab === 'active' ? handleQuestComplete : undefined}
-                  />
-                ))
+                quests.map((quest: any, i: number) => {
+                  const questTemplate = quest.quest_templates || quest;
+                  return (
+                    <QuestCard
+                      key={quest.id}
+                      index={i}
+                      id={quest.id}
+                      title={questTemplate.title}
+                      description={questTemplate.description}
+                      domain={questTemplate.domain}
+                      xpReward={questTemplate.xp_reward || questTemplate.xpReward}
+                      rarity={questTemplate.rarity || 'common'}
+                      progress={0}
+                      status={activeTab === 'active' ? 'active' : activeTab === 'available' ? 'available' : 'completed'}
+                      objectives={questTemplate.objectives ? questTemplate.objectives.map((o:any, idx:number) => ({ id: `${idx}`, text: o, completed: quest.objectives_completed?.[idx] || false })) : []}
+                      onContinue={
+                        activeTab === 'available' ? () => handleStartQuest(quest.id) :
+                        activeTab === 'active' ? () => handleCompleteQuest(quest.id, questTemplate.xp_reward || questTemplate.xpReward) : undefined
+                      }
+                    />
+                  )
+                })
               )}
             </div>
 

@@ -6,15 +6,28 @@ import { useToast } from '@/components/ui/Toast'
 import { Sidebar } from '@/components/layout/Sidebar'
 import { Button } from '@/components/ui/button'
 
+import { DEMO_BUILDINGS } from '@/lib/demo-data'
+const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
+
 export default function KingdomPage() {
   const [kingdom, setKingdom] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [selectedBuilding, setSelectedBuilding] = useState<any>(null)
   const [isBuilding, setIsBuilding] = useState(false)
-  const { showToast } = useToast()
+  const { addToast } = useToast()
 
   async function fetchKingdom() {
+    if (IS_DEMO) {
+      setKingdom({
+        kingdom_name: 'The Obsidian Realm',
+        attributes: { attr_strength: 12, attr_intelligence: 18, attr_focus: 15, attr_technical: 14, attr_leadership: 10 },
+        buildings: DEMO_BUILDINGS
+      })
+      setLoading(false)
+      return
+    }
+
     try {
       const res = await fetch('/api/kingdom')
       if (!res.ok) throw new Error('Failed to fetch kingdom data')
@@ -32,17 +45,25 @@ export default function KingdomPage() {
   }, [])
 
   const handleBuild = async (buildingId: string) => {
+    if (IS_DEMO) {
+      const updatedBuildings = DEMO_BUILDINGS.map(b => b.id === buildingId ? { ...b, is_built: true } : b)
+      setKingdom((prev: any) => ({ ...prev, buildings: updatedBuildings }))
+      addToast({ type: 'success', message: 'STRUCTURE MANIFESTED', description: 'Your kingdom grows.' })
+      setSelectedBuilding(null)
+      return
+    }
+
     setIsBuilding(true)
     try {
       const res = await fetch(`/api/kingdom/${buildingId}/build`, { method: 'POST' })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to manifest structure')
       
-      showToast(data.message || 'Structure manifested')
+      addToast({ type: 'success', message: data.message || 'Structure manifested' })
       setSelectedBuilding(null)
       fetchKingdom() // Refresh data
     } catch (err: any) {
-      showToast(err.message)
+      addToast({ type: 'error', message: err.message })
     } finally {
       setIsBuilding(false)
     }
