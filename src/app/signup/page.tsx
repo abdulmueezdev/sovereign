@@ -64,39 +64,21 @@ export default function SignupPage() {
             animation: 'fadeInUp 400ms var(--ease-out-expo) both'
           }}
         >
-          <div className="mb-10">
-            <h1 className="font-serif text-[40px] font-bold text-[#E8E6E0] leading-none mb-2">
-              BEGIN
+          <div className="space-y-6 text-center max-w-sm mx-auto">
+            <h1 className="font-cormorant text-[32px] font-bold text-[#E8E6E0]">
+              Registration Closed
             </h1>
-            <p className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase">
-              Claim Your Kingdom
+            <p className="font-grotesk text-[13px] text-[#5C5C5C] leading-relaxed">
+              New kingdoms are not accepting sovereigns at this time.
+              If you were granted access, proceed to the gate.
             </p>
-          </div>
-
-          <div className="space-y-6">
-            <div className="p-6 border border-[#1A1A1A] bg-[rgba(255,255,255,0.02)]">
-              <h2 className="font-sans text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-4">
-                Registration Currently Disabled
-              </h2>
-              <p className="font-sans text-[13px] text-[#E8E6E0] mb-6 leading-relaxed">
-                New accounts cannot be created at this time. Please return later.
-              </p>
-            </div>
-            
-            <Link 
+            <Link
               href="/login"
-              className="w-full flex items-center justify-center bg-[#1A1A1A] text-[#E8E6E0] font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-4 hover:bg-[#C41E1E] hover:text-[#FAFAF9] transition-colors"
+              className="inline-block bg-[#C41E1E] text-white font-grotesk text-[11px] tracking-[0.2em] uppercase px-10 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150"
             >
-              PROCEED TO LOGIN
+              Proceed to Login
             </Link>
           </div>
-
-          <p className="mt-8 font-sans text-[13px] text-[#5C5C5C]">
-            Already have a kingdom?{' '}
-            <Link href="/login" className="text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors duration-150">
-              Enter
-            </Link>
-          </p>
         </div>
       </div>
     </div>
