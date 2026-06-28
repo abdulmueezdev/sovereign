@@ -53,7 +53,22 @@ function DashboardContent() {
 
   const fetchDashboard = async () => {
     if (IS_DEMO) {
-      setProfile(DEMO_PROFILE)
+      setProfile({
+        ...DEMO_PROFILE,
+        characterName: DEMO_PROFILE.character_name,
+        xpToNext: DEMO_PROFILE.xp_to_next_level || 300,
+        attributes: {
+          strength: DEMO_PROFILE.attr_strength,
+          vitality: DEMO_PROFILE.attr_vitality,
+          intelligence: DEMO_PROFILE.attr_intelligence,
+          focus: DEMO_PROFILE.attr_focus,
+          technical: DEMO_PROFILE.attr_technical,
+          creativity: DEMO_PROFILE.attr_creativity,
+          leadership: DEMO_PROFILE.attr_leadership,
+          charisma: DEMO_PROFILE.attr_charisma,
+          discipline: DEMO_PROFILE.attr_discipline,
+        }
+      })
       setQuests(DEMO_QUESTS_ACTIVE)
       setKingdom(DEMO_BUILDINGS)
       setLoading(false)

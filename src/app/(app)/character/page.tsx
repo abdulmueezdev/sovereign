@@ -28,7 +28,12 @@ export default function CharacterPage() {
   useEffect(() => {
     async function fetchData() {
       if (IS_DEMO) {
-        setProfile(DEMO_PROFILE)
+        setProfile({
+          ...DEMO_PROFILE,
+          characterName: DEMO_PROFILE.character_name,
+          houseId: DEMO_PROFILE.house_id,
+          xpToNext: DEMO_PROFILE.xp_to_next_level || 300,
+        })
         setAchievements(DEMO_ACHIEVEMENTS)
         setLoading(false)
         return
@@ -80,17 +85,17 @@ export default function CharacterPage() {
   const avatarUrl = `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${profile.characterName}&backgroundColor=080808`
   const xpPercent = Math.min(100, Math.max(0, (profile.xp / profile.xpToNext) * 100))
 
-  const attributes = [
-    { key: 'strength', label: 'STRENGTH', val: profile.attributes.strength },
-    { key: 'vitality', label: 'VITALITY', val: profile.attributes.vitality },
-    { key: 'intelligence', label: 'INTELLIGENCE', val: profile.attributes.intelligence },
-    { key: 'focus', label: 'FOCUS', val: profile.attributes.focus },
-    { key: 'technical', label: 'TECHNICAL', val: profile.attributes.technical },
-    { key: 'creativity', label: 'CREATIVITY', val: profile.attributes.creativity },
-    { key: 'leadership', label: 'LEADERSHIP', val: profile.attributes.leadership },
-    { key: 'charisma', label: 'CHARISMA', val: profile.attributes.charisma },
-    { key: 'discipline', label: 'DISCIPLINE', val: profile.attributes.discipline },
-  ]
+  const attributes = profile ? [
+    { key: 'strength', label: 'STRENGTH', val: profile.attr_strength ?? profile.attributes?.strength },
+    { key: 'vitality', label: 'VITALITY', val: profile.attr_vitality ?? profile.attributes?.vitality },
+    { key: 'intelligence', label: 'INTELLIGENCE', val: profile.attr_intelligence ?? profile.attributes?.intelligence },
+    { key: 'focus', label: 'FOCUS', val: profile.attr_focus ?? profile.attributes?.focus },
+    { key: 'technical', label: 'TECHNICAL', val: profile.attr_technical ?? profile.attributes?.technical },
+    { key: 'creativity', label: 'CREATIVITY', val: profile.attr_creativity ?? profile.attributes?.creativity },
+    { key: 'leadership', label: 'LEADERSHIP', val: profile.attr_leadership ?? profile.attributes?.leadership },
+    { key: 'charisma', label: 'CHARISMA', val: profile.attr_charisma ?? profile.attributes?.charisma },
+    { key: 'discipline', label: 'DISCIPLINE', val: profile.attr_discipline ?? profile.attributes?.discipline },
+  ] : []
 
   return (
     <div className="flex-1 p-8 md:p-12 lg:p-16 min-h-screen">
