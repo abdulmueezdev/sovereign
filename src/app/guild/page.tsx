@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { Sidebar } from '@/components/layout/Sidebar'
 
 interface Member {
@@ -200,13 +199,10 @@ export default function GuildHubPage() {
           {/* Bottom Section: Your Contribution */}
           <div className="mt-20 border border-[#1A1A1A] p-6 lg:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div className="flex items-center gap-6">
-              <div className="w-12 h-12 relative grayscale border border-[#1A1A1A]">
-                <Image 
-                  src={`https://api.dicebear.com/7.x/shapes/svg?seed=${members.find(m => m.rank === your_contribution.rank)?.character_name || 'anon'}`} 
-                  alt="Your Avatar" 
-                  fill 
-                  className="object-cover" 
-                />
+              <div className="w-12 h-12 flex items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A]">
+                <span className="font-serif text-[20px] font-bold text-[#E8E6E0]">
+                  {(members.find(m => m.rank === your_contribution.rank)?.character_name || 'Y').charAt(0).toUpperCase()}
+                </span>
               </div>
               <div className="flex flex-col">
                 <span className="font-mono text-[10px] text-[#C41E1E] tracking-[0.2em] uppercase mb-1">

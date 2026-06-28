@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import Image from 'next/image'
 
 interface Ranking {
   rank: number
@@ -124,13 +123,10 @@ export default function LeaderboardPage() {
 
                   {/* AVATAR + NAME */}
                   <div className="flex items-center gap-4 flex-1 min-w-[120px]">
-                    <div className="w-8 h-8 relative grayscale border border-[#1A1A1A] shrink-0">
-                      <Image 
-                        src={row.avatar_url} 
-                        alt={row.character_name} 
-                        fill 
-                        className="object-cover" 
-                      />
+                    <div className="w-8 h-8 flex items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] shrink-0">
+                      <span className="font-serif text-[16px] font-bold text-[#E8E6E0]">
+                        {row.character_name?.charAt(0)?.toUpperCase() ?? 'S'}
+                      </span>
                     </div>
                     <span className="font-sans text-[14px] truncate">{row.character_name}</span>
                   </div>
@@ -176,13 +172,10 @@ export default function LeaderboardPage() {
                 {data.your_rank.rank}
               </div>
               <div className="flex items-center gap-4 flex-1 min-w-[120px]">
-                <div className="w-8 h-8 relative grayscale border border-[#1A1A1A] shrink-0">
-                  <Image 
-                    src={`https://api.dicebear.com/7.x/shapes/svg?seed=${data.your_rank.character_name}`} 
-                    alt={data.your_rank.character_name} 
-                    fill 
-                    className="object-cover" 
-                  />
+                <div className="w-8 h-8 flex items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A] shrink-0">
+                  <span className="font-serif text-[16px] font-bold text-[#E8E6E0]">
+                    {data.your_rank.character_name?.charAt(0)?.toUpperCase() ?? 'S'}
+                  </span>
                 </div>
                 <span className="font-sans text-[14px] font-medium text-[#C41E1E] truncate">{data.your_rank.character_name}</span>
               </div>

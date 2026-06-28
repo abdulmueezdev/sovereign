@@ -1,7 +1,6 @@
 'use client'
 
 import { Home, Sword, User, Grid, MessageSquare, Settings, Swords, Castle } from 'lucide-react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -23,8 +22,6 @@ export function Sidebar() {
     { name: 'Kingdom', icon: Grid, href: '/kingdom' },
     { name: 'Companion', icon: MessageSquare, href: '/companion' },
   ]
-
-  const avatarUrl = profile ? `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${profile.characterName}&backgroundColor=080808` : "https://api.dicebear.com/7.x/shapes/svg?seed=Aeon"
 
   return (
     <>
@@ -74,14 +71,10 @@ export function Sidebar() {
             <Settings size={20} strokeWidth={1.5} />
           </Link>
           <div className="flex flex-col items-center pb-2">
-            <div className="w-8 h-8 relative rounded-none overflow-hidden grayscale border border-[#1A1A1A]">
-              <Image
-                src={avatarUrl}
-                alt="Avatar"
-                fill
-                sizes="32px"
-                className="object-cover"
-              />
+            <div className="w-8 h-8 flex items-center justify-center bg-[#1A1A1A] border border-[#2A2A2A]">
+              <span className="font-serif text-[16px] font-bold text-[#E8E6E0]">
+                {profile?.characterName?.charAt(0)?.toUpperCase() ?? 'S'}
+              </span>
             </div>
           </div>
         </div>

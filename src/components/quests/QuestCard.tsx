@@ -51,6 +51,10 @@ export function QuestCard({
       o.id === objectiveId ? { ...o, completed: checked } : o
     ))
 
+    if (questId.startsWith('custom-')) {
+      return
+    }
+
     if (!navigator.onLine) {
       const queueJson = localStorage.getItem('offlineQuestQueue')
       const queue = queueJson ? JSON.parse(queueJson) : []
