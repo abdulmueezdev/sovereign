@@ -17,6 +17,7 @@ export default function CompanionPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [timeStr, setTimeStr] = useState('00:00:00:00')
   const [activeTab, setActiveTab] = useState<'log' | 'protocols'>('log')
+  const [showAegisPanel, setShowAegisPanel] = useState(false)
   
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -119,8 +120,18 @@ export default function CompanionPage() {
   return (
     <div className="flex flex-col md:flex-row h-[calc(100vh-48px)] -m-4 md:-m-8">
       {/* Left panel — chat */}
-      <div className="flex-1 flex flex-col min-h-0 md:w-[60%] bg-[#080808]">
+      <div className="flex-1 flex flex-col min-h-0 md:w-[60%] bg-[#080808] relative">
         <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-6 py-8 space-y-8">
+          {/* Mobile Header Toggle */}
+          <div className="md:hidden flex justify-end mb-8">
+            <button
+              onClick={() => setShowAegisPanel(true)}
+              className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors focus:outline-none"
+            >
+              AEGIS →
+            </button>
+          </div>
+          
           {messages.map((msg: any) => (
             msg.role === 'user' ? (
               <div key={msg.id} className="flex justify-end">
@@ -193,24 +204,71 @@ export default function CompanionPage() {
         </div>
       </div>
       
-      {/* Right panel — Aegis profile */}
-      <div className="hidden md:block md:w-[40%] bg-[#F5F0E8] border-l border-[#E0D8CC]">
-        <div className="p-6 border-b border-[#E0D8CC]">
-          <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#9A8A7A] mb-1">COMPANION</p>
+      {/* Mobile: Aegis panel as slide-over */}
+      {showAegisPanel && (
+        <div className="fixed inset-0 z-50 md:hidden flex justify-end">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/60" 
+            onClick={() => setShowAegisPanel(false)} 
+          />
+          
+          {/* Panel */}
+          <div className="relative w-[300px] bg-[#F5F0E8] flex flex-col animate-slide-in-right">
+            {/* Header with close button */}
+            <div className="flex items-center justify-between p-6 border-b border-[#E0D8CC] shrink-0">
+              <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#9A8A7A]">COMPANION</p>
+              <button
+                onClick={() => setShowAegisPanel(false)}
+                aria-label="Close panel"
+                className="w-8 h-8 flex items-center justify-center text-[#9A8A7A] hover:text-[#1A1A1A] transition-colors focus:outline-none -mr-2"
+              >
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M2 2l12 12M14 2L2 14" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="p-6 flex-1 overflow-y-auto">
+              <h2 className="font-serif text-[32px] font-bold text-[#1A1A1A] leading-none mb-1">
+                Aegis
+              </h2>
+              <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#9A8A7A] mb-8">ARCHITECT · LVL 42</p>
+
+              <div className="space-y-2">
+                <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#9A8A7A] mb-3">QUICK PROMPTS</p>
+                {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
+                  <button key={prompt} onClick={() => { handleSend(prompt); setShowAegisPanel(false); }}
+                    className="block w-full text-left font-sans text-[12px] text-[#767676] hover:text-[#1A1A1A] py-2 border-b border-[#E0D8CC] transition-colors">
+                    {prompt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop: Always visible, no close button */}
+      <div className="hidden md:flex md:w-[40%] bg-[#F5F0E8] border-l border-[#E0D8CC] flex-col">
+        <div className="p-6 lg:p-8 border-b border-[#E0D8CC] shrink-0">
+          <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#9A8A7A] mb-2">COMPANION</p>
           <h2 className="font-serif text-[32px] font-bold text-[#1A1A1A] leading-none mb-1">
             Aegis
           </h2>
           <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#9A8A7A]">ARCHITECT · LVL 42</p>
         </div>
         
-        <div className="px-6 py-4 space-y-2">
-          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#9A8A7A] mb-3">QUICK PROMPTS</p>
-          {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
-            <button key={prompt} onClick={() => handleSend(prompt)}
-              className="block w-full text-left font-sans text-[12px] text-[#767676] hover:text-[#1A1A1A] py-2 border-b border-[#E0D8CC] transition-colors">
-              {prompt}
-            </button>
-          ))}
+        <div className="p-6 lg:p-8 flex-1 overflow-y-auto">
+          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#9A8A7A] mb-4">QUICK PROMPTS</p>
+          <div className="space-y-2">
+            {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
+              <button key={prompt} onClick={() => handleSend(prompt)}
+                className="block w-full text-left font-sans text-[12px] text-[#767676] hover:text-[#1A1A1A] py-3 border-b border-[#E0D8CC] transition-colors">
+                {prompt}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

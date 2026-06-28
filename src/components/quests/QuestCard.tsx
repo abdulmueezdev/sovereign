@@ -177,22 +177,33 @@ export function QuestCard({
             className="relative w-full sm:w-[400px] h-full max-h-[90vh] my-auto sm:mr-8 bg-[#0C0C0C] border border-[#1A1A1A] pointer-events-auto flex flex-col animate-slide-in-right shadow-2xl"
             style={{ animation: 'slideInRight 300ms var(--ease-out-expo) both' }}
           >
-            {/* Header Fixed at Top */}
-            <div className="p-6 md:p-8 border-b border-[#1A1A1A] shrink-0 bg-[#0C0C0C]">
-              <div className="flex gap-4 mb-4">
-                <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
-                  {domain}
-                </span>
-                <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
-                  {rarity}
-                </span>
-                <span className="font-mono text-[11px] tracking-[0.15em] text-[#C41E1E] uppercase">
-                  {xpReward} XP
-                </span>
+            {/* Drawer header */}
+            <div className="flex items-start justify-between p-6 md:p-8 border-b border-[#1A1A1A] shrink-0 bg-[#0C0C0C]">
+              <div>
+                <div className="flex gap-4 mb-4">
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
+                    {domain}
+                  </span>
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
+                    {rarity}
+                  </span>
+                  <span className="font-mono text-[11px] tracking-[0.15em] text-[#C41E1E] uppercase">
+                    {xpReward} XP
+                  </span>
+                </div>
+                <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[#E8E6E0] leading-tight pr-4">
+                  {title}
+                </h2>
               </div>
-              <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[#E8E6E0] leading-tight">
-                {title}
-              </h2>
+              <button
+                onClick={() => setIsDrawerOpen(false)}
+                aria-label="Close drawer"
+                className="w-10 h-10 flex items-center justify-center shrink-0 text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors focus:outline-none -mt-2 -mr-2"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M2 2l12 12M14 2L2 14" />
+                </svg>
+              </button>
             </div>
 
             {/* Content Area flex-1 overflow-y-auto */}

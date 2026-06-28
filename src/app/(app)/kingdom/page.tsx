@@ -159,35 +159,40 @@ export default function KingdomPage() {
           </div>
         </div>
 
-        {/* Right Column / Detail Panel Slider */}
         <div 
-          className={`fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[#0C0C0C] border-l border-[#1A1A1A] p-8 flex flex-col transition-transform duration-500 ease-out-expo z-20 overflow-y-auto ${
+          className={`fixed top-0 right-0 w-full sm:w-[400px] h-full bg-[#0C0C0C] border-l border-[#1A1A1A] flex flex-col transition-transform duration-500 ease-out-expo z-40 overflow-hidden ${
             selectedBuilding ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
           {selectedBuilding && (
             <>
-              <button 
-                onClick={() => setSelectedBuilding(null)}
-                className="absolute top-6 right-6 text-[#767676] hover:text-[#E8E6E0] transition-colors"
-              >
-                <X size={20} />
-              </button>
-              
-              <div className="text-[11px] text-[#767676] font-sans tracking-[0.2em] mb-6 uppercase">
-                Structure Detail
+              {/* Header with close button */}
+              <div className="flex items-center justify-between p-6 lg:p-8 border-b border-[#1A1A1A] shrink-0">
+                <div>
+                  <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#767676] mb-2">STRUCTURE</p>
+                  <h2 className="font-serif text-[32px] font-bold text-[#E8E6E0] leading-none">
+                    {selectedBuilding.name}
+                  </h2>
+                </div>
+                <button
+                  onClick={() => setSelectedBuilding(null)}
+                  aria-label="Close panel"
+                  className="w-10 h-10 flex items-center justify-center text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors focus:outline-none -mt-4 -mr-4"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M2 2l12 12M14 2L2 14" />
+                  </svg>
+                </button>
               </div>
               
-              <h2 className="font-serif text-[40px] font-bold text-[#E8E6E0] mb-2 leading-none">
-                {selectedBuilding.name}
-              </h2>
-              <div className="font-mono text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-8">
-                {selectedBuilding.domain} Domain
-              </div>
-              
-              <p className="font-serif italic text-[#767676] text-[18px] leading-relaxed mb-12">
-                "{safeReplace(selectedBuilding.loreText || selectedBuilding.description || selectedBuilding.lore, /\n/g, ' ')}"
-              </p>
+              <div className="p-6 lg:p-8 flex-1 overflow-y-auto">
+                <div className="font-mono text-[11px] text-[#C41E1E] uppercase tracking-[0.2em] mb-8">
+                  {selectedBuilding.domain} Domain
+                </div>
+                
+                <p className="font-serif italic text-[#767676] text-[18px] leading-relaxed mb-12">
+                  "{safeReplace(selectedBuilding.loreText || selectedBuilding.description || selectedBuilding.lore, /\n/g, ' ')}"
+                </p>
 
               <div className="space-y-10 flex-1">
                 <div>
@@ -248,6 +253,7 @@ export default function KingdomPage() {
                     MANIFESTED
                   </Button>
                 )}
+              </div>
               </div>
             </>
           )}
