@@ -28,9 +28,11 @@ export default function CharacterPage() {
           discipline: DEMO_PROFILE.attr_discipline || 0,
         }
       }
-      setProfile(mappedProfile)
-      setAchievements(DEMO_ACHIEVEMENTS || [])
-      setLoading(false)
+      requestAnimationFrame(() => {
+        setProfile(mappedProfile)
+        setAchievements(DEMO_ACHIEVEMENTS || [])
+        setLoading(false)
+      })
       return
     }
     
@@ -46,15 +48,28 @@ export default function CharacterPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#080808] p-8 md:p-12 lg:p-16 flex justify-center">
-        <div className="w-full max-w-4xl animate-pulse space-y-4">
-          <div className="h-8 bg-[#1A1A1A] w-1/3" />
-          <div className="h-4 bg-[#1A1A1A] w-1/4" />
-          <div className="space-y-2 mt-8">
-            {[...Array(9)].map((_, i) => (
-              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+      <div className="min-h-screen bg-[#080808] p-8 md:p-12 lg:p-16">
+        <div className="max-w-4xl mx-auto animate-pulse">
+          <div className="h-[64px] bg-[#1A1A1A] w-1/2 mb-2" />
+          <div className="h-[14px] bg-[#1A1A1A] w-1/4 mb-4" />
+          <div className="w-full h-[2px] bg-[#1A1A1A] mb-12" />
+          
+          <div className="h-[11px] bg-[#1A1A1A] w-32 mb-6" />
+          
+          <div className="space-y-6 mb-12">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+              <div key={i}>
+                <div className="flex justify-between items-baseline mb-2">
+                  <div className="h-[11px] bg-[#1A1A1A] w-24" />
+                  <div className="h-[28px] bg-[#1A1A1A] w-8" />
+                </div>
+                <div className="w-full h-[1px] bg-[#1A1A1A]" />
+              </div>
             ))}
           </div>
+          
+          <div className="h-[11px] bg-[#1A1A1A] w-40 mb-6" />
+          <div className="border border-[#1A1A1A] p-4 h-24" />
         </div>
       </div>
     )
@@ -79,7 +94,7 @@ export default function CharacterPage() {
         <h1 className="font-serif text-[48px] md:text-[64px] font-bold">
           {profile.characterName || profile.character_name}
         </h1>
-        <p className="font-sans text-[14px] text-[#5C5C5C] mt-2">
+        <p className="font-sans text-[14px] text-[#767676] mt-2">
           {profile.xp?.toLocaleString()} / {profile.xpToNext?.toLocaleString()} XP
         </p>
         
@@ -93,7 +108,7 @@ export default function CharacterPage() {
           />
         </div>
 
-        <h2 className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#5C5C5C] mt-12 mb-6">
+        <h2 className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#767676] mt-12 mb-6">
           Spheres of Being
         </h2>
         
@@ -116,7 +131,7 @@ export default function CharacterPage() {
           </div>
         ))}
 
-        <h2 className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#5C5C5C] mt-12 mb-6">
+        <h2 className="font-sans text-[11px] tracking-[0.2em] uppercase text-[#767676] mt-12 mb-6">
           Manifested Echoes
         </h2>
         
@@ -129,7 +144,7 @@ export default function CharacterPage() {
               {!ach.earned && (
                 <span className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#C41E1E]">LOCKED</span>
               )}
-              <p className="font-sans text-[14px] text-[#5C5C5C] mt-2">{ach.description}</p>
+              <p className="font-sans text-[14px] text-[#767676] mt-2">{ach.description}</p>
             </div>
           ))
         )}

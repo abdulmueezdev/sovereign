@@ -28,7 +28,7 @@ const buttonVariants = cva(
           "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#2A2A2A] focus-visible:ring-offset-0",
         ].join(' '),
         ghost:
-          "bg-transparent text-[#5C5C5C] font-sans text-[11px] tracking-[0.2em] uppercase hover:text-[#E8E6E0] transition-colors duration-150",
+          "bg-transparent text-[#767676] font-sans text-[11px] tracking-[0.2em] uppercase hover:text-[#E8E6E0] transition-colors duration-150",
         link: 
           "font-serif text-[18px] italic text-[#C41E1E] hover:text-[#E8E6E0] transition-colors duration-150",
       },

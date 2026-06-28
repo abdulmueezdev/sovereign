@@ -70,7 +70,7 @@ export default function AchievementsPage() {
 
   const renderRarityIndicator = (rarity: Rarity) => {
     if (rarity === 'common') return null
-    if (rarity === 'rare') return <span className="font-mono text-[10px] text-[#5C5C5C] ml-2">◆</span>
+    if (rarity === 'rare') return <span className="font-mono text-[10px] text-[#767676] ml-2">◆</span>
     if (rarity === 'epic') return <span className="font-mono text-[10px] text-[#C41E1E] ml-2">◆</span>
     if (rarity === 'legendary') return <span className="font-mono text-[10px] text-[#C41E1E] ml-2">★</span>
   }
@@ -83,13 +83,13 @@ export default function AchievementsPage() {
         <h1 className="font-serif text-[40px] font-bold uppercase leading-none">
           MILESTONES
         </h1>
-        <p className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mt-3">
+        <p className="font-sans text-[11px] text-[#767676] tracking-[0.2em] uppercase mt-3">
           CLAIMED AND UNCLAIMED
         </p>
       </div>
 
       {loading ? (
-        <div className="flex-1 flex items-center justify-center font-mono text-[14px] text-[#5C5C5C] animate-pulse py-12">
+        <div className="flex-1 flex items-center justify-center font-mono text-[14px] text-[#767676] animate-pulse py-12">
           READING RECORDS...
         </div>
       ) : error ? (
@@ -112,7 +112,7 @@ export default function AchievementsPage() {
                 }} 
               />
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#5C5C5C] mt-2">
+            <div className="font-mono text-[10px] uppercase tracking-[0.15em] text-[#767676] mt-2">
               {data.completion_pct}% COMPLETION
             </div>
           </div>
@@ -128,7 +128,7 @@ export default function AchievementsPage() {
                   className={`pb-3 font-sans text-[11px] uppercase tracking-[0.2em] transition-colors
                     ${isActive 
                       ? 'border-b-2 border-[#C41E1E] text-[#E8E6E0]' 
-                      : 'text-[#5C5C5C] hover:text-[#E8E6E0] border-b-2 border-transparent'
+                      : 'text-[#767676] hover:text-[#E8E6E0] border-b-2 border-transparent'
                     }
                   `}
                 >
@@ -139,7 +139,7 @@ export default function AchievementsPage() {
           </div>
 
           {filteredAchievements.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center font-mono text-[12px] text-[#5C5C5C] py-12 uppercase tracking-widest text-center border border-[#1A1A1A]">
+            <div className="flex-1 flex items-center justify-center font-mono text-[12px] text-[#767676] py-12 uppercase tracking-widest text-center border border-[#1A1A1A]">
               NO MILESTONES FOUND
             </div>
           ) : (
@@ -182,7 +182,7 @@ export default function AchievementsPage() {
                         {renderRarityIndicator(achievement.rarity)}
                       </div>
 
-                      <p className="font-sans text-[12px] text-[#5C5C5C] line-clamp-2 leading-relaxed mb-6">
+                      <p className="font-sans text-[12px] text-[#767676] line-clamp-2 leading-relaxed mb-6">
                         {achievement.description}
                       </p>
 
@@ -195,7 +195,7 @@ export default function AchievementsPage() {
                                 style={{ width: `${(achievement.progress_current / achievement.progress_target) * 100}%` }}
                               />
                             </div>
-                            <span className="font-mono text-[10px] text-[#5C5C5C]">
+                            <span className="font-mono text-[10px] text-[#767676]">
                               {achievement.progress_current.toLocaleString()} / {achievement.progress_target.toLocaleString()}
                             </span>
                           </div>

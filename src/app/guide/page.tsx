@@ -81,10 +81,10 @@ export default function GuidePage() {
         <h1 className="font-serif text-[56px] md:text-[72px] font-bold leading-[0.92] mb-10">
           How to Rule
           <br />
-          <span className="text-[#5C5C5C]">Your Kingdom</span>
+          <span className="text-[#767676]">Your Kingdom</span>
         </h1>
         <div className="w-8 h-[1px] bg-[#C41E1E] mb-10" />
-        <p className="font-sans text-[14px] text-[#5C5C5C] leading-relaxed max-w-sm">
+        <p className="font-sans text-[14px] text-[#767676] leading-relaxed max-w-sm">
           Six principles. Read once. Apply every day.
         </p>
       </div>
@@ -102,7 +102,7 @@ export default function GuidePage() {
                   {s.heading}
                 </h2>
                 {s.body && (
-                  <p className="font-sans text-[14px] text-[#5C5C5C] leading-[1.75]">
+                  <p className="font-sans text-[14px] text-[#767676] leading-[1.75]">
                     {s.body}
                   </p>
                 )}
@@ -111,7 +111,7 @@ export default function GuidePage() {
                     {s.lines.map((line, j) => (
                       <div key={j} className="flex items-start gap-4">
                         <span className="block w-[1px] min-h-[16px] bg-[#C41E1E] mt-[4px] shrink-0" />
-                        <p className="font-sans text-[14px] text-[#5C5C5C] leading-[1.75]">
+                        <p className="font-sans text-[14px] text-[#767676] leading-[1.75]">
                           {line}
                         </p>
                       </div>

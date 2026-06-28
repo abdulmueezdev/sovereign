@@ -42,6 +42,7 @@ function QuestsContent() {
     setLoading(true)
     setError(false)
     if (IS_DEMO) {
+      await Promise.resolve()
       if (tab === 'active') setQuests(DEMO_QUESTS_ACTIVE)
       else if (tab === 'available') setQuests(dormantQuests)
       else setQuests(DEMO_QUESTS_FULFILLED)
@@ -67,11 +68,11 @@ function QuestsContent() {
 
   useEffect(() => {
     if (IS_DEMO) {
-      fetchQuests(activeTab)
+      requestAnimationFrame(() => fetchQuests(activeTab))
       return
     }
     if (user && userProfile?.onboarding_complete) {
-      fetchQuests(activeTab)
+      requestAnimationFrame(() => fetchQuests(activeTab))
     }
   }, [user, userProfile, activeTab])
 
@@ -157,13 +158,29 @@ function QuestsContent() {
 
   if (authLoading || (loading && quests.length === 0 && !error)) {
     return (
-      <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
-        <div className="w-full max-w-4xl animate-pulse space-y-4">
-          <div className="h-8 bg-[#1A1A1A] w-1/3" />
-          <div className="h-4 bg-[#1A1A1A] w-1/4" />
-          <div className="space-y-2 mt-8">
-            {[...Array(9)].map((_, i) => (
-              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+      <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16 bg-[#080808]">
+        <div className="max-w-4xl mx-auto animate-pulse space-y-8">
+          <div className="mb-12">
+            <div className="h-[48px] bg-[#1A1A1A] w-1/3 mb-2" />
+            <div className="h-[14px] bg-[#1A1A1A] w-1/4" />
+          </div>
+          
+          <div className="flex border-b border-[#1A1A1A] mb-8 gap-4">
+            <div className="h-10 bg-[#1A1A1A] w-24 mb-2" />
+            <div className="h-10 bg-[#1A1A1A] w-24 mb-2" />
+            <div className="h-10 bg-[#1A1A1A] w-24 mb-2" />
+          </div>
+
+          <div className="flex flex-col border-b border-[#1A1A1A] min-h-[400px] space-y-4">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="border border-[#1A1A1A] p-5 space-y-3">
+                <div className="flex justify-between">
+                  <div className="h-6 bg-[#1A1A1A] w-2/3" />
+                  <div className="h-4 bg-[#1A1A1A] w-16" />
+                </div>
+                <div className="h-4 bg-[#1A1A1A] w-full" />
+                <div className="h-[2px] bg-[#1A1A1A] w-full" />
+              </div>
             ))}
           </div>
         </div>
@@ -200,7 +217,7 @@ function QuestsContent() {
               <h1 className="font-serif text-[48px] font-bold text-[#E8E6E0] mb-2 leading-none">
                 The Board
               </h1>
-              <p className="font-sans text-[14px] text-[#5C5C5C]">
+              <p className="font-sans text-[14px] text-[#767676]">
                 Manifest your will. Choose your trials.
               </p>
             </div>
@@ -218,7 +235,7 @@ function QuestsContent() {
                   className={`font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-4 border-b-2 transition-colors ${
                     activeTab === tab.id 
                       ? 'border-[#C41E1E] text-[#E8E6E0]' 
-                      : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0]'
+                      : 'border-transparent text-[#767676] hover:text-[#E8E6E0]'
                   }`}
                 >
                   {tab.label}
@@ -246,7 +263,7 @@ function QuestsContent() {
                   FAILED TO SYNCHRONIZE WITH THE VOID.
                 </div>
               ) : quests.length === 0 ? (
-                <div className="py-12 text-[#5C5C5C] font-mono text-[11px] uppercase tracking-widest text-center">
+                <div className="py-12 text-[#767676] font-mono text-[11px] uppercase tracking-widest text-center">
                   No {activeTab} echoes found.
                 </div>
               ) : (

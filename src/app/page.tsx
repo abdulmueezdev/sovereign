@@ -26,7 +26,7 @@ function LandingContent() {
       {/* Content */}
       <div className="relative z-10 text-center animate-fade-in-up flex flex-col items-center">
         
-        <p className="font-sans text-[13px] tracking-[0.3em] text-[#5C5C5C] uppercase mb-12">
+        <p className="font-sans text-[13px] tracking-[0.3em] text-[#767676] uppercase mb-12">
           SOVEREIGN
         </p>
         

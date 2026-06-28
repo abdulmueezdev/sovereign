@@ -67,14 +67,14 @@ function LoginForm() {
           <h1 className="font-serif text-[40px] font-bold text-[#E8E6E0] leading-none mb-2">
             SIGN IN
           </h1>
-          <p className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase">
+          <p className="font-mono text-[10px] text-[#767676] tracking-[0.2em] uppercase">
             Enter the Void
           </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
-            <label htmlFor="email" className="font-mono text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase block">
+            <label htmlFor="email" className="font-mono text-[11px] text-[#767676] tracking-[0.2em] uppercase block">
               Email
             </label>
             <input
@@ -91,7 +91,7 @@ function LoginForm() {
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="password" className="font-mono text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase block">
+            <label htmlFor="password" className="font-mono text-[11px] text-[#767676] tracking-[0.2em] uppercase block">
               Password
             </label>
             <input
@@ -122,7 +122,7 @@ function LoginForm() {
           </button>
         </form>
 
-        <p className="mt-8 font-sans text-[13px] text-[#5C5C5C]">
+        <p className="mt-8 font-sans text-[13px] text-[#767676]">
           Registration is currently closed.
         </p>
       </div>
@@ -134,13 +134,21 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#080808] flex flex-col justify-center px-[20%]">
       <Suspense fallback={
-        <div className="w-full max-w-4xl animate-pulse space-y-4">
-          <div className="h-8 bg-[#1A1A1A] w-1/3" />
-          <div className="h-4 bg-[#1A1A1A] w-1/4" />
-          <div className="space-y-2 mt-8">
-            {[...Array(9)].map((_, i) => (
-              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
-            ))}
+        <div className="w-full max-w-[480px] animate-pulse space-y-6">
+          <div className="mb-10 space-y-2">
+            <div className="h-[40px] bg-[#1A1A1A] w-1/2" />
+            <div className="h-[10px] bg-[#1A1A1A] w-1/3" />
+          </div>
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="h-[11px] bg-[#1A1A1A] w-16" />
+              <div className="h-12 bg-[#1A1A1A] w-full" />
+            </div>
+            <div className="space-y-2">
+              <div className="h-[11px] bg-[#1A1A1A] w-20" />
+              <div className="h-12 bg-[#1A1A1A] w-full" />
+            </div>
+            <div className="h-12 bg-[#1A1A1A] w-full mt-4" />
           </div>
         </div>
       }>

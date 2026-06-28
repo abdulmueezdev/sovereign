@@ -52,7 +52,7 @@ export default function SkillTreePage() {
   }
 
   useEffect(() => {
-    fetchData()
+    requestAnimationFrame(() => fetchData())
   }, [])
 
   const handleNodeClick = (skillId: string, status: string) => {
@@ -89,7 +89,7 @@ export default function SkillTreePage() {
       <div className="flex min-h-screen bg-[#080808] text-[#E8E6E0]">
         <Sidebar />
         <main className="flex-1 md:ml-[64px] min-h-screen p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="font-mono text-[14px] text-[#5C5C5C] animate-pulse">READING THE PATH...</div>
+          <div className="font-mono text-[14px] text-[#767676] animate-pulse">READING THE PATH...</div>
         </main>
       </div>
     )
@@ -124,7 +124,7 @@ export default function SkillTreePage() {
         <h1 className="font-serif text-[40px] font-bold uppercase leading-none">
           THE PATH
         </h1>
-        <p className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mt-3 mb-2">
+        <p className="font-sans text-[11px] text-[#767676] tracking-[0.2em] uppercase mt-3 mb-2">
           {data.class} CLASS
         </p>
         <p className="font-mono text-[14px] text-[#C41E1E]">
@@ -185,11 +185,11 @@ export default function SkillTreePage() {
                   `}>
                     {skill.name}
                   </h3>
-                  <p className="font-sans text-[12px] text-[#5C5C5C] max-w-[240px] leading-relaxed mb-2">
+                  <p className="font-sans text-[12px] text-[#767676] max-w-[240px] leading-relaxed mb-2">
                     {skill.description}
                   </p>
                   <span className={`font-mono text-[11px] uppercase tracking-wider
-                    ${isBought ? 'text-[#5C5C5C]' : ''}
+                    ${isBought ? 'text-[#767676]' : ''}
                     ${isAvailable ? 'text-[#C41E1E]' : ''}
                     ${isLocked ? 'text-[#3A3A3A]' : ''}
                   `}>

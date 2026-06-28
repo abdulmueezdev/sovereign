@@ -67,7 +67,7 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
               placeholder="Name your endeavor..."
               value={formData.name}
               onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-              className="w-full bg-transparent border-b border-[#1A1A1A] focus:border-[#5C5C5C] text-[#E8E6E0] font-serif italic text-[24px] pb-2 outline-none transition-colors"
+              className="w-full bg-transparent border-b border-[#1A1A1A] focus:border-[#767676] text-[#E8E6E0] font-serif italic text-[24px] pb-2 outline-none transition-colors"
             />
           </div>
 
@@ -77,13 +77,13 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
               rows={3}
               value={formData.description}
               onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-              className="w-full bg-transparent border border-[#1A1A1A] focus:border-[#5C5C5C] text-[#E8E6E0] font-sans text-[13px] p-4 outline-none resize-none transition-colors placeholder:text-[#3A3A3A]"
+              className="w-full bg-transparent border border-[#1A1A1A] focus:border-[#767676] text-[#E8E6E0] font-sans text-[13px] p-4 outline-none resize-none transition-colors placeholder:text-[#3A3A3A]"
             />
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <label className="font-mono text-[10px] text-[#5C5C5C] uppercase tracking-[0.2em]">Objectives</label>
+              <label className="font-mono text-[10px] text-[#767676] uppercase tracking-[0.2em]">Objectives</label>
               {formData.objectives.length < 6 && (
                 <button 
                   onClick={handleAddObjective}
@@ -102,7 +102,7 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
                     value={obj}
                     onChange={e => handleObjectiveChange(i, e.target.value)}
                     placeholder={`Objective ${i + 1}`}
-                    className="flex-1 bg-transparent border border-[#1A1A1A] focus:border-[#5C5C5C] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none transition-colors"
+                    className="flex-1 bg-transparent border border-[#1A1A1A] focus:border-[#767676] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none transition-colors"
                   />
                   {formData.objectives.length > 1 && (
                     <button 
@@ -119,11 +119,11 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
 
           <div className="grid grid-cols-2 gap-6">
             <div>
-              <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-2">Domain</label>
+              <label className="block font-mono text-[10px] text-[#767676] uppercase tracking-[0.2em] mb-2">Domain</label>
               <select 
                 value={formData.domain}
                 onChange={e => setFormData(prev => ({ ...prev, domain: e.target.value as any }))}
-                className="w-full bg-transparent border border-[#1A1A1A] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none focus:border-[#5C5C5C] appearance-none"
+                className="w-full bg-transparent border border-[#1A1A1A] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none focus:border-[#767676] appearance-none"
               >
                 {['scholar', 'warrior', 'builder', 'commander', 'strength', 'vitality', 'intelligence', 'focus', 'technical', 'creativity', 'leadership', 'charisma', 'discipline'].map(d => (
                   <option key={d} value={d} className="bg-[#080808] capitalize">{d}</option>
@@ -131,11 +131,11 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
               </select>
             </div>
             <div>
-              <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-2">Difficulty</label>
+              <label className="block font-mono text-[10px] text-[#767676] uppercase tracking-[0.2em] mb-2">Difficulty</label>
               <select 
                 value={formData.difficulty}
                 onChange={handleDifficultyChange}
-                className="w-full bg-transparent border border-[#1A1A1A] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none focus:border-[#5C5C5C] appearance-none"
+                className="w-full bg-transparent border border-[#1A1A1A] text-[#E8E6E0] font-sans text-[13px] px-3 py-2 outline-none focus:border-[#767676] appearance-none"
               >
                 <option value="Common" className="bg-[#080808]">Common</option>
                 <option value="Rare" className="bg-[#080808]">Rare</option>
@@ -146,12 +146,12 @@ export function ForgeQuestModal({ isOpen, onClose, onForge }: ForgeQuestModalPro
           </div>
 
           <div>
-            <label className="block font-mono text-[10px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-2">XP Reward</label>
+            <label className="block font-mono text-[10px] text-[#767676] uppercase tracking-[0.2em] mb-2">XP Reward</label>
             <input 
               type="number"
               value={formData.xpReward}
               onChange={e => setFormData(prev => ({ ...prev, xpReward: parseInt(e.target.value) || 0 }))}
-              className="w-full bg-transparent border border-[#1A1A1A] focus:border-[#5C5C5C] text-[#E8E6E0] font-mono text-[13px] px-3 py-2 outline-none transition-colors"
+              className="w-full bg-transparent border border-[#1A1A1A] focus:border-[#767676] text-[#E8E6E0] font-mono text-[13px] px-3 py-2 outline-none transition-colors"
             />
           </div>
         </div>

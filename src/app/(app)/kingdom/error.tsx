@@ -1,23 +1,28 @@
 'use client'
+import { AlertTriangle } from 'lucide-react'
 
-export default function KingdomError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string }
-  reset: () => void
-}) {
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <div className="min-h-[calc(100vh-8rem)] bg-[#080808] text-[#E8E6E0] flex flex-col items-center justify-center -m-4 md:-m-8">
-      <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#C41E1E]">CORRUPTION DETECTED</p>
-      <h1 className="font-serif text-[48px] font-bold mt-4">The void shifts unexpectedly.</h1>
-      <p className="font-sans text-[13px] text-[#5C5C5C] mt-6">Failed to fetch kingdom data.</p>
-      <button 
-        onClick={() => window.location.reload()} 
-        className="mt-8 bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-3 hover:bg-[#E8282B] transition-colors"
-      >
-        RETURN TO THE REALM
-      </button>
+    <div className="flex-1 min-h-[400px] bg-[#080808] flex items-center justify-center p-8">
+      <div className="text-center max-w-md border border-[#1A1A1A] p-12 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#C41E1E] to-transparent opacity-50" />
+        <AlertTriangle className="w-12 h-12 text-[#C41E1E] mx-auto mb-6" strokeWidth={1} />
+        <h2 className="font-serif text-[28px] font-bold text-[#E8E6E0] mb-2 uppercase tracking-wide">
+          Fracture Detected
+        </h2>
+        <p className="font-sans text-[14px] text-[#767676] mb-8 leading-relaxed">
+          The void has shifted unexpectedly. Reality fails to manifest here.
+        </p>
+        <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#C41E1E] mb-8 opacity-80 break-words">
+          {error.message || 'Unknown corruption'}
+        </p>
+        <button 
+          onClick={reset}
+          className="bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-10 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#E8E6E0]"
+        >
+          Realign Reality
+        </button>
+      </div>
     </div>
   )
 }

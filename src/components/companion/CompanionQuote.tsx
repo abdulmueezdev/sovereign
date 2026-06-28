@@ -6,7 +6,7 @@ export function CompanionQuote() {
       <div className="font-mono text-[10px] text-[#C41E1E] tracking-[0.15em] uppercase">
         AEGIS // ARCHITECT
       </div>
-      <blockquote className="font-serif italic text-[18px] text-[#5C5C5C] leading-relaxed border-l-[1px] border-[#1A1A1A] pl-4">
+      <blockquote className="font-serif italic text-[18px] text-[#767676] leading-relaxed border-l-[1px] border-[#1A1A1A] pl-4">
         "We stare into the abyss, and the abyss structures our reality."
       </blockquote>
       <div>

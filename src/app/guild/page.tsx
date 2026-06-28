@@ -122,7 +122,7 @@ export default function GuildHubPage() {
             <h1 className="font-serif text-[28px] font-bold uppercase tracking-wide">
               {house.name}
             </h1>
-            <p className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mt-1">
+            <p className="font-sans text-[11px] text-[#767676] tracking-[0.2em] uppercase mt-1">
               WEEKLY COLLECTIVE ECHOES
             </p>
             
@@ -136,7 +136,7 @@ export default function GuildHubPage() {
                   style={{ width: `${progressPct}%` }} 
                 />
               </div>
-              <div className="mt-2 font-mono text-[10px] text-[#5C5C5C]">
+              <div className="mt-2 font-mono text-[10px] text-[#767676]">
                 {house.days_remaining} {house.days_remaining === 1 ? 'DAY' : 'DAYS'} REMAINING
               </div>
             </div>
@@ -149,14 +149,14 @@ export default function GuildHubPage() {
             <div className="lg:col-span-7">
               <div className="flex flex-col border-t border-[#1A1A1A]">
                 {members.length === 0 ? (
-                  <div className="py-8 text-center font-mono text-[12px] text-[#5C5C5C]">
+                  <div className="py-8 text-center font-mono text-[12px] text-[#767676]">
                     NO CONTRIBUTIONS THIS CYCLE
                   </div>
                 ) : (
                   members.slice(0, 8).map((member, i) => (
                     <div key={i} className="flex items-center justify-between py-4 border-b border-[#1A1A1A]">
                       <div className="flex items-center gap-6">
-                        <span className="font-mono text-[12px] text-[#5C5C5C] w-8">
+                        <span className="font-mono text-[12px] text-[#767676] w-8">
                           {toRoman(member.rank)}
                         </span>
                         <span className="font-sans text-[14px]">
@@ -174,7 +174,7 @@ export default function GuildHubPage() {
 
             {/* Right: House Standings (5 cols) */}
             <div className="lg:col-span-5 flex flex-col gap-6">
-              <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-2">
+              <h2 className="font-mono text-[10px] text-[#767676] tracking-[0.2em] uppercase mb-2">
                 HOUSE STANDINGS
               </h2>
               <div className="flex flex-col gap-8">
@@ -185,10 +185,10 @@ export default function GuildHubPage() {
                   >
                     <div className="flex justify-between items-baseline">
                       <h3 className="font-serif text-[22px]">{standing.house_id}</h3>
-                      <span className="font-mono text-[12px] text-[#5C5C5C]">{standing.total_xp.toLocaleString()} XP</span>
+                      <span className="font-mono text-[12px] text-[#767676]">{standing.total_xp.toLocaleString()} XP</span>
                     </div>
                     <div className="h-[2px] bg-[#1A1A1A] w-full">
-                      <div className="h-full bg-[#5C5C5C] transition-all duration-1000" style={{ width: `${standing.progress_pct}%` }} />
+                      <div className="h-full bg-[#767676] transition-all duration-1000" style={{ width: `${standing.progress_pct}%` }} />
                     </div>
                   </div>
                 ))}
@@ -218,11 +218,11 @@ export default function GuildHubPage() {
             
             <div className="flex items-center gap-8 sm:text-right">
               <div className="flex flex-col">
-                <span className="font-mono text-[10px] text-[#5C5C5C] mb-1">RANK</span>
+                <span className="font-mono text-[10px] text-[#767676] mb-1">RANK</span>
                 <span className="font-mono text-[16px]">{your_contribution.rank === 999 ? '-' : toRoman(your_contribution.rank)}</span>
               </div>
               <div className="flex flex-col">
-                <span className="font-mono text-[10px] text-[#5C5C5C] mb-1">CONTRIBUTED</span>
+                <span className="font-mono text-[10px] text-[#767676] mb-1">CONTRIBUTED</span>
                 <span className="font-mono text-[16px] text-[#C41E1E]">{your_contribution.xp.toLocaleString()} XP</span>
               </div>
             </div>

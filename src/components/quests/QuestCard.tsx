@@ -110,7 +110,7 @@ export function QuestCard({
         <div className="flex flex-col md:flex-row justify-between md:items-start gap-4 px-4">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <span className="font-mono text-[11px] tracking-[0.15em] text-[#5C5C5C] uppercase">
+              <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
                 {domain}
               </span>
               {isDueToday && (
@@ -123,14 +123,14 @@ export function QuestCard({
             <h3 className="font-serif text-[22px] font-bold text-[#E8E6E0] mb-2">
               {title}
             </h3>
-            <p className="font-sans text-[14px] text-[#5C5C5C] line-clamp-2 leading-relaxed max-w-xl">
+            <p className="font-sans text-[14px] text-[#767676] line-clamp-2 leading-relaxed max-w-xl">
               {description}
             </p>
           </div>
 
           <div className="flex flex-col items-end gap-4 min-w-[120px]">
             <div className="text-right">
-              <span className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] uppercase block mb-1">
+              <span className="font-sans text-[11px] tracking-[0.2em] text-[#767676] uppercase block mb-1">
                 Yield
               </span>
               <span className="font-serif text-[32px] font-bold text-[#E8E6E0] leading-none">
@@ -176,10 +176,10 @@ export function QuestCard({
             {/* Header Fixed at Top */}
             <div className="p-6 md:p-8 border-b border-[#1A1A1A] shrink-0 bg-[#0C0C0C]">
               <div className="flex gap-4 mb-4">
-                <span className="font-mono text-[11px] tracking-[0.15em] text-[#5C5C5C] uppercase">
+                <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
                   {domain}
                 </span>
-                <span className="font-mono text-[11px] tracking-[0.15em] text-[#5C5C5C] uppercase">
+                <span className="font-mono text-[11px] tracking-[0.15em] text-[#767676] uppercase">
                   {rarity}
                 </span>
                 <span className="font-mono text-[11px] tracking-[0.15em] text-[#C41E1E] uppercase">
@@ -215,7 +215,7 @@ export function QuestCard({
                         />
                         <div className="w-4 h-4 border border-[#2A2A2A] peer-checked:bg-[#C41E1E] peer-checked:border-[#C41E1E] transition-colors flex items-center justify-center" />
                       </div>
-                      <span className={`font-sans text-[14px] transition-colors ${obj.completed ? 'text-[#5C5C5C] line-through' : 'text-[#E8E6E0]'}`}>
+                      <span className={`font-sans text-[14px] transition-colors ${obj.completed ? 'text-[#767676] line-through' : 'text-[#E8E6E0]'}`}>
                         {obj.text}
                       </span>
                     </label>
@@ -223,7 +223,7 @@ export function QuestCard({
                 </div>
               </div>
 
-              <div className="font-mono text-[11px] text-[#5C5C5C] uppercase tracking-[0.15em] mb-12">
+              <div className="font-mono text-[11px] text-[#767676] uppercase tracking-[0.15em] mb-12">
                 {completedCount} of {objectives.length} objectives complete
               </div>
             </div>

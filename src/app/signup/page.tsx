@@ -68,7 +68,7 @@ export default function SignupPage() {
             <h1 className="font-serif text-[32px] font-bold text-[#E8E6E0]">
               Registration Closed
             </h1>
-            <p className="font-sans text-[13px] text-[#5C5C5C] leading-relaxed">
+            <p className="font-sans text-[13px] text-[#767676] leading-relaxed">
               New kingdoms are not accepting sovereigns at this time.
               If you were granted access, proceed to the gate.
             </p>

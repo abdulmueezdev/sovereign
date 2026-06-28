@@ -14,7 +14,9 @@ export function LevelUpGate({ open, characterName, newLevel, newTitle, onClose }
   const [render, setRender] = useState(open)
 
   useEffect(() => {
-    if (open) setRender(true)
+    if (open) {
+      requestAnimationFrame(() => setRender(true))
+    }
   }, [open])
 
   if (!render) return null
@@ -44,7 +46,7 @@ export function LevelUpGate({ open, characterName, newLevel, newTitle, onClose }
         </p>
         
         <p 
-          className="font-serif italic text-[24px] text-[#5C5C5C] mb-16 animate-fade-in"
+          className="font-serif italic text-[24px] text-[#767676] mb-16 animate-fade-in"
           style={{ animationDelay: '600ms', animationFillMode: 'both' }}
         >
           {newTitle}

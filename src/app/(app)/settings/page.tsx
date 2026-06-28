@@ -124,7 +124,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
-        <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Accessing Configurations...</div>
+        <div className="text-[#767676] font-mono text-[11px] tracking-[0.2em] uppercase">Accessing Configurations...</div>
       </div>
     )
   }
@@ -136,7 +136,7 @@ export default function SettingsPage() {
       <div className="max-w-2xl mx-auto animate-fade-in-up pb-24 md:pb-0">
           
           <div className="mb-16">
-            <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
+            <div className="text-[11px] text-[#767676] font-sans tracking-[0.2em] mb-4 uppercase">
               System
             </div>
             <h1 className="font-serif text-[64px] md:text-[80px] font-bold text-[#E8E6E0] mb-2 leading-none">
@@ -146,13 +146,13 @@ export default function SettingsPage() {
 
           {/* Identities Section */}
           <section className="mb-16">
-            <h2 className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
+            <h2 className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
               Identities
             </h2>
             
             <div className="flex flex-col gap-8 mb-12">
               <div className="flex flex-col gap-2">
-                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Character Name</label>
+                <label className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em]">Character Name</label>
                 <input 
                   type="text" 
                   value={names.characterName} 
@@ -162,7 +162,7 @@ export default function SettingsPage() {
               </div>
               
               <div className="flex flex-col gap-2">
-                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Kingdom Name</label>
+                <label className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em]">Kingdom Name</label>
                 <input 
                   type="text" 
                   value={names.kingdomName} 
@@ -172,7 +172,7 @@ export default function SettingsPage() {
               </div>
               
               <div className="flex flex-col gap-2">
-                <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">Companion Name</label>
+                <label className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em]">Companion Name</label>
                 <input 
                   type="text" 
                   value={names.companionName} 
@@ -193,12 +193,12 @@ export default function SettingsPage() {
 
           {/* Order Affiliation Section */}
           <section className="mb-16">
-            <h2 className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
+            <h2 className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em] mb-8 border-b border-[#1A1A1A] pb-4">
               Order Affiliation
             </h2>
             
             <div className="flex flex-col gap-2 mb-8">
-              <label className="font-sans text-[11px] text-[#5C5C5C] uppercase tracking-[0.2em]">House</label>
+              <label className="font-sans text-[11px] text-[#767676] uppercase tracking-[0.2em]">House</label>
               <select 
                 value={houseId} 
                 onChange={e => setHouseId(e.target.value)}
@@ -219,7 +219,7 @@ export default function SettingsPage() {
               >
                 {isSavingHouse ? 'SWITCHING...' : 'SWITCH HOUSE'}
               </Button>
-              <span className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.1em] uppercase">
+              <span className="font-mono text-[10px] text-[#767676] tracking-[0.1em] uppercase">
                 Note: Limited to once per week.
               </span>
             </div>

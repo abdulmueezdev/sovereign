@@ -21,11 +21,11 @@ export function StatPip({ attribute, value, delta, icon }: StatPipProps) {
 
   return (
     <div className="flex items-center gap-4 py-2 border-b border-[#1A1A1A] last:border-0">
-      <div className="text-[#5C5C5C]">
+      <div className="text-[#767676]">
         <IconComponent size={16} strokeWidth={1.5} />
       </div>
       <div className="flex-1 flex items-baseline justify-between">
-        <span className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] uppercase">
+        <span className="font-sans text-[11px] tracking-[0.2em] text-[#767676] uppercase">
           {attribute}
         </span>
         <div className="flex items-center gap-3">

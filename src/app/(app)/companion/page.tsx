@@ -38,7 +38,9 @@ export default function CompanionPage() {
 
   useEffect(() => {
     if (IS_DEMO) {
-      setMessages([{ id: 'init', role: 'assistant', content: 'The void stirs. Your kingdom grows stronger with each action. What would you manifest today?' }])
+      requestAnimationFrame(() => {
+        setMessages([{ id: 'init', role: 'assistant', content: 'The void stirs. Your kingdom grows stronger with each action. What would you manifest today?' }])
+      })
       return
     }
 
@@ -159,10 +161,10 @@ export default function CompanionPage() {
         {/* Input Area */}
         <div className="border-t border-[#1A1A1A] px-6 py-4 bg-[#080808]">
           <div className="md:hidden px-0 py-2 space-y-2 mb-4">
-            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#5C5C5C] mb-3">QUICK PROMPTS</p>
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#767676] mb-3">QUICK PROMPTS</p>
             {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
               <button key={prompt} onClick={() => handleSend(prompt)}
-                className="block w-full text-left font-sans text-[12px] text-[#5C5C5C] hover:text-[#E8E6E0] py-2 border-b border-[#1A1A1A] transition-colors">
+                className="block w-full text-left font-sans text-[12px] text-[#767676] hover:text-[#E8E6E0] py-2 border-b border-[#1A1A1A] transition-colors">
                 {prompt}
               </button>
             ))}
@@ -175,7 +177,7 @@ export default function CompanionPage() {
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSend()}
               placeholder="Speak to the void..."
-              className="flex-1 bg-transparent border border-[#2A2A2A] px-4 py-3 font-sans text-[13px] text-[#E8E6E0] placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#5C5C5C] transition-colors"
+              className="flex-1 bg-transparent border border-[#2A2A2A] px-4 py-3 font-sans text-[13px] text-[#E8E6E0] placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#767676] transition-colors"
               style={{ borderRadius: 0 }}
             />
             <button
@@ -205,7 +207,7 @@ export default function CompanionPage() {
           <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#9A8A7A] mb-3">QUICK PROMPTS</p>
           {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
             <button key={prompt} onClick={() => handleSend(prompt)}
-              className="block w-full text-left font-sans text-[12px] text-[#5C5C5C] hover:text-[#1A1A1A] py-2 border-b border-[#E0D8CC] transition-colors">
+              className="block w-full text-left font-sans text-[12px] text-[#767676] hover:text-[#1A1A1A] py-2 border-b border-[#E0D8CC] transition-colors">
               {prompt}
             </button>
           ))}

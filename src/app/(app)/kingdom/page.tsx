@@ -18,8 +18,9 @@ export default function KingdomPage() {
   const [isBuilding, setIsBuilding] = useState(false)
   const { addToast } = useToast()
 
-  async function fetchKingdom() {
+  const fetchKingdom = async () => {
     if (IS_DEMO) {
+      await Promise.resolve()
       setKingdom({
         kingdom_name: 'The Obsidian Realm',
         attributes: { attr_strength: 12, attr_intelligence: 18, attr_focus: 15, attr_technical: 14, attr_leadership: 10 },
@@ -42,7 +43,7 @@ export default function KingdomPage() {
   }
 
   useEffect(() => {
-    fetchKingdom()
+    requestAnimationFrame(() => fetchKingdom())
   }, [])
 
   const handleBuild = async (buildingId: string) => {
@@ -73,7 +74,7 @@ export default function KingdomPage() {
   if (loading) {
     return (
       <div className="flex-1 flex items-center justify-center">
-        <div className="text-[#5C5C5C] font-mono text-[11px] tracking-[0.2em] uppercase">Surveying Domain...</div>
+        <div className="text-[#767676] font-mono text-[11px] tracking-[0.2em] uppercase">Surveying Domain...</div>
       </div>
     )
   }
@@ -95,20 +96,20 @@ export default function KingdomPage() {
           <div className="max-w-[1400px] mx-auto">
             {/* Header */}
             <div className="mb-16">
-              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-4 uppercase">
+              <div className="text-[11px] text-[#767676] font-sans tracking-[0.2em] mb-4 uppercase">
                 Domain of
               </div>
               <h1 className="font-serif text-[40px] font-bold text-[#E8E6E0] mb-6 uppercase leading-none">
                 {kingdom.name}
               </h1>
-              <p className="font-serif italic text-[#5C5C5C] text-[18px] max-w-2xl mb-8 leading-relaxed">
+              <p className="font-serif italic text-[#767676] text-[18px] max-w-2xl mb-8 leading-relaxed">
                 A reflection of your inner fortitude. As you conquer the physical realm, these walls rise in parallel.
               </p>
             </div>
 
             {/* Grid */}
             <section>
-              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-8 uppercase border-b border-[#1A1A1A] pb-4">
+              <div className="text-[11px] text-[#767676] font-sans tracking-[0.2em] mb-8 uppercase border-b border-[#1A1A1A] pb-4">
                 Structures
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -122,7 +123,7 @@ export default function KingdomPage() {
                       onClick={() => setSelectedBuilding(b)}
                       className={`flex flex-col p-6 border cursor-pointer transition-colors ${
                         isAvailable ? 'border-[#C41E1E] hover:border-[#E8E6E0]' : 
-                        isBuilt ? 'border-[#3A3A3A] hover:border-[#5C5C5C]' : 
+                        isBuilt ? 'border-[#3A3A3A] hover:border-[#767676]' : 
                         'border-[#1A1A1A] opacity-40 hover:opacity-100 hover:border-[#3A3A3A]'
                       }`}
                     >
@@ -143,10 +144,10 @@ export default function KingdomPage() {
                       </div>
                       
                       <div>
-                        <h3 className={`font-serif text-[22px] font-bold leading-tight mb-2 ${isAvailable || isBuilt ? 'text-[#E8E6E0]' : 'text-[#5C5C5C]'}`}>
+                        <h3 className={`font-serif text-[22px] font-bold leading-tight mb-2 ${isAvailable || isBuilt ? 'text-[#E8E6E0]' : 'text-[#767676]'}`}>
                           {b.name}
                         </h3>
-                        <div className="font-mono text-[11px] text-[#5C5C5C] uppercase tracking-[0.1em]">
+                        <div className="font-mono text-[11px] text-[#767676] uppercase tracking-[0.1em]">
                           {b.domain} domain
                         </div>
                       </div>
@@ -168,12 +169,12 @@ export default function KingdomPage() {
             <>
               <button 
                 onClick={() => setSelectedBuilding(null)}
-                className="absolute top-6 right-6 text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors"
+                className="absolute top-6 right-6 text-[#767676] hover:text-[#E8E6E0] transition-colors"
               >
                 <X size={20} />
               </button>
               
-              <div className="text-[11px] text-[#5C5C5C] font-sans tracking-[0.2em] mb-6 uppercase">
+              <div className="text-[11px] text-[#767676] font-sans tracking-[0.2em] mb-6 uppercase">
                 Structure Detail
               </div>
               
@@ -184,7 +185,7 @@ export default function KingdomPage() {
                 {selectedBuilding.domain} Domain
               </div>
               
-              <p className="font-serif italic text-[#5C5C5C] text-[18px] leading-relaxed mb-12">
+              <p className="font-serif italic text-[#767676] text-[18px] leading-relaxed mb-12">
                 "{safeReplace(selectedBuilding.loreText || selectedBuilding.description || selectedBuilding.lore, /\n/g, ' ')}"
               </p>
 
@@ -193,7 +194,7 @@ export default function KingdomPage() {
                   <div className="text-[11px] text-[#3A3A3A] font-sans tracking-[0.2em] mb-4 uppercase">
                     Unlock Condition
                   </div>
-                  <div className={`font-mono text-[11px] flex items-center gap-3 uppercase tracking-[0.1em] ${selectedBuilding.status === 'locked' || selectedBuilding.is_locked ? 'text-[#5C5C5C]' : 'text-[#E8E6E0]'}`}>
+                  <div className={`font-mono text-[11px] flex items-center gap-3 uppercase tracking-[0.1em] ${selectedBuilding.status === 'locked' || selectedBuilding.is_locked ? 'text-[#767676]' : 'text-[#E8E6E0]'}`}>
                     {selectedBuilding.status !== 'locked' && !selectedBuilding.is_locked ? <Check size={16} className="text-[#C41E1E]" /> : <X size={16} className="text-[#3A3A3A]" />}
                     {safeReplace(selectedBuilding.unlockAttribute || selectedBuilding.req_attr || selectedBuilding.required_attribute, 'attr_', '')} LEVEL {selectedBuilding.unlockThreshold || selectedBuilding.req_value || selectedBuilding.required_value}
                   </div>
@@ -203,7 +204,7 @@ export default function KingdomPage() {
                   <div className="text-[11px] text-[#3A3A3A] font-sans tracking-[0.2em] mb-4 uppercase">
                     Effects
                   </div>
-                  <ul className="font-mono text-[11px] text-[#5C5C5C] space-y-4 uppercase tracking-[0.1em]">
+                  <ul className="font-mono text-[11px] text-[#767676] space-y-4 uppercase tracking-[0.1em]">
                     <li className="flex items-start gap-3">
                       <span className="text-[#C41E1E] mt-0.5">◆</span> 
                       <span>Unlocks {selectedBuilding.questUnlockDomain || selectedBuilding.domain} quests</span>

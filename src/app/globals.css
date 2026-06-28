@@ -36,6 +36,10 @@
     border-radius: 0 !important;
   }
   
+  button, a, input, select, textarea {
+    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#C41E1E];
+  }
+  
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;

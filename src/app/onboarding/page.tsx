@@ -40,6 +40,7 @@ function OnboardingContent() {
     },
   })
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const selectedClass = watch('class')
 
   const handleNextStep = async () => {
@@ -95,13 +96,13 @@ function OnboardingContent() {
               style={{ animation: 'fadeInUp 400ms var(--ease-out-expo) both' }}
             >
               <div>
-                <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                <h2 className="font-mono text-[10px] text-[#767676] tracking-[0.2em] uppercase mb-6">
                   IDENTITY
                 </h2>
               </div>
 
               <div className="space-y-2">
-                <label className="font-sans text-[13px] text-[#5C5C5C] block">
+                <label className="font-sans text-[13px] text-[#767676] block">
                   Character Name
                 </label>
                 <input
@@ -116,7 +117,7 @@ function OnboardingContent() {
               </div>
 
               <div className="space-y-2" style={{ animationDelay: '100ms', animationFillMode: 'both' }}>
-                <label className="font-sans text-[13px] text-[#5C5C5C] block">
+                <label className="font-sans text-[13px] text-[#767676] block">
                   Kingdom Name
                 </label>
                 <input
@@ -148,7 +149,7 @@ function OnboardingContent() {
               style={{ animation: 'fadeInUp 400ms var(--ease-out-expo) both' }}
             >
               <div>
-                <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                <h2 className="font-mono text-[10px] text-[#767676] tracking-[0.2em] uppercase mb-6">
                   AFFINITY
                 </h2>
               </div>
@@ -168,7 +169,7 @@ function OnboardingContent() {
                       style={{ animation: 'fadeInUp 400ms var(--ease-out-expo) both', animationDelay: `${index * 100}ms` }}
                     >
                       <h3 className="font-serif text-[24px] font-bold text-[#E8E6E0] mb-2">{c.name}</h3>
-                      <p className="font-sans text-[13px] text-[#5C5C5C] line-clamp-2 leading-relaxed">
+                      <p className="font-sans text-[13px] text-[#767676] line-clamp-2 leading-relaxed">
                         {c.description}
                       </p>
                     </div>
@@ -199,13 +200,13 @@ function OnboardingContent() {
               style={{ animation: 'fadeInUp 400ms var(--ease-out-expo) both' }}
             >
               <div>
-                <h2 className="font-mono text-[10px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
+                <h2 className="font-mono text-[10px] text-[#767676] tracking-[0.2em] uppercase mb-6">
                   ARCHITECT
                 </h2>
               </div>
 
               <div className="space-y-2">
-                <label className="font-sans text-[13px] text-[#5C5C5C] block">
+                <label className="font-sans text-[13px] text-[#767676] block">
                   Companion Name
                 </label>
                 <input

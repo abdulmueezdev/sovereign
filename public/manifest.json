@@ -1,19 +1,14 @@
 {
-  "name": "Sovereign — Forge Your Kingdom",
+  "name": "Sovereign",
   "short_name": "Sovereign",
-  "description": "Turn real-life self-improvement into an RPG kingdom-building game.",
-  "start_url": "/",
-  "scope": "/",
+  "description": "Forge your kingdom through discipline.",
+  "start_url": "/dashboard",
   "display": "standalone",
-  "orientation": "portrait-primary",
   "background_color": "#080808",
   "theme_color": "#080808",
+  "orientation": "portrait",
   "icons": [
-    {
-      "src": "/logo.svg",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
+    { "src": "/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ]
 }

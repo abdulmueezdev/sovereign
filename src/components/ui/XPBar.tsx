@@ -28,10 +28,10 @@ export function XPBar({ current, max, level, variant = 'full' }: XPBarProps) {
       {/* Labels */}
       {variant === 'full' && (
         <div className="flex justify-between items-end">
-          <span className="font-sans text-[11px] tracking-[0.2em] text-[#5C5C5C] uppercase">
+          <span className="font-sans text-[11px] tracking-[0.2em] text-[#767676] uppercase">
             Progress
           </span>
-          <span className="font-mono text-[14px] text-[#5C5C5C]">
+          <span className="font-mono text-[14px] text-[#767676]">
             {current.toLocaleString()} / {max.toLocaleString()} XP
           </span>
         </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Home, Sword, User, Grid, MessageCircle, Settings } from 'lucide-react'
+import { Home, Sword, User, Grid, MessageSquare, Settings, Swords, Castle } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -21,7 +21,7 @@ export function Sidebar() {
     { name: 'Quests', icon: Sword, href: '/quests' },
     { name: 'Character', icon: User, href: '/character' },
     { name: 'Kingdom', icon: Grid, href: '/kingdom' },
-    { name: 'Companion', icon: MessageCircle, href: '/companion' },
+    { name: 'Companion', icon: MessageSquare, href: '/companion' },
   ]
 
   const avatarUrl = profile ? `https://api.dicebear.com/7.x/bottts-neutral/svg?seed=${profile.characterName}&backgroundColor=080808` : "https://api.dicebear.com/7.x/shapes/svg?seed=Aeon"
@@ -51,7 +51,7 @@ export function Sidebar() {
                 className={`group flex items-center justify-center w-full h-14 transition-colors duration-150 border-l-2 ${
                   active 
                     ? 'border-[#C41E1E] text-[#C41E1E] bg-[#0C0C0C]' 
-                    : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
+                    : 'border-transparent text-[#767676] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
                 }`}
                 title={item.name}
               >
@@ -68,7 +68,7 @@ export function Sidebar() {
             className={`flex items-center justify-center w-full h-14 transition-colors duration-150 border-l-2 ${
               pathname === '/settings' 
                 ? 'border-[#C41E1E] text-[#C41E1E] bg-[#0C0C0C]' 
-                : 'border-transparent text-[#5C5C5C] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
+                : 'border-transparent text-[#767676] hover:text-[#E8E6E0] hover:bg-[#0C0C0C]'
             }`}
           >
             <Settings size={20} strokeWidth={1.5} />
@@ -88,25 +88,28 @@ export function Sidebar() {
       </aside>
 
       {/* Mobile Bottom Nav */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden border-t border-[#1A1A1A] bg-[#080808]">
-        <div className="flex items-center justify-around h-14 px-2">
-          {navItems.map((item) => {
-            const Icon = item.icon
-            const active = pathname === item.href
-            return (
-              <Link
-                key={item.name}
-                href={item.href}
-                className={`flex items-center justify-center w-12 h-12 transition-colors duration-150 ${
-                  active ? 'text-[#C41E1E]' : 'text-[#3A3A3A] hover:text-[#5C5C5C]'
-                }`}
-                aria-label={item.name}
-              >
-                <Icon size={20} strokeWidth={1.5} />
-              </Link>
-            )
-          })}
-        </div>
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-[#080808] border-t border-[#1A1A1A] h-14 flex items-center justify-around md:hidden">
+        {[
+          { href: '/dashboard', icon: Home, label: 'Dashboard' },
+          { href: '/quests', icon: Swords, label: 'Quests' },
+          { href: '/kingdom', icon: Castle, label: 'Kingdom' },
+          { href: '/companion', icon: MessageSquare, label: 'Companion' },
+          { href: '/settings', icon: Settings, label: 'Settings' },
+        ].map(({ href, icon: Icon, label }) => {
+          const isActive = pathname === href || pathname.startsWith(`${href}/`);
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={label}
+              className={`flex items-center justify-center w-12 h-12 transition-colors duration-150 ${
+                isActive ? 'text-[#C41E1E]' : 'text-[#767676]'
+              } hover:text-[#E8E6E0]`}
+            >
+              <Icon size={24} strokeWidth={1.5} />
+            </Link>
+          );
+        })}
       </nav>
     </>
   )

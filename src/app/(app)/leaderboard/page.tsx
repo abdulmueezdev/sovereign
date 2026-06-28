@@ -61,7 +61,7 @@ export default function LeaderboardPage() {
         <h1 className="font-serif text-[40px] font-bold uppercase leading-none">
           THE RANKINGS
         </h1>
-        <p className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mt-3">
+        <p className="font-sans text-[11px] text-[#767676] tracking-[0.2em] uppercase mt-3">
           GLOBAL ECHOES
         </p>
       </div>
@@ -77,7 +77,7 @@ export default function LeaderboardPage() {
               className={`pb-3 font-sans text-[11px] uppercase tracking-[0.2em] transition-colors
                 ${isActive 
                   ? 'border-b-2 border-[#C41E1E] text-[#E8E6E0]' 
-                  : 'text-[#5C5C5C] hover:text-[#E8E6E0] border-b-2 border-transparent'
+                  : 'text-[#767676] hover:text-[#E8E6E0] border-b-2 border-transparent'
                 }
               `}
             >
@@ -88,7 +88,7 @@ export default function LeaderboardPage() {
       </div>
 
       {loading ? (
-        <div className="flex-1 flex items-center justify-center font-mono text-[14px] text-[#5C5C5C] animate-pulse py-12">
+        <div className="flex-1 flex items-center justify-center font-mono text-[14px] text-[#767676] animate-pulse py-12">
           GATHERING ECHOES...
         </div>
       ) : error ? (
@@ -96,7 +96,7 @@ export default function LeaderboardPage() {
           ERROR: {error}
         </div>
       ) : !data || data.rankings.length === 0 ? (
-        <div className="flex-1 flex items-center justify-center font-mono text-[12px] text-[#5C5C5C] py-12 text-center uppercase tracking-widest">
+        <div className="flex-1 flex items-center justify-center font-mono text-[12px] text-[#767676] py-12 text-center uppercase tracking-widest">
           NO ECHOES RECORDED
         </div>
       ) : (
@@ -118,7 +118,7 @@ export default function LeaderboardPage() {
               >
                 <div className="flex items-center flex-1">
                   {/* RANK */}
-                  <div className={`w-[60px] font-mono text-[14px] shrink-0 ${isTop3 ? 'text-[#C41E1E]' : 'text-[#5C5C5C]'}`}>
+                  <div className={`w-[60px] font-mono text-[14px] shrink-0 ${isTop3 ? 'text-[#C41E1E]' : 'text-[#767676]'}`}>
                     {row.rank === 1 ? '♔ 1' : row.rank}
                   </div>
 
@@ -141,7 +141,7 @@ export default function LeaderboardPage() {
                   <span 
                     className={`
                       font-sans text-[11px] uppercase border px-2 py-1 tracking-widest
-                      ${row.house_id === 'ZENITH' ? 'border-[#C41E1E] text-[#C41E1E]' : 'border-[#2A2A2A] text-[#5C5C5C]'}
+                      ${row.house_id === 'ZENITH' ? 'border-[#C41E1E] text-[#C41E1E]' : 'border-[#2A2A2A] text-[#767676]'}
                     `}
                   >
                     {row.house_id}
@@ -151,11 +151,11 @@ export default function LeaderboardPage() {
                 {/* LEVEL & XP */}
                 <div className="flex items-center justify-end gap-6 md:gap-12 flex-1 shrink-0">
                   <div className="flex flex-col md:flex-row md:items-baseline md:gap-2 text-right">
-                    <span className="font-mono text-[10px] text-[#5C5C5C] md:hidden">LVL</span>
+                    <span className="font-mono text-[10px] text-[#767676] md:hidden">LVL</span>
                     <span className="font-serif text-[22px] font-bold">{row.level}</span>
                   </div>
                   <div className="flex flex-col md:flex-row md:items-baseline md:gap-2 text-right w-[80px] md:w-auto">
-                    <span className="font-mono text-[10px] text-[#5C5C5C] md:hidden">XP</span>
+                    <span className="font-mono text-[10px] text-[#767676] md:hidden">XP</span>
                     <span className="font-mono text-[14px] text-[#E8E6E0]">
                       {row.xp_total.toLocaleString()}
                     </span>
@@ -196,11 +196,11 @@ export default function LeaderboardPage() {
 
             <div className="flex items-center justify-end gap-6 md:gap-12 flex-1 shrink-0">
               <div className="flex flex-col md:flex-row md:items-baseline md:gap-2 text-right">
-                <span className="font-mono text-[10px] text-[#5C5C5C] md:hidden">LVL</span>
+                <span className="font-mono text-[10px] text-[#767676] md:hidden">LVL</span>
                 <span className="font-serif text-[22px] font-bold">{data.your_rank.level}</span>
               </div>
               <div className="flex flex-col md:flex-row md:items-baseline md:gap-2 text-right w-[80px] md:w-auto">
-                <span className="font-mono text-[10px] text-[#5C5C5C] md:hidden">XP</span>
+                <span className="font-mono text-[10px] text-[#767676] md:hidden">XP</span>
                 <span className="font-mono text-[14px] text-[#E8E6E0]">
                   {data.your_rank.xp_total.toLocaleString()}
                 </span>

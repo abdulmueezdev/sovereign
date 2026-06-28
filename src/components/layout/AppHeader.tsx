@@ -30,7 +30,7 @@ export function AppHeader() {
         {/* Back — mobile only */}
         <button
           onClick={() => router.back()}
-          className="md:hidden flex items-center gap-2 text-[#5C5C5C] hover:text-[#E8E6E0] transition-colors duration-150"
+          className="md:hidden flex items-center gap-2 text-[#767676] hover:text-[#E8E6E0] transition-colors duration-150"
           aria-label="Go back"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -47,7 +47,7 @@ export function AppHeader() {
         {/* Guide link — right */}
         <Link
           href="/guide"
-          className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#3A3A3A] hover:text-[#5C5C5C] transition-colors duration-150 hidden md:block focus:outline-none focus-visible:outline-none"
+          className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#3A3A3A] hover:text-[#767676] transition-colors duration-150 hidden md:block focus:outline-none focus-visible:outline-none"
         >
           Codex
         </Link>
