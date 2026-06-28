@@ -44,7 +44,21 @@ export default function CharacterPage() {
       .catch(() => setLoading(false))
   }, [])
 
-  if (loading) return <div className="text-[#E8E6E0] p-8">Loading...</div>
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#080808] p-8 md:p-12 lg:p-16 flex justify-center">
+        <div className="w-full max-w-4xl animate-pulse space-y-4">
+          <div className="h-8 bg-[#1A1A1A] w-1/3" />
+          <div className="h-4 bg-[#1A1A1A] w-1/4" />
+          <div className="space-y-2 mt-8">
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
   if (!profile) return <div className="text-[#E8E6E0] p-8">Error loading character</div>
 
   const attributes = [

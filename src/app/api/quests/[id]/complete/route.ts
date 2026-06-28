@@ -73,6 +73,8 @@ export async function POST(
     newSkillPoints += 1
   }
 
+  console.log(`[QuestComplete] User ${user.id} - Original XP: ${profile.xp}, Added: ${xpReward}. New XP: ${currentXp}, New Level: ${level}, Leveled Up: ${leveledUp}`);
+
   // Update profile
   await supabase
     .from('profiles')
@@ -178,6 +180,7 @@ export async function POST(
           unlockedAchievementIds.push(ach.id)
           // Add bonus XP to total
           await supabase.from('profiles').update({ xp_total: xpTotal + ach.xp_bonus }).eq('id', user.id)
+          console.log(`[QuestComplete] Unlocked achievement ${ach.id} for user ${user.id}`);
         }
         
         await supabase.from('user_achievements').upsert(payload)

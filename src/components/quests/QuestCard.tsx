@@ -67,13 +67,16 @@ export function QuestCard({
     }
 
     try {
+      console.log(`[QuestCard] Calling PUT /api/quests/${questId}/objective`, { objectiveId, checked })
       const res = await fetch(`/api/quests/${questId}/objective`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ objectiveId, checked })
       })
       if (!res.ok) throw new Error('Failed to save objective status')
+      console.log(`[QuestCard] Objective updated successfully.`)
     } catch (err) {
+      console.error(`[QuestCard] Failed to update objective`, err)
       const queueJson = localStorage.getItem('offlineQuestQueue')
       const queue = queueJson ? JSON.parse(queueJson) : []
       queue.push({
@@ -91,13 +94,13 @@ export function QuestCard({
   async function markComplete(questId: string) {
     setIsCompleting(true)
     try {
-      const res = await fetch(`/api/quests/${questId}/complete`, { method: 'POST' })
-      const result = await res.json()
-      
-      if (result.success) {
-        setIsDrawerOpen(false)
-        if (onContinue) onContinue()
+      console.log(`[QuestCard] Marking complete for quest: ${questId}`)
+      if (onContinue) {
+        await Promise.resolve(onContinue())
       }
+      setIsDrawerOpen(false)
+    } catch (err) {
+      console.error('[QuestCard] markComplete error:', err)
     } finally {
       setIsCompleting(false)
     }

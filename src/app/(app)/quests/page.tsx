@@ -126,9 +126,14 @@ function QuestsContent() {
   if (authLoading || (loading && quests.length === 0 && !error)) {
     return (
       <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
-        <div className="w-full max-w-4xl animate-pulse">
-          <div className="h-8 bg-[#1A1A1A] w-1/3 mb-12" />
-          <div className="h-64 bg-[#1A1A1A] w-full" />
+        <div className="w-full max-w-4xl animate-pulse space-y-4">
+          <div className="h-8 bg-[#1A1A1A] w-1/3" />
+          <div className="h-4 bg-[#1A1A1A] w-1/4" />
+          <div className="space-y-2 mt-8">
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+            ))}
+          </div>
         </div>
       </div>
     )

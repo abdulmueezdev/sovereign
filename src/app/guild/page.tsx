@@ -83,7 +83,15 @@ export default function GuildHubPage() {
       <div className="flex min-h-screen bg-[#080808] text-[#E8E6E0]">
         <Sidebar />
         <main className="flex-1 md:ml-[64px] min-h-screen p-8 md:p-12 lg:p-16 flex items-center justify-center">
-          <div className="font-mono text-[14px] text-[#5C5C5C] animate-pulse">LOADING HOUSE RECORDS...</div>
+          <div className="w-full max-w-4xl animate-pulse space-y-4">
+            <div className="h-8 bg-[#1A1A1A] w-1/3" />
+            <div className="h-4 bg-[#1A1A1A] w-1/4" />
+            <div className="space-y-2 mt-8">
+              {[...Array(9)].map((_, i) => (
+                <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+              ))}
+            </div>
+          </div>
         </main>
       </div>
     )

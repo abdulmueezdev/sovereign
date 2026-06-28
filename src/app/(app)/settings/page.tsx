@@ -112,6 +112,10 @@ export default function SettingsPage() {
   }
 
   const handleLogout = async () => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
+      router.push('/login')
+      return
+    }
     const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/login')

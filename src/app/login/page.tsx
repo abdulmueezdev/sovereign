@@ -133,7 +133,17 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <div className="min-h-screen bg-[#080808] flex flex-col justify-center px-[20%]">
-      <Suspense fallback={<div className="w-full max-w-[480px] h-[400px] flex items-center justify-center font-mono text-[#5C5C5C] text-[10px] tracking-[0.2em] uppercase">Loading Gateway...</div>}>
+      <Suspense fallback={
+        <div className="w-full max-w-4xl animate-pulse space-y-4">
+          <div className="h-8 bg-[#1A1A1A] w-1/3" />
+          <div className="h-4 bg-[#1A1A1A] w-1/4" />
+          <div className="space-y-2 mt-8">
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="h-[1px] bg-[#1A1A1A] w-full" />
+            ))}
+          </div>
+        </div>
+      }>
         <LoginForm />
       </Suspense>
     </div>
