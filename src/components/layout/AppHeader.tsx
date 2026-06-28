@@ -36,7 +36,7 @@ export function AppHeader() {
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M10 3L5 8L10 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square"/>
           </svg>
-          <span className="font-grotesk text-[10px] tracking-[0.2em] uppercase">Back</span>
+          <span className="font-sans text-[10px] tracking-[0.2em] uppercase">Back</span>
         </button>
 
         {/* Page title — center */}

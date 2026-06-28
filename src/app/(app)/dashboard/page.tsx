@@ -84,6 +84,10 @@ function DashboardContent() {
   }
 
   useEffect(() => {
+    if (IS_DEMO) {
+      fetchDashboard()
+      return
+    }
     if (user && userProfile?.onboarding_complete) {
       fetchDashboard()
     }

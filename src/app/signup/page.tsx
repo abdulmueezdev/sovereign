@@ -65,16 +65,16 @@ export default function SignupPage() {
           }}
         >
           <div className="space-y-6 text-center max-w-sm mx-auto">
-            <h1 className="font-cormorant text-[32px] font-bold text-[#E8E6E0]">
+            <h1 className="font-serif text-[32px] font-bold text-[#E8E6E0]">
               Registration Closed
             </h1>
-            <p className="font-grotesk text-[13px] text-[#5C5C5C] leading-relaxed">
+            <p className="font-sans text-[13px] text-[#5C5C5C] leading-relaxed">
               New kingdoms are not accepting sovereigns at this time.
               If you were granted access, proceed to the gate.
             </p>
             <Link
               href="/login"
-              className="inline-block bg-[#C41E1E] text-white font-grotesk text-[11px] tracking-[0.2em] uppercase px-10 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150"
+              className="inline-block bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-10 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150"
             >
               Proceed to Login
             </Link>

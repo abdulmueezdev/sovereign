@@ -21,6 +21,20 @@ export default function SettingsPage() {
   const [isSavingHouse, setIsSavingHouse] = useState(false)
 
   useEffect(() => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
+      import('@/lib/demo-data').then(({ DEMO_PROFILE }) => {
+        setProfile(DEMO_PROFILE)
+        setNames({
+          characterName: DEMO_PROFILE.character_name,
+          kingdomName: DEMO_PROFILE.kingdom_name,
+          companionName: DEMO_PROFILE.companion_name || 'Aegis'
+        })
+        setHouseId(DEMO_PROFILE.house_id)
+        setLoading(false)
+      })
+      return
+    }
+
     fetch('/api/profile')
       .then(res => res.json())
       .then(data => {
@@ -38,6 +52,16 @@ export default function SettingsPage() {
   }, [])
 
   const handleSaveNames = async () => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
+      setIsSavingNames(true)
+      setTimeout(() => {
+        setProfile((prev: any) => ({ ...prev, characterName: names.characterName, kingdomName: names.kingdomName, companionName: names.companionName }))
+        showToast('Identities updated successfully')
+        setIsSavingNames(false)
+      }, 500)
+      return
+    }
+
     setIsSavingNames(true)
     try {
       const res = await fetch('/api/profile', {
@@ -56,6 +80,16 @@ export default function SettingsPage() {
   }
 
   const handleSaveHouse = async () => {
+    if (process.env.NEXT_PUBLIC_DEMO_MODE === 'true') {
+      setIsSavingHouse(true)
+      setTimeout(() => {
+        setProfile((prev: any) => ({ ...prev, houseId }))
+        showToast('House changed successfully')
+        setIsSavingHouse(false)
+      }, 500)
+      return
+    }
+
     setIsSavingHouse(true)
     try {
       const res = await fetch('/api/profile/change-house', {

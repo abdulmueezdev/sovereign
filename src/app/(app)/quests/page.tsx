@@ -31,6 +31,7 @@ function QuestsContent() {
   })
 
   useEffect(() => {
+    if (IS_DEMO) return
     if (!authLoading && !user) router.push('/login')
   }, [user, authLoading, router])
 

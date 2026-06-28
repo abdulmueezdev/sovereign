@@ -11,7 +11,7 @@ const buttonVariants = cva(
       variant: {
         default: [
           "bg-[#C41E1E] text-white",
-          "font-grotesk text-[11px] tracking-[0.2em] uppercase",
+          "font-sans text-[11px] tracking-[0.2em] uppercase",
           "rounded-none",
           "hover:bg-[#E8282B] transition-colors duration-150",
           "active:scale-[0.97] transition-transform duration-[80ms]",
@@ -20,7 +20,7 @@ const buttonVariants = cva(
         ].join(' '),
         secondary: [
           "bg-transparent text-[#E8E6E0]",
-          "font-grotesk text-[11px] tracking-[0.2em] uppercase",
+          "font-sans text-[11px] tracking-[0.2em] uppercase",
           "rounded-none",
           "border border-[#2A2A2A]",
           "hover:border-[#E8E6E0] transition-colors duration-150",
