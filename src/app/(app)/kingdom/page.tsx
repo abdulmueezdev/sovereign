@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { Button } from '@/components/ui/button'
 
 import { DEMO_BUILDINGS } from '@/lib/demo-data'
+import { safeReplace } from '@/lib/utils'
 const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
 
 export default function KingdomPage() {
@@ -184,7 +185,7 @@ export default function KingdomPage() {
               </div>
               
               <p className="font-serif italic text-[#5C5C5C] text-[18px] leading-relaxed mb-12">
-                "{selectedBuilding.loreText}"
+                "{safeReplace(selectedBuilding.loreText || selectedBuilding.description || selectedBuilding.lore, /\n/g, ' ')}"
               </p>
 
               <div className="space-y-10 flex-1">
@@ -192,9 +193,9 @@ export default function KingdomPage() {
                   <div className="text-[11px] text-[#3A3A3A] font-sans tracking-[0.2em] mb-4 uppercase">
                     Unlock Condition
                   </div>
-                  <div className={`font-mono text-[11px] flex items-center gap-3 uppercase tracking-[0.1em] ${selectedBuilding.status === 'locked' ? 'text-[#5C5C5C]' : 'text-[#E8E6E0]'}`}>
-                    {selectedBuilding.status !== 'locked' ? <Check size={16} className="text-[#C41E1E]" /> : <X size={16} className="text-[#3A3A3A]" />}
-                    {selectedBuilding.unlockAttribute.replace('attr_', '')} LEVEL {selectedBuilding.unlockThreshold}
+                  <div className={`font-mono text-[11px] flex items-center gap-3 uppercase tracking-[0.1em] ${selectedBuilding.status === 'locked' || selectedBuilding.is_locked ? 'text-[#5C5C5C]' : 'text-[#E8E6E0]'}`}>
+                    {selectedBuilding.status !== 'locked' && !selectedBuilding.is_locked ? <Check size={16} className="text-[#C41E1E]" /> : <X size={16} className="text-[#3A3A3A]" />}
+                    {safeReplace(selectedBuilding.unlockAttribute || selectedBuilding.req_attr || selectedBuilding.required_attribute, 'attr_', '')} LEVEL {selectedBuilding.unlockThreshold || selectedBuilding.req_value || selectedBuilding.required_value}
                   </div>
                 </div>
                 
@@ -205,12 +206,12 @@ export default function KingdomPage() {
                   <ul className="font-mono text-[11px] text-[#5C5C5C] space-y-4 uppercase tracking-[0.1em]">
                     <li className="flex items-start gap-3">
                       <span className="text-[#C41E1E] mt-0.5">◆</span> 
-                      <span>Unlocks {selectedBuilding.questUnlockDomain} quests</span>
+                      <span>Unlocks {selectedBuilding.questUnlockDomain || selectedBuilding.domain} quests</span>
                     </li>
-                    {selectedBuilding.xpBonusPct > 0 && (
+                    {(selectedBuilding.xpBonusPct > 0 || selectedBuilding.xp_bonus > 0) && (
                       <li className="flex items-start gap-3">
                         <span className="text-[#C41E1E] mt-0.5">◆</span> 
-                        <span>+{selectedBuilding.xpBonusPct}% XP in {selectedBuilding.questUnlockDomain} domain</span>
+                        <span>+{(selectedBuilding.xpBonusPct || selectedBuilding.xp_bonus || 0)}% XP in {selectedBuilding.questUnlockDomain || selectedBuilding.domain} domain</span>
                       </li>
                     )}
                   </ul>

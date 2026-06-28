@@ -213,27 +213,49 @@ export default function DashboardPage() {
                 <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                   MANIFESTED ECHOES
                 </h2>
-                <div className="flex flex-col border-b border-[#1A1A1A]">
+                <div className="flex flex-col border-b border-[#1A1A1A] pb-6">
                   {quests.length === 0 ? (
-                    <div className="py-8 text-[#5C5C5C] font-sans text-sm">No active quests. The void is still.</div>
+                    <div className="border border-[#1A1A1A] p-8 text-center">
+                      <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#3A3A3A] mb-3">NO ACTIVE QUESTS</p>
+                      <p className="font-serif text-[20px] italic text-[#5C5C5C] mb-6">The board awaits your command.</p>
+                      <Link href="/quests" className="inline-block bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150">
+                        GO TO QUEST BOARD
+                      </Link>
+                    </div>
                   ) : (
-                    quests.map((quest: any, i: number) => (
-                      <QuestCard
-                        key={quest.id}
-                        index={i}
-                        id={quest.id}
-                        title={quest.title || quest.quest_templates?.title}
-                        description={quest.description || quest.quest_templates?.description}
-                        domain={quest.domain || quest.quest_templates?.domain}
-                        xpReward={quest.xpReward || quest.quest_templates?.xp_reward}
-                        rarity={quest.rarity}
-                        progress={quest.progress}
-                        dueDate={quest.dueDate}
-                        status={quest.status}
-                        objectives={quest.objectives || quest.quest_templates?.objectives}
-                        onContinue={handleQuestComplete}
-                      />
-                    ))
+                    <div className="space-y-4">
+                      {quests.slice(0, 2).map((quest: any) => {
+                        const title = quest.title || quest.quest_templates?.title;
+                        const domain = quest.domain || quest.quest_templates?.domain;
+                        const progress = quest.progress || 0;
+                        return (
+                          <div key={quest.id} className="border border-[#1A1A1A] p-5 hover:border-[#2A2A2A] transition-colors bg-[#0C0C0C]">
+                            <div className="flex items-start justify-between mb-4">
+                              <div>
+                                <span className="font-mono text-[10px] tracking-[0.15em] text-[#5C5C5C] uppercase block mb-1">
+                                  {domain}
+                                </span>
+                                <h3 className="font-serif text-[20px] font-bold text-[#E8E6E0] leading-tight">
+                                  {title}
+                                </h3>
+                              </div>
+                              <Link href="/quests" className="font-mono text-[9px] text-[#C41E1E] hover:text-[#E8282B] uppercase tracking-[0.1em] shrink-0 mt-1">
+                                CONTINUE →
+                              </Link>
+                            </div>
+                            <div className="w-full h-[2px] bg-[#1A1A1A] relative">
+                              <div
+                                className="absolute top-0 left-0 h-full transition-all duration-[800ms]"
+                                style={{ 
+                                  width: `${progress}%`,
+                                  background: 'linear-gradient(90deg, #C41E1E 0%, #8B0000 100%)',
+                                }}
+                              />
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
                   )}
                 </div>
               </div>

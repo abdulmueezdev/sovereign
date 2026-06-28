@@ -2,6 +2,15 @@
 // Static demo data — used when NEXT_PUBLIC_DEMO_MODE=true
 // No database, no auth, no API calls needed
 
+export interface CustomQuestFormData {
+  name: string;
+  description: string;
+  objectives: string[];
+  domain: 'strength' | 'vitality' | 'intelligence' | 'focus' | 'technical' | 'creativity' | 'leadership' | 'charisma' | 'discipline' | 'scholar' | 'warrior' | 'builder' | 'commander';
+  difficulty: 'Common' | 'Rare' | 'Epic' | 'Legendary';
+  xpReward: number;
+}
+
 export const DEMO_PROFILE = {
   id: 'demo-user',
   character_name: 'Mueez',
@@ -104,12 +113,12 @@ export const DEMO_QUESTS_FULFILLED = [
 ];
 
 export const DEMO_BUILDINGS = [
-  { id: 'b1', name: 'The Scriptorium', description: 'A hall of learning. Boosts Scholar quest XP by 10%.', domain: 'scholar', is_built: true, is_available: true, req_attr: 'attr_intelligence', req_value: 10 },
-  { id: 'b2', name: 'The Forge', description: 'Where weapons are made. Unlocks Warrior quests.', domain: 'warrior', is_built: false, is_available: true, req_attr: 'attr_strength', req_value: 10 },
-  { id: 'b3', name: 'The Observatory', description: 'Study the stars. Increases focus attribute gain.', domain: 'scholar', is_built: false, is_available: true, req_attr: 'attr_focus', req_value: 14 },
-  { id: 'b4', name: 'The Vault', description: 'Stores your kingdom\'s wealth.', domain: 'builder', is_built: false, is_available: false, req_attr: 'attr_technical', req_value: 20 },
-  { id: 'b5', name: 'The Arena', description: 'Train warriors. Unlocks advanced combat quests.', domain: 'warrior', is_built: false, is_available: false, req_attr: 'attr_strength', req_value: 20 },
-  { id: 'b6', name: 'The Council Hall', description: 'Coordinate your kingdom. Boosts leadership gain.', domain: 'commander', is_built: false, is_available: false, req_attr: 'attr_leadership', req_value: 15 },
+  { id: 'b1', name: 'The Scriptorium', description: 'A hall of learning. Boosts Scholar quest XP by 10%.', lore: 'Knowledge is power.', domain: 'scholar', is_built: true, is_available: true, is_locked: false, req_attr: 'attr_intelligence', req_value: 10, xp_bonus: 10 },
+  { id: 'b2', name: 'The Forge', description: 'Where weapons are made. Unlocks Warrior quests.', lore: 'Iron sharpens iron.', domain: 'warrior', is_built: false, is_available: true, is_locked: false, req_attr: 'attr_strength', req_value: 10, xp_bonus: 0 },
+  { id: 'b3', name: 'The Observatory', description: 'Study the stars. Increases focus attribute gain.', lore: 'The cosmos watch over us.', domain: 'scholar', is_built: false, is_available: true, is_locked: false, req_attr: 'attr_focus', req_value: 14, xp_bonus: 5 },
+  { id: 'b4', name: 'The Vault', description: 'Stores your kingdom\'s wealth.', lore: 'Prosperity demands protection.', domain: 'builder', is_built: false, is_available: false, is_locked: true, req_attr: 'attr_technical', req_value: 20, xp_bonus: 0 },
+  { id: 'b5', name: 'The Arena', description: 'Train warriors. Unlocks advanced combat quests.', lore: 'Blood drawn in training spares blood in war.', domain: 'warrior', is_built: false, is_available: false, is_locked: true, req_attr: 'attr_strength', req_value: 20, xp_bonus: 15 },
+  { id: 'b6', name: 'The Council Hall', description: 'Coordinate your kingdom. Boosts leadership gain.', lore: 'A ruler must listen before commanding.', domain: 'commander', is_built: false, is_available: false, is_locked: true, req_attr: 'attr_leadership', req_value: 15, xp_bonus: 5 },
 ];
 
 export const DEMO_ACHIEVEMENTS = [

@@ -67,16 +67,13 @@ export function QuestCard({
     }
 
     try {
-      console.log(`[QuestCard] Calling PUT /api/quests/${questId}/objective`, { objectiveId, checked })
       const res = await fetch(`/api/quests/${questId}/objective`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ objectiveId, checked })
       })
       if (!res.ok) throw new Error('Failed to save objective status')
-      console.log(`[QuestCard] Objective updated successfully.`)
     } catch (err) {
-      console.error(`[QuestCard] Failed to update objective`, err)
       const queueJson = localStorage.getItem('offlineQuestQueue')
       const queue = queueJson ? JSON.parse(queueJson) : []
       queue.push({
@@ -94,13 +91,11 @@ export function QuestCard({
   async function markComplete(questId: string) {
     setIsCompleting(true)
     try {
-      console.log(`[QuestCard] Marking complete for quest: ${questId}`)
       if (onContinue) {
         await Promise.resolve(onContinue())
       }
       setIsDrawerOpen(false)
     } catch (err) {
-      console.error('[QuestCard] markComplete error:', err)
     } finally {
       setIsCompleting(false)
     }
@@ -175,11 +170,12 @@ export function QuestCard({
           />
           
           <div 
-            className="relative w-[360px] h-full bg-[#0C0C0C] border-l border-[#1A1A1A] pointer-events-auto flex flex-col animate-slide-in-right"
+            className="relative w-full sm:w-[400px] h-full max-h-[90vh] my-auto sm:mr-8 bg-[#0C0C0C] border border-[#1A1A1A] pointer-events-auto flex flex-col animate-slide-in-right shadow-2xl"
             style={{ animation: 'slideInRight 300ms var(--ease-out-expo) both' }}
           >
-            <div className="p-8 flex-1 overflow-y-auto">
-              <div className="flex gap-4 mb-6">
+            {/* Header Fixed at Top */}
+            <div className="p-6 md:p-8 border-b border-[#1A1A1A] shrink-0 bg-[#0C0C0C]">
+              <div className="flex gap-4 mb-4">
                 <span className="font-mono text-[11px] tracking-[0.15em] text-[#5C5C5C] uppercase">
                   {domain}
                 </span>
@@ -190,10 +186,13 @@ export function QuestCard({
                   {xpReward} XP
                 </span>
               </div>
-
-              <h2 className="font-serif text-[28px] font-bold text-[#E8E6E0] leading-tight mb-4">
+              <h2 className="font-serif text-[24px] md:text-[28px] font-bold text-[#E8E6E0] leading-tight">
                 {title}
               </h2>
+            </div>
+
+            {/* Content Area flex-1 overflow-y-auto */}
+            <div className="p-6 md:p-8 flex-1 overflow-y-auto">
               
               <p className="font-sans text-[14px] text-[#E8E6E0] mb-8 leading-relaxed opacity-80">
                 {description}
@@ -206,7 +205,7 @@ export function QuestCard({
                 
                 <div className="space-y-4">
                   {objectives.map((obj) => (
-                    <label key={obj.id} className="flex items-start gap-4 cursor-pointer group">
+                    <label key={obj.id} className="flex items-start gap-4 cursor-pointer group min-h-[48px] p-2 -ml-2 hover:bg-[#1A1A1A] transition-colors rounded-none">
                       <div className="relative flex items-center justify-center mt-1">
                         <input
                           type="checkbox"
@@ -229,17 +228,17 @@ export function QuestCard({
               </div>
             </div>
 
-            <div className="p-8 border-t border-[#1A1A1A] bg-[#080808] flex flex-col gap-4">
+            <div className="p-6 md:p-8 border-t border-[#1A1A1A] bg-[#080808] shrink-0 flex flex-col md:flex-row gap-4">
               <button
                 onClick={() => markComplete(id)}
                 disabled={!isAllComplete || isCompleting}
-                className="w-full bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-[80ms] disabled:opacity-50 disabled:hover:bg-[#C41E1E] disabled:active:scale-100"
+                className="w-full md:flex-1 bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-6 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-[80ms] disabled:opacity-50 disabled:hover:bg-[#C41E1E] disabled:active:scale-100"
               >
                 {isCompleting ? 'Marking...' : 'Mark Complete'}
               </button>
               <button 
                 onClick={() => setIsDrawerOpen(false)}
-                className="bg-transparent text-[#E8E6E0] font-sans text-[11px] tracking-[0.2em] uppercase px-8 py-3 border border-[#2A2A2A] hover:border-[#E8E6E0] transition-colors duration-150"
+                className="w-full md:flex-1 bg-transparent text-[#E8E6E0] font-sans text-[11px] tracking-[0.2em] uppercase px-6 py-3 border border-[#2A2A2A] hover:border-[#E8E6E0] transition-colors duration-150"
               >
                 Close
               </button>

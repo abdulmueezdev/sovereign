@@ -9,8 +9,9 @@ import { Sidebar } from '@/components/layout/Sidebar'
 import { QuestCard } from '@/components/quests/QuestCard'
 import { ToastContainer, useToast } from '@/components/ui/Toast'
 import { LevelUpGate } from '@/components/overlays/LevelUpGate'
+import { ForgeQuestModal } from '@/components/quests/ForgeQuestModal'
 
-import { DEMO_QUESTS_ACTIVE, DEMO_QUESTS_DORMANT, DEMO_QUESTS_FULFILLED } from '@/lib/demo-data'
+import { DEMO_QUESTS_ACTIVE, DEMO_QUESTS_DORMANT, DEMO_QUESTS_FULFILLED, type CustomQuestFormData } from '@/lib/demo-data'
 const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
 
 function QuestsContent() {
@@ -23,6 +24,8 @@ function QuestsContent() {
   const [error, setError] = useState(false)
   
   const [quests, setQuests] = useState<any[]>([])
+  const [forgeOpen, setForgeOpen] = useState(false)
+  const [dormantQuests, setDormantQuests] = useState(DEMO_QUESTS_DORMANT)
 
   const [levelUpData, setLevelUpData] = useState<{ open: boolean; newLevel: number; newTitle: string }>({
     open: false,
@@ -40,7 +43,7 @@ function QuestsContent() {
     setError(false)
     if (IS_DEMO) {
       if (tab === 'active') setQuests(DEMO_QUESTS_ACTIVE)
-      else if (tab === 'available') setQuests(DEMO_QUESTS_DORMANT)
+      else if (tab === 'available') setQuests(dormantQuests)
       else setQuests(DEMO_QUESTS_FULFILLED)
       setLoading(false)
       return
@@ -74,7 +77,7 @@ function QuestsContent() {
 
   const handleStartQuest = async (questTemplateId: string) => {
     if (IS_DEMO) {
-      const template = DEMO_QUESTS_DORMANT.find(q => q.id === questTemplateId)
+      const template = dormantQuests.find(q => q.id === questTemplateId)
       DEMO_QUESTS_ACTIVE.push({
         id: `demo-${Date.now()}`,
         quest_template_id: questTemplateId,
@@ -106,8 +109,14 @@ function QuestsContent() {
     if (IS_DEMO) {
       const idx = DEMO_QUESTS_ACTIVE.findIndex(q => q.id === questId)
       if (idx !== -1) {
+        const quest = DEMO_QUESTS_ACTIVE[idx]
         DEMO_QUESTS_ACTIVE.splice(idx, 1)
-        addToast({ type: 'xp', message: `+${xpReward} XP EARNED` })
+        DEMO_QUESTS_FULFILLED.unshift({
+          ...quest,
+          status: 'fulfilled',
+          completed_at: new Date().toISOString()
+        } as any)
+        addToast({ type: 'xp', message: `+${xpReward} XP EARNED`, description: 'Quest fulfilled. The void acknowledges your discipline.' })
         fetchQuests(activeTab)
       }
       return
@@ -116,10 +125,33 @@ function QuestsContent() {
     try {
       const res = await fetch(`/api/quests/${questId}/complete`, { method: 'POST' })
       if (!res.ok) throw new Error()
-      addToast({ type: 'xp', message: `+${xpReward} XP EARNED` })
+      addToast({ type: 'xp', message: `+${xpReward} XP EARNED`, description: 'Quest fulfilled. The void acknowledges your discipline.' })
       fetchQuests(activeTab)
     } catch (err) {
       addToast({ type: 'error', message: 'FAILED TO COMPLETE' })
+    }
+  }
+
+  function handleForgeQuest(formData: CustomQuestFormData) {
+    const newQuest = {
+      id: `custom-${Date.now()}`,
+      title: formData.name, // The component expects title, mapping from name
+      description: formData.description,
+      objectives: formData.objectives,
+      domain: formData.domain,
+      xp_reward: formData.xpReward,
+      rarity: formData.difficulty.toLowerCase(),
+    };
+    
+    setDormantQuests(prev => [...prev, newQuest]);
+    if (activeTab === 'available') {
+      setQuests(prev => [...prev, newQuest]);
+    }
+    setForgeOpen(false);
+    addToast({ type: 'success', message: 'QUEST FORGED', description: 'Your custom quest awaits manifestation.' });
+    
+    if (!IS_DEMO) {
+      // TODO: POST to /api/quests/custom
     }
   }
 
@@ -153,6 +185,12 @@ function QuestsContent() {
         newLevel={levelUpData.newLevel}
         newTitle={levelUpData.newTitle}
         onClose={() => setLevelUpData({ ...levelUpData, open: false })}
+      />
+
+      <ForgeQuestModal
+        isOpen={forgeOpen}
+        onClose={() => setForgeOpen(false)}
+        onForge={handleForgeQuest}
       />
 
       <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16">
@@ -190,6 +228,15 @@ function QuestsContent() {
 
             {/* Content */}
             <div className="flex flex-col border-b border-[#1A1A1A] min-h-[400px]">
+              {activeTab === 'available' && (
+                <div className="flex items-center justify-between mb-8 mt-4">
+                  <p className="font-mono text-[10px] tracking-[0.3em] uppercase text-[#2A2A2A]">DORMANT QUESTS</p>
+                  <button onClick={() => setForgeOpen(true)}
+                    className="bg-[#C41E1E] text-white font-sans text-[11px] tracking-[0.2em] uppercase px-6 py-3 hover:bg-[#E8282B] active:scale-[0.97] transition-all duration-150">
+                    + FORGE NEW QUEST
+                  </button>
+                </div>
+              )}
               {loading ? (
                 <div className="py-12 flex justify-center">
                   <div className="w-6 h-6 border-2 border-[#1A1A1A] border-t-[#C41E1E] rounded-none animate-spin" />

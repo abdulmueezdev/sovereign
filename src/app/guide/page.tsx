@@ -92,7 +92,7 @@ export default function GuidePage() {
       {/* Sections */}
       <div className="max-w-3xl mx-auto px-6 pb-32">
         {SECTIONS.map((s) => (
-          <div key={s.id} className="border-t border-[#1A1A1A] py-14">
+          <div key={s.id} className="border-t border-[#1A1A1A] py-16">
             <div className="grid grid-cols-[48px_1fr] gap-8 md:gap-12">
               <span className="font-mono text-[10px] tracking-[0.2em] text-[#2A2A2A] uppercase block pt-[6px]">
                 {s.id}
@@ -124,7 +124,7 @@ export default function GuidePage() {
         ))}
 
         {/* CTA */}
-        <div className="border-t border-[#1A1A1A] pt-20 flex flex-col items-start gap-8">
+        <div className="mt-20 pt-20 border-t border-[#1A1A1A] flex flex-col items-start gap-8">
           <p className="font-serif text-[22px] italic text-[#3A3A3A]">
             The void awaits your command.
           </p>

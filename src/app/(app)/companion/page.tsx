@@ -58,53 +58,56 @@ export default function CompanionPage() {
       .catch(console.error)
   }, [])
 
-  async function handleSend(messageText: string) {
-    const text = messageText.trim();
-    if (!text) return;
-
-    const userMsg = { id: Date.now().toString(), role: 'user' as const, content: text };
-    setMessages(prev => [...prev, userMsg]);
+  async function handleSend(text?: string) {
+    const trimmed = (text ?? input).trim();
+    if (!trimmed) return;
+    
+    setMessages(prev => [...prev, {
+      id: `u-${Date.now()}`,
+      role: 'user',
+      content: trimmed,
+      timestamp: new Date().toISOString(),
+    } as any]);
     setInput('');
     setIsLoading(true);
-
+    
     try {
-      let responseText: string;
-
+      let reply: string;
       if (IS_DEMO) {
-        // Simulate AI delay
         await new Promise(r => setTimeout(r, 900));
-        responseText = getDemoCompanionResponse(text);
+        reply = getDemoCompanionResponse(trimmed);
       } else {
         const res = await fetch('/api/companion/message', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text }),
+          body: JSON.stringify({ message: trimmed }),
         });
-        
-        if (!res.ok) throw new Error(`API error: ${res.status}`);
         const data = await res.json();
-        responseText = data.message ?? data.response ?? data.content ?? data.reply ?? 'The void stirs. Try again.';
+        reply = data.reply ?? data.message ?? data.content ?? 'The void stirs. Try again.';
       }
-
-      const aegisMsg = { id: (Date.now() + 1).toString(), role: 'assistant' as const, content: responseText };
-      setMessages(prev => [...prev, aegisMsg]);
-
-    } catch (err) {
-      console.error('[Companion] Send error:', err);
-      const errorMsg = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant' as const,
+      
+      setMessages(prev => [...prev, {
+        id: `a-${Date.now()}`,
+        role: 'assistant',
+        content: reply,
+        timestamp: new Date().toISOString(),
+      } as any]);
+    } catch {
+      setMessages(prev => [...prev, {
+        id: `e-${Date.now()}`,
+        role: 'assistant',
         content: 'The void stirs. Try again.',
-      };
-      setMessages(prev => [...prev, errorMsg]);
+        timestamp: new Date().toISOString(),
+      } as any]);
     } finally {
       setIsLoading(false);
     }
   }
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    handleSend(input)
+  const formatTime = (iso?: string) => {
+    if (!iso) return timeStr;
+    const d = new Date(iso);
+    return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
   }
 
   const handleQuickPrompt = (promptText: string) => {
@@ -112,42 +115,38 @@ export default function CompanionPage() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-full relative -m-4 md:-m-8">
-      {/* LEFT PANEL - TERMINAL */}
-      <div className="flex-1 min-w-0 flex flex-col bg-[#080808] p-4 md:p-8 h-[50vh] md:h-full border-b md:border-b-0 md:border-r border-[#1A1A1A]">
-        
-        {/* Top left timestamp */}
-        <div className="font-mono text-[11px] text-[#3A3A3A] mb-8 select-none">
-          {timeStr}
-        </div>
-
-        {/* Chat Area */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden min-w-0 pb-4 pr-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`mb-8 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}
-            >
-              {msg.role === 'assistant' ? (
-                <p
-                  className="font-serif text-[20px] italic text-[#E8E6E0] leading-relaxed break-words"
-                  style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', overflowWrap: 'break-word' }}
-                >
-                  {msg.content}
-                </p>
-              ) : (
-                <p
-                  className="font-sans text-[13px] text-[#5C5C5C] leading-relaxed inline-block break-words"
-                  style={{ wordBreak: 'break-word' }}
-                >
-                  {msg.content}
-                </p>
-              )}
-            </div>
+    <div className="flex flex-col md:flex-row h-[calc(100vh-48px)] -m-4 md:-m-8">
+      {/* Left panel — chat */}
+      <div className="flex-1 flex flex-col min-h-0 md:w-[60%] bg-[#080808]">
+        <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden px-6 py-8 space-y-8">
+          {messages.map((msg: any) => (
+            msg.role === 'user' ? (
+              <div key={msg.id} className="flex justify-end">
+                <div className="max-w-[80%] bg-[#1A1A1A] px-5 py-3 border border-[#2A2A2A]">
+                  <p className="font-sans text-[13px] text-[#E8E6E0] leading-relaxed" style={{ wordBreak: 'break-word' }}>
+                    {msg.content}
+                  </p>
+                  <p className="font-mono text-[9px] text-[#3A3A3A] mt-2 text-right tracking-[0.1em]">
+                    {formatTime(msg.timestamp)}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div key={msg.id} className="flex justify-start">
+                <div className="max-w-[80%]">
+                  <p className="font-serif text-[20px] italic text-[#E8E6E0] leading-relaxed" style={{ wordBreak: 'break-word', overflowWrap: 'anywhere' }}>
+                    {msg.content}
+                  </p>
+                  <p className="font-mono text-[9px] text-[#3A3A3A] mt-2 tracking-[0.1em]">
+                    AEGIS · {formatTime(msg.timestamp)}
+                  </p>
+                </div>
+              </div>
+            )
           ))}
 
           {isLoading && (
-            <div className="mb-8 text-left">
+            <div className="flex justify-start">
               <p className="font-serif text-[20px] italic text-[#2A2A2A] animate-pulse">
                 The void stirs...
               </p>
@@ -156,119 +155,61 @@ export default function CompanionPage() {
           
           <div ref={messagesEndRef} />
         </div>
-      </div>
 
-      {/* RIGHT PANEL - PARCHMENT */}
-      <div className="w-full md:w-[35%] bg-[#F5F0E8] flex flex-col p-4 md:p-8 overflow-y-auto h-[50vh] md:h-full">
-        
-        {/* Right panel header — text only, no avatar */}
-        <div className="p-6 border-b border-[#E8E0D0] mb-8">
-          <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#9A9090] mb-1">
-            COMPANION
-          </p>
+        {/* Input Area */}
+        <div className="border-t border-[#1A1A1A] px-6 py-4 bg-[#080808]">
+          <div className="md:hidden px-0 py-2 space-y-2 mb-4">
+            <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#5C5C5C] mb-3">QUICK PROMPTS</p>
+            {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
+              <button key={prompt} onClick={() => handleSend(prompt)}
+                className="block w-full text-left font-sans text-[12px] text-[#5C5C5C] hover:text-[#E8E6E0] py-2 border-b border-[#1A1A1A] transition-colors">
+                {prompt}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <input
+              type="text"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && handleSend()}
+              placeholder="Speak to the void..."
+              className="flex-1 bg-transparent border border-[#2A2A2A] px-4 py-3 font-sans text-[13px] text-[#E8E6E0] placeholder:text-[#3A3A3A] focus:outline-none focus:border-[#5C5C5C] transition-colors"
+              style={{ borderRadius: 0 }}
+            />
+            <button
+              onClick={() => handleSend()}
+              disabled={!input.trim() || isLoading}
+              className="bg-[#C41E1E] text-white w-10 h-10 flex items-center justify-center hover:bg-[#E8282B] disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.97] transition-all duration-150"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Right panel — Aegis profile */}
+      <div className="hidden md:block md:w-[40%] bg-[#F5F0E8] border-l border-[#E0D8CC]">
+        <div className="p-6 border-b border-[#E0D8CC]">
+          <p className="font-mono text-[9px] tracking-[0.35em] uppercase text-[#9A8A7A] mb-1">COMPANION</p>
           <h2 className="font-serif text-[32px] font-bold text-[#1A1A1A] leading-none mb-1">
             Aegis
           </h2>
-          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#9A9090]">
-            ARCHITECT · LVL 42
-          </p>
+          <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-[#9A8A7A]">ARCHITECT · LVL 42</p>
         </div>
-
-        {/* Toggles */}
-        <div className="flex gap-2 mb-12">
-          <button 
-            onClick={() => setActiveTab('log')}
-            className={`flex-1 py-2 font-mono text-[10px] tracking-[0.15em] uppercase border border-[#1A1A1A] transition-colors ${
-              activeTab === 'log' ? 'bg-[#1A1A1A] text-[#F5F0E8]' : 'bg-transparent text-[#1A1A1A] hover:bg-[#E8E6E0]'
-            }`}
-          >
-            Memory Log
-          </button>
-          <button 
-            onClick={() => setActiveTab('protocols')}
-            className={`flex-1 py-2 font-mono text-[10px] tracking-[0.15em] uppercase border border-[#1A1A1A] transition-colors ${
-              activeTab === 'protocols' ? 'bg-[#1A1A1A] text-[#F5F0E8]' : 'bg-transparent text-[#1A1A1A] hover:bg-[#E8E6E0]'
-            }`}
-          >
-            Protocols
-          </button>
+        
+        <div className="px-6 py-4 space-y-2">
+          <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#9A8A7A] mb-3">QUICK PROMPTS</p>
+          {['Suggest a quest', 'Analyze my week', 'I am struggling'].map(prompt => (
+            <button key={prompt} onClick={() => handleSend(prompt)}
+              className="block w-full text-left font-sans text-[12px] text-[#5C5C5C] hover:text-[#1A1A1A] py-2 border-b border-[#E0D8CC] transition-colors">
+              {prompt}
+            </button>
+          ))}
         </div>
-
-        {activeTab === 'log' ? (
-          <>
-            {/* Input Console */}
-            <div className="mb-12 flex-1 flex flex-col justify-end">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Communicate your intent..."
-                  className="w-full bg-transparent border-b border-[#1A1A1A] text-[#1A1A1A] pb-2 font-sans text-[14px] resize-none focus:outline-none transition-colors placeholder:text-[#A8A094]"
-                  rows={1}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault()
-                      handleSubmit(e)
-                    }
-                  }}
-                />
-                <div className="flex justify-end">
-                  <button 
-                    type="submit"
-                    disabled={isLoading || !input.trim()}
-                    className="font-serif italic text-[18px] text-[#C41E1E] hover:text-[#1A1A1A] transition-colors disabled:opacity-50"
-                  >
-                    {isLoading ? 'Transmitting...' : 'Send →'}
-                  </button>
-                </div>
-              </form>
-            </div>
-
-            {/* Quick Prompts */}
-            <div>
-              <div className="font-mono text-[10px] text-[#5C5C5C] tracking-widest uppercase mb-4">
-                Quick Prompts
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "Give me a quest",
-                  "Analyze my week",
-                  "I'm struggling",
-                  "What should I focus on?"
-                ].map(prompt => (
-                  <button
-                    key={prompt}
-                    onClick={() => handleQuickPrompt(prompt)}
-                    disabled={isLoading}
-                    className="border border-[#C8C0B4] text-[#1A1A1A] px-3 py-1.5 font-sans text-xs hover:border-[#1A1A1A] hover:bg-[#1A1A1A] hover:text-[#F5F0E8] transition-colors disabled:opacity-50"
-                  >
-                    {prompt}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="flex-1 space-y-8">
-            <div>
-              <div className="font-mono text-[10px] text-[#5C5C5C] tracking-widest uppercase mb-4">
-                Directives
-              </div>
-              <div className="flex flex-col gap-2">
-                <button className="text-left font-sans text-sm text-[#1A1A1A] hover:text-[#C41E1E] transition-colors underline decoration-[#C8C0B4] underline-offset-4">
-                  COMMENCE QUEST
-                </button>
-                <button className="text-left font-sans text-sm text-[#1A1A1A] hover:text-[#C41E1E] transition-colors underline decoration-[#C8C0B4] underline-offset-4">
-                  INSPECT ASSETS
-                </button>
-                <button className="text-left font-sans text-sm text-[#1A1A1A] hover:text-[#C41E1E] transition-colors underline decoration-[#C8C0B4] underline-offset-4">
-                  DIAGNOSTICS
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
       </div>
     </div>
   )
