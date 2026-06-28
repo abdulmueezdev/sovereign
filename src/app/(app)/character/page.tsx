@@ -31,8 +31,19 @@ export default function CharacterPage() {
         setProfile({
           ...DEMO_PROFILE,
           characterName: DEMO_PROFILE.character_name,
-          houseId: DEMO_PROFILE.house_id,
+          houseId: DEMO_PROFILE.house_id || 'ash',
           xpToNext: DEMO_PROFILE.xp_to_next_level || 300,
+          attributes: {
+            strength: DEMO_PROFILE.attr_strength,
+            vitality: DEMO_PROFILE.attr_vitality,
+            intelligence: DEMO_PROFILE.attr_intelligence,
+            focus: DEMO_PROFILE.attr_focus,
+            technical: DEMO_PROFILE.attr_technical,
+            creativity: DEMO_PROFILE.attr_creativity,
+            leadership: DEMO_PROFILE.attr_leadership,
+            charisma: DEMO_PROFILE.attr_charisma,
+            discipline: DEMO_PROFILE.attr_discipline,
+          }
         })
         setAchievements(DEMO_ACHIEVEMENTS)
         setLoading(false)
@@ -86,15 +97,15 @@ export default function CharacterPage() {
   const xpPercent = Math.min(100, Math.max(0, (profile.xp / profile.xpToNext) * 100))
 
   const attributes = profile ? [
-    { key: 'strength', label: 'STRENGTH', val: profile.attr_strength ?? profile.attributes?.strength },
-    { key: 'vitality', label: 'VITALITY', val: profile.attr_vitality ?? profile.attributes?.vitality },
-    { key: 'intelligence', label: 'INTELLIGENCE', val: profile.attr_intelligence ?? profile.attributes?.intelligence },
-    { key: 'focus', label: 'FOCUS', val: profile.attr_focus ?? profile.attributes?.focus },
-    { key: 'technical', label: 'TECHNICAL', val: profile.attr_technical ?? profile.attributes?.technical },
-    { key: 'creativity', label: 'CREATIVITY', val: profile.attr_creativity ?? profile.attributes?.creativity },
-    { key: 'leadership', label: 'LEADERSHIP', val: profile.attr_leadership ?? profile.attributes?.leadership },
-    { key: 'charisma', label: 'CHARISMA', val: profile.attr_charisma ?? profile.attributes?.charisma },
-    { key: 'discipline', label: 'DISCIPLINE', val: profile.attr_discipline ?? profile.attributes?.discipline },
+    { key: 'strength', label: 'STRENGTH', val: profile.attributes?.strength ?? profile.attr_strength ?? 0 },
+    { key: 'vitality', label: 'VITALITY', val: profile.attributes?.vitality ?? profile.attr_vitality ?? 0 },
+    { key: 'intelligence', label: 'INTELLIGENCE', val: profile.attributes?.intelligence ?? profile.attr_intelligence ?? 0 },
+    { key: 'focus', label: 'FOCUS', val: profile.attributes?.focus ?? profile.attr_focus ?? 0 },
+    { key: 'technical', label: 'TECHNICAL', val: profile.attributes?.technical ?? profile.attr_technical ?? 0 },
+    { key: 'creativity', label: 'CREATIVITY', val: profile.attributes?.creativity ?? profile.attr_creativity ?? 0 },
+    { key: 'leadership', label: 'LEADERSHIP', val: profile.attributes?.leadership ?? profile.attr_leadership ?? 0 },
+    { key: 'charisma', label: 'CHARISMA', val: profile.attributes?.charisma ?? profile.attr_charisma ?? 0 },
+    { key: 'discipline', label: 'DISCIPLINE', val: profile.attributes?.discipline ?? profile.attr_discipline ?? 0 },
   ] : []
 
   return (

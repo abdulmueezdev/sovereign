@@ -180,8 +180,23 @@ export default function DashboardPage() {
                   <h2 className="font-sans text-[11px] text-[#5C5C5C] tracking-[0.2em] uppercase mb-6">
                     WEEKLY CADENCE
                   </h2>
-                  <div className="border border-[#1A1A1A] h-48 flex items-center justify-center text-[#3A3A3A] font-mono text-[10px]">
-                    [ PROGRESS RING PLACEHOLDER ]
+                  <div className="border border-[#1A1A1A] h-48 flex items-center justify-center p-6">
+                    <div className="w-full flex flex-col gap-4">
+                      <div className="flex justify-between items-baseline">
+                        <span className="font-mono text-[10px] text-[#5C5C5C] uppercase">Cadence</span>
+                        <span className="font-mono text-[10px] text-[#C41E1E]">70%</span>
+                      </div>
+                      <div className="h-[2px] bg-[#1A1A1A] w-full relative">
+                        <div 
+                          className="absolute top-0 left-0 h-full"
+                          style={{ 
+                            width: '70%',
+                            background: 'linear-gradient(90deg, #C41E1E 0%, #8B0000 100%)',
+                            boxShadow: '0 0 6px 1px rgba(196,30,30,0.3)',
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
