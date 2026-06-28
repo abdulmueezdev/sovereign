@@ -1,9 +1,9 @@
 'use client'
 
-import { useUser } from '@/contexts/UserContext'
-import { UserProvider } from '@/contexts/UserContext'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { DEMO_PROFILE, DEMO_QUESTS_ACTIVE, DEMO_BUILDINGS } from '@/lib/demo-data'
 
 import { Sidebar } from '@/components/layout/Sidebar'
 import { XPBar } from '@/components/ui/XPBar'
@@ -14,42 +14,23 @@ import { CompanionQuote } from '@/components/companion/CompanionQuote'
 import { LevelUpGate } from '@/components/overlays/LevelUpGate'
 import { ToastContainer, useToast } from '@/components/ui/Toast'
 
-import { DEMO_PROFILE, DEMO_QUESTS_ACTIVE, DEMO_BUILDINGS } from '@/lib/demo-data'
 const IS_DEMO = process.env.NEXT_PUBLIC_DEMO_MODE === 'true'
 
-function DashboardContent() {
-  const { user, profile: userProfile, loading: authLoading } = useUser()
+export default function DashboardPage() {
   const router = useRouter()
   const { toasts, addToast, removeToast } = useToast()
-
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
-
+  
   const [profile, setProfile] = useState<any>(null)
   const [quests, setQuests] = useState<any[]>([])
   const [kingdom, setKingdom] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(false)
 
   const [levelUpData, setLevelUpData] = useState<{ open: boolean; newLevel: number; newTitle: string }>({
     open: false,
     newLevel: 1,
     newTitle: ''
   })
-
-  useEffect(() => {
-    if (IS_DEMO) return
-    if (!authLoading && !user) {
-      router.push('/login')
-    }
-  }, [user, authLoading, router])
-
-  useEffect(() => {
-    if (IS_DEMO) return
-    if (!authLoading && user) {
-      if (!userProfile || !userProfile.onboarding_complete) {
-        router.push('/onboarding')
-      }
-    }
-  }, [user, userProfile, authLoading, router])
 
   const fetchDashboard = async () => {
     if (IS_DEMO) {
@@ -82,13 +63,24 @@ function DashboardContent() {
         fetch('/api/kingdom')
       ])
       
+      if (profileRes.status === 401 || questsRes.status === 401 || kingdomRes.status === 401) {
+        router.push('/login')
+        return
+      }
+
       if (!profileRes.ok || !questsRes.ok || !kingdomRes.ok) {
         setError(true)
         setLoading(false)
         return
       }
       
-      setProfile(await profileRes.json())
+      const pData = await profileRes.json()
+      if (!pData || !pData.onboarding_complete) {
+        router.push('/onboarding')
+        return
+      }
+
+      setProfile(pData)
       setQuests(await questsRes.json())
       setKingdom(await kingdomRes.json())
       setLoading(false)
@@ -99,18 +91,17 @@ function DashboardContent() {
   }
 
   useEffect(() => {
-    if (IS_DEMO) {
-      fetchDashboard()
-      return
-    }
-    if (user && userProfile?.onboarding_complete) {
-      fetchDashboard()
-    }
-  }, [user, userProfile])
+    fetchDashboard()
+  }, [])
 
   const handleQuestComplete = () => {
     addToast({ type: 'xp', message: `++ XP AWARDED` })
     
+    if (IS_DEMO) {
+      fetchDashboard()
+      return
+    }
+
     fetch('/api/profile').then(res => res.json()).then(newProfile => {
       if (profile && newProfile.level > profile.level) {
         setLevelUpData({
@@ -123,7 +114,7 @@ function DashboardContent() {
     })
   }
 
-  if (authLoading || (loading && !error && userProfile?.onboarding_complete)) {
+  if (loading) {
     return (
       <div className="flex-1 p-8 md:p-12 lg:p-16 flex items-center justify-center">
         <div className="w-full max-w-4xl">
@@ -138,10 +129,6 @@ function DashboardContent() {
         </div>
       </div>
     )
-  }
-
-  if (!user || (!userProfile?.onboarding_complete && !authLoading)) {
-    return null
   }
 
   if (error || !profile) {
@@ -167,7 +154,7 @@ function DashboardContent() {
         onClose={() => setLevelUpData({ ...levelUpData, open: false })}
       />
 
-      <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16">
+      <div className="flex-1 min-h-screen p-8 md:p-12 lg:p-16 bg-[#080808] text-[#E8E6E0]">
         <div className="max-w-[1400px] mx-auto animate-fade-in-up">
             
             <div className="mb-16">
@@ -212,15 +199,15 @@ function DashboardContent() {
                         key={quest.id}
                         index={i}
                         id={quest.id}
-                        title={quest.title}
-                        description={quest.description}
-                        domain={quest.domain}
-                        xpReward={quest.xpReward}
+                        title={quest.title || quest.quest_templates?.title}
+                        description={quest.description || quest.quest_templates?.description}
+                        domain={quest.domain || quest.quest_templates?.domain}
+                        xpReward={quest.xpReward || quest.quest_templates?.xp_reward}
                         rarity={quest.rarity}
                         progress={quest.progress}
                         dueDate={quest.dueDate}
                         status={quest.status}
-                        objectives={quest.objectives}
+                        objectives={quest.objectives || quest.quest_templates?.objectives}
                         onContinue={handleQuestComplete}
                       />
                     ))
@@ -234,9 +221,9 @@ function DashboardContent() {
                     DOMINION
                   </h2>
                   <KingdomThumbnail 
-                    name={kingdom.name}
-                    level={kingdom.level}
-                    buildings={kingdom.buildings}
+                    name={kingdom.name || kingdom[0]?.name}
+                    level={kingdom.level || 1}
+                    buildings={kingdom.buildings || kingdom}
                   />
                 </div>
 
@@ -260,13 +247,5 @@ function DashboardContent() {
         </div>
       </div>
     </>
-  )
-}
-
-export default function DashboardPage() {
-  return (
-    <UserProvider>
-      <DashboardContent />
-    </UserProvider>
   )
 }
